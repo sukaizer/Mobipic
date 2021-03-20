@@ -1,0 +1,18 @@
+.button {
+    -fx-focus-color: firebrick;
+    -fx-pref-width: 30;
+    -fx-pref-height: 30;
+}
+
+.button :hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),10,0,0,0); /*effet d'ombre*/
+}
+
+#iconOpen {
+    -fx-graphic : url("/ressources/images/open.png");
+}
+
+
+#iconNew {
+    -fx-graphic : url("/ressources/images/file.png");
+}

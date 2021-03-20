@@ -28,7 +28,7 @@
               <menus>
                   <Menu mnemonicParsing="false" text="Fichier">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Charger Projet" />
+                      <MenuItem id="menuItemOpen" mnemonicParsing="false" text="Ouvrir..." />
                         <MenuItem id="menuItemNew" mnemonicParsing="false" text="Nouveau" />
                         <MenuItem id="menuItemSave" mnemonicParsing="false" text="Enregistrer          (Ctrl+S)" />
                         <MenuItem mnemonicParsing="false" text="Enregistrer sous..." />
@@ -74,9 +74,10 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <ToolBar prefHeight="40.0" prefWidth="200.0">
+            <ToolBar prefHeight="40.0" prefWidth="200.0" stylesheets="@../cssFiles/toolBar.css">
               <items>
-                <Button mnemonicParsing="false" text="Button" />
+                <Button id="iconOpen" mnemonicParsing="false" />
+                  <Button id="iconNew" mnemonicParsing="false" />
               </items>
             </ToolBar>
          </children>

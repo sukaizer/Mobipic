@@ -20,6 +20,10 @@
     -fx-graphic : url("/ressources/images/save.png");
 }
 
+#menuItemOpen .label {
+    -fx-graphic : url("/ressources/images/open.png");
+}
+
 .context-menu {
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
