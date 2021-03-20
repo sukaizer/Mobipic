@@ -13,7 +13,6 @@
 
 #menuItemNew .label{
     -fx-graphic : url("/ressources/images/file.png");
-
 }
 
 #menuItemSave .label {
@@ -22,6 +21,14 @@
 
 #menuItemOpen .label {
     -fx-graphic : url("/ressources/images/open.png");
+}
+
+#menuItemHelp .label {
+    -fx-graphic : url("/ressources/images/help.png");
+}
+
+#menuItemImage .label {
+    -fx-graphic : url("/ressources/images/image.png");
 }
 
 .context-menu {

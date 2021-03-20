@@ -57,7 +57,7 @@
                               <MenuItem mnemonicParsing="false" text="Forme" />
                               <MenuItem mnemonicParsing="false" text="Filtre" />
                               <MenuItem mnemonicParsing="false" text="Emoji" />
-                              <MenuItem mnemonicParsing="false" text="Image" />
+                              <MenuItem id="menuItemImage" mnemonicParsing="false" text="Image" />
                           </items>
                         </Menu>
                         <MenuItem mnemonicParsing="false" text="Renommer" />
@@ -69,7 +69,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aide">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Lien du Github" />
+                    <MenuItem id="menuItemHelp" mnemonicParsing="false" text="Lien du Github" />
                   </items>
                 </Menu>
               </menus>
@@ -78,6 +78,7 @@
               <items>
                 <Button id="iconOpen" mnemonicParsing="false" />
                   <Button id="iconNew" mnemonicParsing="false" />
+                  <Button id="iconSave" mnemonicParsing="false" />
               </items>
             </ToolBar>
          </children>

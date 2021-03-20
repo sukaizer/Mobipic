@@ -13,7 +13,10 @@
     -fx-graphic : url("/ressources/images/open.png");
 }
 
-
 #iconNew {
     -fx-graphic : url("/ressources/images/file.png");
+}
+
+#iconSave {
+    -fx-graphic : url("/ressources/images/save.png");
 }
