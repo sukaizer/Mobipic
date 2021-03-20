@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="75.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <VBox prefHeight="600.0" prefWidth="650.0">
+         <children>
+            <MenuBar stylesheets="@../cssFiles/menuBar.css">
+              <menus>
+                  <Menu mnemonicParsing="false" text="Fichier">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Charger Projet" />
+                        <MenuItem id="menuItemNew" mnemonicParsing="false" text="Nouveau" />
+                        <MenuItem id="menuItemSave" mnemonicParsing="false" text="Enregistrer          (Ctrl+S)" />
+                        <MenuItem mnemonicParsing="false" text="Enregistrer sous..." />
+                        <MenuItem mnemonicParsing="false" text="Fermer" />
+                        <MenuItem mnemonicParsing="false" text="Exporter sous..." />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Quitter" />
+                    </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" text="Édition">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Défaire         (Ctrl+Z)" />
+                        <MenuItem mnemonicParsing="false" text="Refaire         (Ctrl+Y)" />
+                        <MenuItem mnemonicParsing="false" text="Couper         (Ctrl+X)" />
+                        <MenuItem mnemonicParsing="false" text="Copier          (Ctrl+C)" />
+                        <MenuItem mnemonicParsing="false" text="Coller           (Ctrl+V)" />
+                        <MenuItem mnemonicParsing="false" text="Effacer" />
+                        <MenuItem mnemonicParsing="false" text="Redimensionner" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Calque">
+                  <items>
+                        <Menu mnemonicParsing="false" text="Nouveau">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Texte" />
+                              <MenuItem mnemonicParsing="false" text="Forme" />
+                              <MenuItem mnemonicParsing="false" text="Filtre" />
+                              <MenuItem mnemonicParsing="false" text="Emoji" />
+                              <MenuItem mnemonicParsing="false" text="Image" />
+                          </items>
+                        </Menu>
+                        <MenuItem mnemonicParsing="false" text="Renommer" />
+                        <MenuItem mnemonicParsing="false" text="Redimensionner" />
+                        <MenuItem mnemonicParsing="false" text="Duppliquer" />
+                        <MenuItem mnemonicParsing="false" text="Supprimer" />
+                        <MenuItem mnemonicParsing="false" text="Fusionner" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Aide">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Lien du Github" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <ToolBar prefHeight="40.0" prefWidth="200.0">
+              <items>
+                <Button mnemonicParsing="false" text="Button" />
+              </items>
+            </ToolBar>
+         </children>
+      </VBox>
+      <VBox prefHeight="600.0" prefWidth="250.0" GridPane.columnIndex="1">
+         <children>
+            <ScrollPane prefHeight="400.0" prefWidth="250.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+              </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </children>
+</GridPane>
