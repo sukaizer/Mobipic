@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerMain">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="75.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" />
@@ -28,7 +28,7 @@
               <menus>
                   <Menu mnemonicParsing="false" text="Fichier">
                     <items>
-                      <MenuItem id="menuItemOpen" mnemonicParsing="false" text="Ouvrir..." />
+                      <MenuItem id="menuItemOpen" mnemonicParsing="false" onAction="#setOpenMenuAction" text="Ouvrir..." />
                         <MenuItem id="menuItemNew" mnemonicParsing="false" text="Nouveau" />
                         <MenuItem id="menuItemSave" mnemonicParsing="false" text="Enregistrer          (Ctrl+S)" />
                         <MenuItem mnemonicParsing="false" text="Enregistrer sous..." />
@@ -57,7 +57,7 @@
                               <MenuItem mnemonicParsing="false" text="Forme" />
                               <MenuItem mnemonicParsing="false" text="Filtre" />
                               <MenuItem mnemonicParsing="false" text="Emoji" />
-                              <MenuItem mnemonicParsing="false" text="Image" />
+                              <MenuItem id="menuItemImage" mnemonicParsing="false" text="Image" />
                           </items>
                         </Menu>
                         <MenuItem mnemonicParsing="false" text="Renommer" />
@@ -69,15 +69,16 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aide">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Lien du Github" />
+                    <MenuItem id="menuItemHelp" mnemonicParsing="false" text="Lien du Github" />
                   </items>
                 </Menu>
               </menus>
             </MenuBar>
             <ToolBar prefHeight="40.0" prefWidth="200.0" stylesheets="@../cssFiles/toolBar.css">
               <items>
-                <Button id="iconOpen" mnemonicParsing="false" />
+                <Button id="iconOpen" mnemonicParsing="false" onAction="#setOpenMenuAction" />
                   <Button id="iconNew" mnemonicParsing="false" />
+                  <Button id="iconSave" mnemonicParsing="false" />
               </items>
             </ToolBar>
          </children>
