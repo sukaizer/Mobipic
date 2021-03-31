@@ -26,9 +26,7 @@ public class ControllerMain implements Initializable {
             if(extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg") || extension.equals("bmp")){
                 System.out.println("hey");
             }
-        }catch(NullPointerException n){
-            
-        }
+        }catch(NullPointerException ignored){}
     }
 
     @Override
