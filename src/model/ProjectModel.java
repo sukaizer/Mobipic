@@ -1,13 +1,16 @@
 package model;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.ArrayList;
 
 public class ProjectModel {
     private ArrayList<Layer> layerArrayList;
     private ShapeToDraw shapeToDraw;
+    private GraphicsContext graphicsContext;
 
     public ProjectModel() {
-        this.shapeToDraw = null;
+        this.shapeToDraw = ShapeToDraw.nothing;
         this.layerArrayList = new ArrayList<>();
     }
 
@@ -28,7 +31,10 @@ public class ProjectModel {
     }
 
     public void paintLayers(){
-        //erased
+        if(this.graphicsContext == null){
+            this.graphicsContext = layerArrayList.get(0).getGraphicsContext();
+        }
+        this.graphicsContext.clearRect(0,0,1000,1000);
         for (Layer layer:this.layerArrayList) {
             layer.paint();
         }

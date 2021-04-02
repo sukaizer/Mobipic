@@ -26,6 +26,10 @@ public abstract class Layer {
 
     public abstract void paint();
 
+    public GraphicsContext getGraphicsContext() {
+        return graphicsContext;
+    }
+
     public void setFocused(boolean focus){
         this.isFocused = focus;
     }

@@ -27,13 +27,18 @@ public class ControllerMain implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.model = new ProjectModel();
         fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Project Files","*.mbpc"),
                 new FileChooser.ExtensionFilter("Image Files","*.jpg","*.png","*.jpeg","*.bmp"));
 
         try {
-            Parent pane = FXMLLoader.load(getClass().getResource("../ressources/fxmlFiles/canvas.fxml"));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../ressources/fxmlFiles/canvas.fxml"));
+            Parent pane = loader.load();
+            ControllerCanvas controllerCanvas = loader.getController();
+            controllerCanvas.init(this.model);
             mainPane.getChildren().add(pane);
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,18 +57,24 @@ public class ControllerMain implements Initializable {
                 System.out.println("hey");
             }
         }catch(NullPointerException ignored){}
+        System.out.println(this.model.getShapeToDraw().toString());
     }
 
     @FXML
     public void addShapeMenu(ActionEvent actionEvent) {
         String path = "../ressources/fxmlFiles/shapes.fxml";
         String name = "Ajouter une Forme";
-        setNewStage(path,name);
+        FXMLLoader loader = setNewStage(path,name);
+        assert loader != null;
+        ControllerShapesMenu controllerShapesMenu = loader.getController();
+        controllerShapesMenu.init(this.model);
     }
 
-    private void setNewStage(String path, String name) {
+    private FXMLLoader setNewStage(String path, String name) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource(path));
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(path));
+            Parent root = loader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             scene.setRoot(root);
@@ -71,9 +82,11 @@ public class ControllerMain implements Initializable {
             stage.centerOnScreen();
             stage.setScene(scene);
             stage.show();
+            return loader;
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
