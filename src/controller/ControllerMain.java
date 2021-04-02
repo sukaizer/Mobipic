@@ -45,6 +45,9 @@ public class ControllerMain implements Initializable {
         }
     }
 
+    /**
+     * Ouvre la fenetre contextuelle de choix de fichiers
+     */
     @FXML
     public void setOpenMenuAction(ActionEvent e) {
         file = fileChooser.showOpenDialog(new Stage());
@@ -60,6 +63,9 @@ public class ControllerMain implements Initializable {
         System.out.println(this.model.getShapeToDraw().toString());
     }
 
+    /**
+     * Ouvre la fenetre contextuelle d'ajout de formes
+     */
     @FXML
     public void addShapeMenu(ActionEvent actionEvent) {
         String path = "../ressources/fxmlFiles/shapes.fxml";
@@ -70,6 +76,12 @@ public class ControllerMain implements Initializable {
         controllerShapesMenu.init(this.model);
     }
 
+    /**
+     * Crée une nouvelle fenetre
+     * @param path chemin vers le fichier FXML
+     * @param name nom de la fenetre
+     * @return FXMLLoader
+     */
     private FXMLLoader setNewStage(String path, String name) {
         try {
             FXMLLoader loader = new FXMLLoader();

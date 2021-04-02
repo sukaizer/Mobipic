@@ -6,16 +6,16 @@ public class Square extends Layer{
 
     private double side;
 
-    Square(double x, double y, double s, GraphicsContext graphicsContext) {
+    public Square(double x, double y, double s, GraphicsContext graphicsContext) {
         super(x, y, graphicsContext);
         this.side = s;
     }
 
-    double getSide(){
+    public double getSide(){
         return this.side;
     }
 
-    void setSide(double s) {
+    public void setSide(double s) {
         this.side = s;
     }
 

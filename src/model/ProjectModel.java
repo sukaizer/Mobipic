@@ -30,11 +30,10 @@ public class ProjectModel {
         this.shapeToDraw = shapeToDraw;
     }
 
+    /**
+     * Dessine toutes les formes présentes
+     */
     public void paintLayers(){
-        if(this.graphicsContext == null){
-            this.graphicsContext = layerArrayList.get(0).getGraphicsContext();
-        }
-        this.graphicsContext.clearRect(0,0,1000,1000);
         for (Layer layer:this.layerArrayList) {
             layer.paint();
         }

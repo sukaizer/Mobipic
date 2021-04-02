@@ -6,25 +6,25 @@ public class Rectangle extends Layer{
 
     private double height, width;
 
-    Rectangle(double x, double y, double h, double w, GraphicsContext graphicsContext) {
+    public Rectangle(double x, double y, double h, double w, GraphicsContext graphicsContext) {
         super(x, y, graphicsContext);
         this.height = h;
         this.width = w;
     }
 
-    double getHeight(){
+    public double getHeight(){
         return this.height;
     }
 
-    double getWidth(){
+    public double getWidth(){
         return this.width;
     }
 
-    void setHeight(double h){
+    public void setHeight(double h){
         this.height = h;
     }
 
-    void setWidth(double w) {
+    public void setWidth(double w) {
         this.width = w;
     }
 

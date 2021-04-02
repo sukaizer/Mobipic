@@ -24,12 +24,23 @@ public abstract class Layer {
         this.graphicsContext = graphicsContext;
     }
 
+    /**
+     * Dessine la forme
+     */
     public abstract void paint();
 
+    /**
+     * renvoie l'objet GraphicsContext relié
+     * @return GraphicsContext
+     */
     public GraphicsContext getGraphicsContext() {
         return graphicsContext;
     }
 
+    /**
+     * détermine si l'objet est cliqué ou pas
+     * @param focus
+     */
     public void setFocused(boolean focus){
         this.isFocused = focus;
     }

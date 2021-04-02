@@ -16,9 +16,12 @@ public class ControllerShapesMenu implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
+    /**
+     * Initialise la classe en lui passant le modèle
+     * @param model
+     */
     public void init(ProjectModel model){
         this.model = model;
     }
@@ -26,6 +29,25 @@ public class ControllerShapesMenu implements Initializable {
     @FXML
     public void drawLine(ActionEvent actionEvent) {
         this.model.setShapeToDraw(ShapeToDraw.Line);
+    }
+
+    public void drawSquare(ActionEvent actionEvent) {
+        this.model.setShapeToDraw(ShapeToDraw.Square);
+    }
+
+    public void drawRectangle(ActionEvent actionEvent) {
+        this.model.setShapeToDraw(ShapeToDraw.Rectangle);
+    }
+
+    public void drawCircle(ActionEvent actionEvent) {
+        this.model.setShapeToDraw(ShapeToDraw.Circle);
+    }
+
+    public void drawTriangle(ActionEvent actionEvent) {
+        this.model.setShapeToDraw(ShapeToDraw.Triangle);
+    }
+
+    public void validateChoice(ActionEvent actionEvent) {
         Node source = (Node) actionEvent.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
