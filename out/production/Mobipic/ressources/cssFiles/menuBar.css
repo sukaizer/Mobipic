@@ -27,6 +27,10 @@
     -fx-graphic : url("/ressources/images/help.png");
 }
 
+#menuItemShapes .label {
+    -fx-graphic : url("/ressources/images/shapes.png");
+}
+
 #menuItemImage .label {
     -fx-graphic : url("/ressources/images/image.png");
 }

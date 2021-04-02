@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+
+
+<Canvas height="530.0" onMouseDragged="#setOnMouseDragged" onMousePressed="#setOnMousePressed" onMouseReleased="#setOnMouseReleased" width="750.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerCanvas" />

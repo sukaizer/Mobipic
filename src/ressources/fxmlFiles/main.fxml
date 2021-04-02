@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -54,7 +55,7 @@
                         <Menu mnemonicParsing="false" text="Nouveau">
                           <items>
                             <MenuItem mnemonicParsing="false" text="Texte" />
-                              <MenuItem mnemonicParsing="false" text="Forme" />
+                              <MenuItem id="menuItemShapes" mnemonicParsing="false" onAction="#addShapeMenu" text="Forme" />
                               <MenuItem mnemonicParsing="false" text="Filtre" />
                               <MenuItem mnemonicParsing="false" text="Emoji" />
                               <MenuItem id="menuItemImage" mnemonicParsing="false" text="Image" />
@@ -81,6 +82,7 @@
                   <Button id="iconSave" mnemonicParsing="false" />
               </items>
             </ToolBar>
+            <Pane fx:id="mainPane" prefHeight="530.0" prefWidth="750.0" />
          </children>
       </VBox>
       <VBox prefHeight="600.0" prefWidth="250.0" GridPane.columnIndex="1">
