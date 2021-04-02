@@ -36,7 +36,7 @@
                         <MenuItem mnemonicParsing="false" text="Fermer" />
                         <MenuItem mnemonicParsing="false" text="Exporter sous..." />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Quitter" />
+                        <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quitter" />
                     </items>
                   </Menu>
                 <Menu mnemonicParsing="false" text="Édition">

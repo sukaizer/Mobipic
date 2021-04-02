@@ -20,10 +20,13 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ControllerMain implements Initializable {
+    private Stage primaryStage;
+    private FileChooser fileChooser;
+    private File file;
+    private ProjectModel model;
+
     @FXML public Pane mainPane;
-    FileChooser fileChooser;
-    File file;
-    ProjectModel model;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,6 +48,10 @@ public class ControllerMain implements Initializable {
         }
     }
 
+    public void init(Stage primaryStage){
+        this.primaryStage = primaryStage;
+    }
+
     /**
      * Ouvre la fenetre contextuelle de choix de fichiers
      */
@@ -61,6 +68,12 @@ public class ControllerMain implements Initializable {
             }
         }catch(NullPointerException ignored){}
         System.out.println(this.model.getShapeToDraw().toString());
+    }
+
+    @FXML
+    public void quitApp(ActionEvent actionEvent) {
+        this.primaryStage.close();
+        //TODO ajouter etes vous sur de quitter etc
     }
 
     /**
@@ -101,4 +114,6 @@ public class ControllerMain implements Initializable {
         }
         return null;
     }
+
+
 }
