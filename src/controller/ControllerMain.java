@@ -20,11 +20,10 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ControllerMain implements Initializable {
+    @FXML public Pane mainPane;
     FileChooser fileChooser;
     File file;
     ProjectModel model;
-
-    @FXML public Pane mainPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -32,6 +31,7 @@ public class ControllerMain implements Initializable {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Project Files","*.mbpc"),
                 new FileChooser.ExtensionFilter("Image Files","*.jpg","*.png","*.jpeg","*.bmp"));
+
         try {
             Parent pane = FXMLLoader.load(getClass().getResource("../ressources/fxmlFiles/canvas.fxml"));
             mainPane.getChildren().add(pane);
