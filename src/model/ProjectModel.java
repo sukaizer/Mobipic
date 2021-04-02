@@ -1,13 +1,18 @@
 package model;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class ProjectModel {
     ArrayList<Layer> layerArrayList;
-    File file;
 
     public ProjectModel() {
         this.layerArrayList = new ArrayList<>();
+    }
+
+    public void paintLayers(){
+        //erased
+        for (Layer layer:this.layerArrayList) {
+            layer.paint();
+        }
     }
 }
