@@ -36,9 +36,12 @@ public class ControllerMain implements Initializable {
     private ProjectModel model;
     ControllerCanvas controllerCanvas;
     Canvas canvas;
-    @FXML public Pane mainPane;
-    @FXML public MenuItem newShapeMenu;
-    @FXML public Menu exportButton;
+    @FXML
+    public Pane mainPane;
+    @FXML
+    public MenuItem newShapeMenu;
+    @FXML
+    public Menu exportButton;
 
 
     @Override
@@ -47,11 +50,11 @@ public class ControllerMain implements Initializable {
         this.exportButton.setDisable(true);
         fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Project Files","*.mbpc"),
-                new FileChooser.ExtensionFilter("Image Files","*.jpg","*.png","*.jpeg","*.bmp"));
+                new FileChooser.ExtensionFilter("Project Files", "*.mbpc"),
+                new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.jpeg", "*.bmp"));
     }
 
-    public void init(Stage primaryStage){
+    public void init(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
@@ -66,33 +69,38 @@ public class ControllerMain implements Initializable {
             String extension = Optional.of(filename)
                     .filter(f -> f.contains("."))
                     .map(f -> f.substring(filename.lastIndexOf(".") + 1)).get();
-            if(extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg") || extension.equals("bmp")){
+            if (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg") || extension.equals("bmp")) {
                 System.out.println("hey");
             }
-        }catch(NullPointerException ignored){}
+        } catch (NullPointerException ignored) {
+        }
         System.out.println(this.model.getShapeToDraw().toString());
     }
 
     @FXML
     public void setNewMenuAction(ActionEvent actionEvent) {
-        file = fileChooser.showOpenDialog(new Stage());
-        Image base = new Image(String.valueOf(file.toURI()),750, 530, false, false);
         try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("../ressources/fxmlFiles/canvas.fxml"));
-            Parent pane = loader.load();
-            this.controllerCanvas = loader.getController();
-            this.canvas = this.controllerCanvas.getCanvas();
-            this.model = new ProjectModel(base,this.canvas.getGraphicsContext2D());
-            this.controllerCanvas.init(this.model);
-            this.mainPane.getChildren().add(pane);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.newShapeMenu.setDisable(false);
-        this.exportButton.setDisable(false);
-        this.model.paintLayers();
-
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Fichiers d'image (*.jpg, *.png, *.bmp)", "*.jpg", "*.png", "*.jpeg", "*.bmp"));
+            File file = fileChooser.showOpenDialog(new Stage());
+            Image base = new Image(String.valueOf(file.toURI()), 750, 530, false, false);
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("../ressources/fxmlFiles/canvas.fxml"));
+                Parent pane = loader.load();
+                this.controllerCanvas = loader.getController();
+                this.canvas = this.controllerCanvas.getCanvas();
+                this.model = new ProjectModel(base, this.canvas.getGraphicsContext2D());
+                this.controllerCanvas.init(this.model);
+                this.mainPane.getChildren().add(pane);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            this.newShapeMenu.setDisable(false);
+            this.exportButton.setDisable(false);
+            this.model.paintLayers();
+        }catch(NullPointerException ignored){}
     }
 
     @FXML
@@ -108,7 +116,7 @@ public class ControllerMain implements Initializable {
     public void addShapeMenu(ActionEvent actionEvent) {
         String path = "../ressources/fxmlFiles/shapes.fxml";
         String name = "Ajouter une Forme";
-        FXMLLoader loader = setNewStage(path,name);
+        FXMLLoader loader = setNewStage(path, name);
         assert loader != null;
         ControllerShapesMenu controllerShapesMenu = loader.getController();
         controllerShapesMenu.init(this.model);
@@ -116,6 +124,7 @@ public class ControllerMain implements Initializable {
 
     /**
      * Crée une nouvelle fenetre
+     *
      * @param path chemin vers le fichier FXML
      * @param name nom de la fenetre
      * @return FXMLLoader
@@ -133,8 +142,7 @@ public class ControllerMain implements Initializable {
             stage.setScene(scene);
             stage.show();
             return loader;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -146,15 +154,15 @@ public class ControllerMain implements Initializable {
 
         //Set extension filter
         FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+                new FileChooser.ExtensionFilter("fichier jpg (*.jpg)", "*.jpg");
         fileChooser.getExtensionFilters().add(extFilter);
 
         //Show save file dialog
         File file = fileChooser.showSaveDialog(primaryStage);
 
-        if(file != null){
+        if (file != null) {
             try {
-                WritableImage writableImage = new WritableImage((int)this.canvas.getWidth(), (int)this.canvas.getHeight());
+                WritableImage writableImage = new WritableImage((int) this.canvas.getWidth(), (int) this.canvas.getHeight());
                 canvas.snapshot(null, writableImage);
                 RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
                 ImageIO.write(renderedImage, "jpg", file);
@@ -169,15 +177,15 @@ public class ControllerMain implements Initializable {
 
         //Set extension filter
         FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("bmp files (*.bmp)", "*.bmp");
+                new FileChooser.ExtensionFilter("fichier bmp (*.bmp)", "*.bmp");
         fileChooser.getExtensionFilters().add(extFilter);
 
         //Show save file dialog
         File file = fileChooser.showSaveDialog(primaryStage);
 
-        if(file != null){
+        if (file != null) {
             try {
-                WritableImage writableImage = new WritableImage((int)this.canvas.getWidth(), (int)this.canvas.getHeight());
+                WritableImage writableImage = new WritableImage((int) this.canvas.getWidth(), (int) this.canvas.getHeight());
                 canvas.snapshot(null, writableImage);
                 RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
                 ImageIO.write(renderedImage, "bmp", file);
@@ -192,15 +200,15 @@ public class ControllerMain implements Initializable {
 
         //Set extension filter
         FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+                new FileChooser.ExtensionFilter("fichier png (*.png)", "*.png");
         fileChooser.getExtensionFilters().add(extFilter);
 
         //Show save file dialog
         File file = fileChooser.showSaveDialog(primaryStage);
 
-        if(file != null){
+        if (file != null) {
             try {
-                WritableImage writableImage = new WritableImage((int)this.canvas.getWidth(), (int)this.canvas.getHeight());
+                WritableImage writableImage = new WritableImage((int) this.canvas.getWidth(), (int) this.canvas.getHeight());
                 canvas.snapshot(null, writableImage);
                 RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
                 ImageIO.write(renderedImage, "png", file);
