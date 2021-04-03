@@ -9,14 +9,12 @@ public class ProjectModel {
     private ShapeToDraw shapeToDraw;
     private GraphicsContext graphicsContext;
     private boolean editing;
-    private javafx.scene.image.Image baseImage;
     private Image baseLayer;
 
     public ProjectModel(javafx.scene.image.Image baseImage,GraphicsContext graphicsContext) {
         this.shapeToDraw = ShapeToDraw.nothing;
         this.layerArrayList = new ArrayList<>();
         this.editing = false;
-        this.baseImage = baseImage;
         this.graphicsContext = graphicsContext;
         this.baseLayer = new Image(baseImage,0,0,this.graphicsContext);
     }
