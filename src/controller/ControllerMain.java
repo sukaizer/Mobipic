@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,45 +8,47 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.ProjectModel;
 
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class ControllerMain implements Initializable {
+
     private Stage primaryStage;
     private FileChooser fileChooser;
     private File file;
     private ProjectModel model;
-
+    ControllerCanvas controllerCanvas;
+    Canvas canvas;
     @FXML public Pane mainPane;
+    @FXML public MenuItem newShapeMenu;
+    @FXML public Menu exportButton;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.model = new ProjectModel();
+        this.newShapeMenu.setDisable(true);
+        this.exportButton.setDisable(true);
         fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Project Files","*.mbpc"),
                 new FileChooser.ExtensionFilter("Image Files","*.jpg","*.png","*.jpeg","*.bmp"));
-
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("../ressources/fxmlFiles/canvas.fxml"));
-            Parent pane = loader.load();
-            ControllerCanvas controllerCanvas = loader.getController();
-            controllerCanvas.init(this.model);
-            mainPane.getChildren().add(pane);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void init(Stage primaryStage){
@@ -68,6 +71,28 @@ public class ControllerMain implements Initializable {
             }
         }catch(NullPointerException ignored){}
         System.out.println(this.model.getShapeToDraw().toString());
+    }
+
+    @FXML
+    public void setNewMenuAction(ActionEvent actionEvent) {
+        file = fileChooser.showOpenDialog(new Stage());
+        Image base = new Image(String.valueOf(file.toURI()),750, 530, false, false);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../ressources/fxmlFiles/canvas.fxml"));
+            Parent pane = loader.load();
+            this.controllerCanvas = loader.getController();
+            this.canvas = this.controllerCanvas.getCanvas();
+            this.model = new ProjectModel(base,this.canvas.getGraphicsContext2D());
+            this.controllerCanvas.init(this.model);
+            this.mainPane.getChildren().add(pane);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.newShapeMenu.setDisable(false);
+        this.exportButton.setDisable(false);
+        this.model.paintLayers();
+
     }
 
     @FXML
@@ -115,5 +140,72 @@ public class ControllerMain implements Initializable {
         return null;
     }
 
+    @FXML
+    public void exportToJpg(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
 
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter =
+                new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if(file != null){
+            try {
+                WritableImage writableImage = new WritableImage((int)this.canvas.getWidth(), (int)this.canvas.getHeight());
+                canvas.snapshot(null, writableImage);
+                RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                ImageIO.write(renderedImage, "jpg", file);
+            } catch (IOException ignored) {
+            }
+        }
+    }
+
+    @FXML
+    public void exportToBmp(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter =
+                new FileChooser.ExtensionFilter("bmp files (*.bmp)", "*.bmp");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if(file != null){
+            try {
+                WritableImage writableImage = new WritableImage((int)this.canvas.getWidth(), (int)this.canvas.getHeight());
+                canvas.snapshot(null, writableImage);
+                RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                ImageIO.write(renderedImage, "bmp", file);
+            } catch (IOException ignored) {
+            }
+        }
+    }
+
+    @FXML
+    public void exportToPng(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter =
+                new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if(file != null){
+            try {
+                WritableImage writableImage = new WritableImage((int)this.canvas.getWidth(), (int)this.canvas.getHeight());
+                canvas.snapshot(null, writableImage);
+                RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                ImageIO.write(renderedImage, "png", file);
+            } catch (IOException ignored) {
+            }
+        }
+    }
 }

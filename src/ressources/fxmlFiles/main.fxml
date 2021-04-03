@@ -30,11 +30,17 @@
                   <Menu mnemonicParsing="false" text="Fichier">
                     <items>
                       <MenuItem id="menuItemOpen" mnemonicParsing="false" onAction="#setOpenMenuAction" text="Ouvrir..." />
-                        <MenuItem id="menuItemNew" mnemonicParsing="false" text="Nouveau" />
+                        <MenuItem id="menuItemNew" mnemonicParsing="false" onAction="#setNewMenuAction" text="Nouveau" />
                         <MenuItem id="menuItemSave" mnemonicParsing="false" text="Enregistrer          (Ctrl+S)" />
                         <MenuItem mnemonicParsing="false" text="Enregistrer sous..." />
                         <MenuItem mnemonicParsing="false" text="Fermer" />
-                        <MenuItem mnemonicParsing="false" text="Exporter sous..." />
+                        <Menu fx:id="exportButton" mnemonicParsing="false" text="Exporter sous...">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#exportToJpg" text=".jpg" />
+                              <MenuItem mnemonicParsing="false" onAction="#exportToBmp" text=".bmp" />
+                              <MenuItem mnemonicParsing="false" onAction="#exportToPng" text=".png" />
+                          </items>
+                        </Menu>
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quitter" />
                     </items>
@@ -55,7 +61,7 @@
                         <Menu mnemonicParsing="false" text="Nouveau">
                           <items>
                             <MenuItem mnemonicParsing="false" text="Texte" />
-                              <MenuItem id="menuItemShapes" mnemonicParsing="false" onAction="#addShapeMenu" text="Forme" />
+                              <MenuItem id="menuItemShapes" fx:id="newShapeMenu" mnemonicParsing="false" onAction="#addShapeMenu" text="Forme" />
                               <MenuItem mnemonicParsing="false" text="Filtre" />
                               <MenuItem mnemonicParsing="false" text="Emoji" />
                               <MenuItem id="menuItemImage" mnemonicParsing="false" text="Image" />
@@ -78,7 +84,7 @@
             <ToolBar prefHeight="40.0" prefWidth="200.0" stylesheets="@../cssFiles/toolBar.css">
               <items>
                 <Button id="iconOpen" mnemonicParsing="false" onAction="#setOpenMenuAction" />
-                  <Button id="iconNew" mnemonicParsing="false" />
+                  <Button id="iconNew" mnemonicParsing="false" onAction="#setNewMenuAction" />
                   <Button id="iconSave" mnemonicParsing="false" />
               </items>
             </ToolBar>

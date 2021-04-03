@@ -7,10 +7,6 @@
     -fx-background-color: #c1bcbc;
 }
 
-.menu-item:focused .label {
-    -fx-font-weight: bold;
-}
-
 #menuItemNew .label{
     -fx-graphic : url("/ressources/images/file.png");
 }

@@ -6,7 +6,7 @@ public class Triangle extends Layer {
 
     private double x1, y1, x2, y2, x3, y3;
 
-    Triangle(double x1, double y1, double x2, double y2, double x3, double y3, GraphicsContext graphicsContext) {
+    public Triangle(double x1, double y1, double x2, double y2, double x3, double y3, GraphicsContext graphicsContext) {
         super(graphicsContext);
         this.x1 = x1;
         this.y1 = y1;
@@ -16,51 +16,51 @@ public class Triangle extends Layer {
         this.y3 = y3;
     }
 
-    double getX1() {
+    public double getX1() {
         return this.x1;
     }
 
-    double getY1() {
+    public double getY1() {
         return this.y1;
     }
 
-    double getX2() {
+    public double getX2() {
         return this.x2;
     }
 
-    double getY2() {
+    public double getY2() {
         return this.y2;
     }
 
-    double getX3() {
+    public double getX3() {
         return this.x3;
     }
 
-    double getY3() {
+    public double getY3() {
         return this.y3;
     }
 
-    void setX1(double x1) {
+    public void setX1(double x1) {
         this.x1 = x1;
     }
 
-    void setY1(double y1) {
+    public void setY1(double y1) {
         this.y1 = y1;
     }
 
-    void setX2(double x2) {
+    public void setX2(double x2) {
         this.x2 = x2;
     }
 
-    void setY2(double y2) {
+    public void setY2(double y2) {
         this.y2 = y2;
     }
 
-    void setX3(double x3) {
+    public void setX3(double x3) {
         this.x3 = x3;
     }
 
-    void sety3(double y3) {
+    public void setY3(double y3) {
         this.y3 = y3;
     }
 
