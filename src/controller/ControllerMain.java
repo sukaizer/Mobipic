@@ -26,6 +26,7 @@ import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -222,5 +223,12 @@ public class ControllerMain implements Initializable {
             } catch (IOException ignored) {
             }
         }
+    }
+
+    @FXML
+    public void helpButtonAction(ActionEvent actionEvent) {
+        try {
+            Desktop.getDesktop().browse(new URL("https://github.com/sukaizer/Mobipic").toURI());
+        } catch (IOException | URISyntaxException ignored) {}
     }
 }

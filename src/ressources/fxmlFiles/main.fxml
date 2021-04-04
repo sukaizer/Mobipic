@@ -83,7 +83,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aide">
                   <items>
-                    <MenuItem id="menuItemHelp" mnemonicParsing="false" text="Lien du Github" />
+                    <MenuItem id="menuItemHelp" mnemonicParsing="false" onAction="#helpButtonAction" text="Lien du Github" />
                   </items>
                 </Menu>
               </menus>
