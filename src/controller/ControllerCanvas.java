@@ -75,43 +75,52 @@ public class ControllerCanvas implements Initializable {
     }
 
     public void lineFirstPoint(MouseEvent e) {
+        resetTriangle();
         this.currentLayer = new Line(e.getX(), e.getY(), e.getX(), e.getY(), this.canvas.getGraphicsContext2D());
         this.model.addLayer(currentLayer);
     }
 
     public void lineSetNewPoint(MouseEvent e) {
+        resetTriangle();
         ((Line) currentLayer).setX2(e.getX());
         ((Line) currentLayer).setY2(e.getY());
     }
 
     public void squareFirstPoint(MouseEvent e) {
+        resetTriangle();
         this.currentLayer = new Square(e.getX(), e.getY(), 0, this.canvas.getGraphicsContext2D());
         this.model.addLayer(currentLayer);
     }
 
     public void squareSetNewPoint(MouseEvent e) {
+        resetTriangle();
         double s = Math.abs(e.getX() - currentLayer.getX());
         ((Square) currentLayer).setSide(s);
     }
 
     public void rectangleFirstPoint(MouseEvent e) {
+        resetTriangle();
         this.currentLayer = new Rectangle(e.getX(), e.getY(), 0, 0, this.canvas.getGraphicsContext2D());
         this.model.addLayer(currentLayer);
     }
 
     public void rectangleSetNewPoint(MouseEvent e) {
+        resetTriangle();
         double w = Math.abs(currentLayer.getX() - e.getX());
         double h = Math.abs(currentLayer.getY() - e.getY());
         ((Rectangle) currentLayer).setWidth(w);
         ((Rectangle) currentLayer).setHeight(h);
     }
 
+
     public void circleFirstPoint(MouseEvent e) {
+        resetTriangle();
         this.currentLayer = new Circle(e.getX(), e.getY(), 0, this.canvas.getGraphicsContext2D());
         this.model.addLayer(currentLayer);
     }
 
     public void circleSetNewPoint(MouseEvent e) {
+        resetTriangle();
         double r = Math.abs(currentLayer.getX() - e.getX()) / 2;
         ((Circle) currentLayer).setRadius(r);
     }
@@ -136,5 +145,13 @@ public class ControllerCanvas implements Initializable {
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    private void resetTriangle() {
+        if (this.triangleFirst != 0) {
+            this.triangleFirst = 0;
+            this.model.getLayerArrayList().remove(this.model.getLayerArrayList().size() - 1);
+            this.model.paintLayers();
+        }
     }
 }
