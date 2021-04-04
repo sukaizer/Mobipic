@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -88,7 +87,10 @@
                   <Button id="iconSave" mnemonicParsing="false" />
               </items>
             </ToolBar>
-            <Pane fx:id="mainPane" prefHeight="530.0" prefWidth="750.0" />
+            <ScrollPane prefHeight="530.0" prefWidth="750.0">
+               <content>
+                  <AnchorPane fx:id="mainPane" prefHeight="530.0" prefWidth="750.0" />
+               </content></ScrollPane>
          </children>
       </VBox>
       <VBox prefHeight="600.0" prefWidth="250.0" GridPane.columnIndex="1">

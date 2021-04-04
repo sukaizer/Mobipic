@@ -11,8 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -20,6 +22,7 @@ import javafx.stage.Window;
 import model.ProjectModel;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -37,11 +40,11 @@ public class ControllerMain implements Initializable {
     ControllerCanvas controllerCanvas;
     Canvas canvas;
     @FXML
-    public Pane mainPane;
-    @FXML
     public MenuItem newShapeMenu;
     @FXML
     public Menu exportButton;
+    @FXML
+    public AnchorPane mainPane;
 
 
     @Override
@@ -84,7 +87,7 @@ public class ControllerMain implements Initializable {
             fileChooser.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("Fichiers d'image (*.jpg, *.png, *.bmp)", "*.jpg", "*.png", "*.jpeg", "*.bmp"));
             File file = fileChooser.showOpenDialog(new Stage());
-            Image base = new Image(String.valueOf(file.toURI()), 750, 530, false, false);
+            Image base = new Image(String.valueOf(file.toURI()));
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../ressources/fxmlFiles/canvas.fxml"));
@@ -94,6 +97,10 @@ public class ControllerMain implements Initializable {
                 this.model = new ProjectModel(base, this.canvas.getGraphicsContext2D());
                 this.controllerCanvas.init(this.model);
                 this.mainPane.getChildren().add(pane);
+                this.mainPane.setMinHeight(base.getHeight());
+                this.mainPane.setMinWidth(base.getWidth());
+                this.canvas.setWidth(base.getWidth());
+                this.canvas.setHeight(base.getHeight());
             } catch (IOException e) {
                 e.printStackTrace();
             }

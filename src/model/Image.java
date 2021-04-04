@@ -10,6 +10,16 @@ public class Image extends Layer {
     public Image(javafx.scene.image.Image image, double x, double y, GraphicsContext graphicsContext) {
         super(x, y, graphicsContext);
         this.image = image;
+        this.w = image.getWidth();
+        this.h = image.getHeight();
+    }
+
+    public double getW() {
+        return w;
+    }
+
+    public double getH() {
+        return h;
     }
 
     @Override
