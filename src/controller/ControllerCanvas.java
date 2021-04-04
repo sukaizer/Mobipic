@@ -17,7 +17,8 @@ public class ControllerCanvas implements Initializable {
     private ProjectModel model;
     private Layer currentLayer;
     private int triangleFirst;
-    @FXML private Canvas canvas;
+    @FXML
+    private Canvas canvas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,12 +65,12 @@ public class ControllerCanvas implements Initializable {
     @FXML
     public void setOnMouseReleased(MouseEvent mouseEvent) {
         setOnMouseDragged(mouseEvent);
-        if (this.model.getShapeToDraw().equals(ShapeToDraw.Triangle) && this.triangleFirst == 3){
+        if (this.model.getShapeToDraw().equals(ShapeToDraw.Triangle) && this.triangleFirst == 3) {
             this.model.setShapeToDraw(ShapeToDraw.nothing);
-        } else if (!this.model.getShapeToDraw().equals(ShapeToDraw.Triangle)){
+        } else if (!this.model.getShapeToDraw().equals(ShapeToDraw.Triangle)) {
             this.model.setShapeToDraw(ShapeToDraw.nothing);
         }
-        if (this.triangleFirst == 3){
+        if (this.triangleFirst == 3) {
             this.triangleFirst = 0;
         }
     }
@@ -129,12 +130,12 @@ public class ControllerCanvas implements Initializable {
         if (this.triangleFirst == 0) {
             this.currentLayer = new Triangle(e.getX(), e.getY(), e.getX(), e.getY(), e.getX(), e.getY(), this.canvas.getGraphicsContext2D());
             this.model.addLayer(currentLayer);
-        } else if (this.triangleFirst == 1){
-            ((Triangle)this.currentLayer).setX2(e.getX());
-            ((Triangle)this.currentLayer).setY2(e.getY());
+        } else if (this.triangleFirst == 1) {
+            ((Triangle) this.currentLayer).setX2(e.getX());
+            ((Triangle) this.currentLayer).setY2(e.getY());
         } else {
-            ((Triangle)this.currentLayer).setX3(e.getX());
-            ((Triangle)this.currentLayer).setY3(e.getY());
+            ((Triangle) this.currentLayer).setX3(e.getX());
+            ((Triangle) this.currentLayer).setY3(e.getY());
         }
         this.triangleFirst++;
     }
