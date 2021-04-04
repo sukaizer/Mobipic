@@ -2,13 +2,16 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="264.0" prefWidth="432.0" stylesheets="@../cssFiles/shapesStage.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerShapesMenu">
+<VBox prefHeight="300.0" prefWidth="500.0" stylesheets="@../cssFiles/shapesStage.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerShapesMenu">
    <children>
-      <HBox id="hbox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="51.0" prefWidth="432.0">
+      <HBox id="hbox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="49.0" prefWidth="432.0">
          <children>
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#drawLine" text="Ligne">
                <HBox.margin>
@@ -32,7 +35,29 @@
                </HBox.margin></Button>
          </children>
       </HBox>
-      <Label text="Label" />
-      <Button id="ok" mnemonicParsing="false" onAction="#validateChoice" text="OK" />
+      <Label fx:id="descriptionLabel" text="Label" />
+      <HBox alignment="CENTER">
+         <children>
+            <ColorPicker fx:id="colorPicker">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </ColorPicker>
+            <CheckBox fx:id="fillCheck" mnemonicParsing="false" text="Rempli ?">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </CheckBox>
+            <Slider fx:id="slider" blockIncrement="0.5" majorTickUnit="10.0" max="10.0" min="1.0" minorTickCount="10" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+            <Label fx:id="sliderLabel" text="Label" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </HBox>
+      <Button id="ok" fx:id="validateButton" mnemonicParsing="false" onAction="#validateChoice" text="OK" />
    </children>
 </VBox>

@@ -31,8 +31,12 @@ public class Rectangle extends Layer{
     @Override
     public void paint() {
         if (this.isFilled){
+            this.graphicsContext.setFill(this.color);
+            this.graphicsContext.setLineWidth(this.lineWidth);
             this.graphicsContext.fillRect(this.x, this.y, this.width, this.height);
         } else {
+            this.graphicsContext.setStroke(this.color);
+            this.graphicsContext.setLineWidth(this.lineWidth);
             this.graphicsContext.strokeRect(this.x, this.y, this.width, this.height);
         }
     }

@@ -76,8 +76,12 @@ public class Triangle extends Layer {
         y[1] = y2;
         y[2] = y3;
         if (this.isFilled){
+            this.graphicsContext.setFill(this.color);
+            this.graphicsContext.setLineWidth(this.lineWidth);
             this.graphicsContext.fillPolygon(x, y, 3);
         } else {
+            this.graphicsContext.setStroke(this.color);
+            this.graphicsContext.setLineWidth(this.lineWidth);
             this.graphicsContext.strokePolygon(x, y, 3);
         }
     }

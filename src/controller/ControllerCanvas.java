@@ -22,7 +22,6 @@ public class ControllerCanvas implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.triangleFirst = 0;
     }
 
     /**
@@ -34,8 +33,14 @@ public class ControllerCanvas implements Initializable {
         this.model = model;
     }
 
+    public void init(Layer currentLayer){
+        this.currentLayer = currentLayer;
+        this.triangleFirst = 0;
+    }
     @FXML
     public void setOnMousePressed(MouseEvent mouseEvent) {
+        System.out.println(this.triangleFirst);
+        if (!this.model.isEditing()) return;
         switch (this.model.getShapeToDraw()) {
             case Line -> lineFirstPoint(mouseEvent);
             case Square -> squareFirstPoint(mouseEvent);
@@ -50,6 +55,7 @@ public class ControllerCanvas implements Initializable {
 
     @FXML
     public void setOnMouseDragged(MouseEvent mouseEvent) {
+        if (!this.model.isEditing()) return;
         switch (this.model.getShapeToDraw()) {
             case Line -> lineSetNewPoint(mouseEvent);
             case Square -> squareSetNewPoint(mouseEvent);
@@ -64,6 +70,7 @@ public class ControllerCanvas implements Initializable {
 
     @FXML
     public void setOnMouseReleased(MouseEvent mouseEvent) {
+        if (!this.model.isEditing()) return;
         setOnMouseDragged(mouseEvent);
         if (this.model.getShapeToDraw().equals(ShapeToDraw.Triangle) && this.triangleFirst == 3) {
             this.model.setShapeToDraw(ShapeToDraw.nothing);
@@ -77,7 +84,10 @@ public class ControllerCanvas implements Initializable {
 
     public void lineFirstPoint(MouseEvent e) {
         resetTriangle();
-        this.currentLayer = new Line(e.getX(), e.getY(), e.getX(), e.getY(), this.canvas.getGraphicsContext2D());
+        currentLayer.setX(e.getX());
+        currentLayer.setY(e.getY());
+        ((Line) currentLayer).setX2(e.getX());
+        ((Line) currentLayer).setY2(e.getY());
         this.model.addLayer(currentLayer);
     }
 
@@ -89,7 +99,9 @@ public class ControllerCanvas implements Initializable {
 
     public void squareFirstPoint(MouseEvent e) {
         resetTriangle();
-        this.currentLayer = new Square(e.getX(), e.getY(), 0, this.canvas.getGraphicsContext2D());
+        currentLayer.setX(e.getX());
+        currentLayer.setY(e.getY());
+        ((Square) currentLayer).setSide(0);
         this.model.addLayer(currentLayer);
     }
 
@@ -101,7 +113,10 @@ public class ControllerCanvas implements Initializable {
 
     public void rectangleFirstPoint(MouseEvent e) {
         resetTriangle();
-        this.currentLayer = new Rectangle(e.getX(), e.getY(), 0, 0, this.canvas.getGraphicsContext2D());
+        currentLayer.setX(e.getX());
+        currentLayer.setY(e.getY());
+        ((Rectangle) currentLayer).setWidth(0);
+        ((Rectangle) currentLayer).setHeight(0);
         this.model.addLayer(currentLayer);
     }
 
@@ -116,7 +131,9 @@ public class ControllerCanvas implements Initializable {
 
     public void circleFirstPoint(MouseEvent e) {
         resetTriangle();
-        this.currentLayer = new Circle(e.getX(), e.getY(), 0, this.canvas.getGraphicsContext2D());
+        currentLayer.setX(e.getX());
+        currentLayer.setY(e.getY());
+        ((Circle) currentLayer).setRadius(0);
         this.model.addLayer(currentLayer);
     }
 
@@ -128,7 +145,12 @@ public class ControllerCanvas implements Initializable {
 
     public void triangleFirstPoint(MouseEvent e) {
         if (this.triangleFirst == 0) {
-            this.currentLayer = new Triangle(e.getX(), e.getY(), e.getX(), e.getY(), e.getX(), e.getY(), this.canvas.getGraphicsContext2D());
+            currentLayer.setX(e.getX());
+            currentLayer.setY(e.getY());
+            ((Triangle) currentLayer).setX2(e.getX());
+            ((Triangle) currentLayer).setY2(e.getY());
+            ((Triangle) currentLayer).setX3(e.getX());
+            ((Triangle) currentLayer).setY3(e.getY());
             this.model.addLayer(currentLayer);
         } else if (this.triangleFirst == 1) {
             ((Triangle) this.currentLayer).setX2(e.getX());

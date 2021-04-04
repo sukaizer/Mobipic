@@ -1,6 +1,8 @@
 package model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public abstract class Layer {
 
@@ -8,11 +10,15 @@ public abstract class Layer {
     protected double x;
     protected double y;
     protected boolean isFilled;
+    protected double lineWidth;
+    protected Paint color;
     protected GraphicsContext graphicsContext;
 
     public Layer(double x, double y, GraphicsContext graphicsContext) {
         this.isFilled = false;
         this.isFocused = false;
+        this.lineWidth = 1.0;
+        this.color = Color.BLACK;
         this.x = x;
         this.y = y;
         this.graphicsContext = graphicsContext;
@@ -62,4 +68,16 @@ public abstract class Layer {
     }
 
     public abstract boolean isIn(double x, double y);
+
+    public void setFilled(boolean filled) {
+        isFilled = filled;
+    }
+
+    public void setLineWidth(double lineWidth) {
+        this.lineWidth = lineWidth;
+    }
+
+    public void setColor(Paint color) {
+        this.color = color;
+    }
 }

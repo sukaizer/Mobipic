@@ -38,8 +38,8 @@ public class ControllerMain implements Initializable {
     private FileChooser fileChooser;
     private File file;
     private ProjectModel model;
-    ControllerCanvas controllerCanvas;
-    Canvas canvas;
+    private ControllerCanvas controllerCanvas;
+    private Canvas canvas;
     @FXML
     public MenuItem newShapeMenu;
     @FXML
@@ -78,7 +78,6 @@ public class ControllerMain implements Initializable {
             }
         } catch (NullPointerException ignored) {
         }
-        System.out.println(this.model.getShapeToDraw().toString());
     }
 
     @FXML
@@ -127,7 +126,7 @@ public class ControllerMain implements Initializable {
         FXMLLoader loader = setNewStage(path, name);
         assert loader != null;
         ControllerShapesMenu controllerShapesMenu = loader.getController();
-        controllerShapesMenu.init(this.model);
+        controllerShapesMenu.init(this.model,this.controllerCanvas,this.canvas);
     }
 
     /**

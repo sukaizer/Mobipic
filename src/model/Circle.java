@@ -21,8 +21,12 @@ public class Circle extends Layer{
     @Override
     public void paint() {
         if(this.isFilled){
+            this.graphicsContext.setFill(this.color);
+            this.graphicsContext.setLineWidth(this.lineWidth);
             this.graphicsContext.fillOval(this.x, this.y, 2*this.r, 2*this.r);
         } else{
+            this.graphicsContext.setStroke(this.color);
+            this.graphicsContext.setLineWidth(this.lineWidth);
             this.graphicsContext.strokeOval(this.x, this.y, 2*this.r, 2*this.r);
         }
     }

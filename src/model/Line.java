@@ -29,6 +29,8 @@ public class Line extends Layer{
 
     @Override
     public void paint() {
+        this.graphicsContext.setStroke(this.color);
+        this.graphicsContext.setLineWidth(this.lineWidth);
         this.graphicsContext.strokeLine(this.x,this.y,this.x2,this.y2);
     }
 
