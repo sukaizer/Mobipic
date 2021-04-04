@@ -39,7 +39,6 @@ public class ControllerCanvas implements Initializable {
     }
     @FXML
     public void setOnMousePressed(MouseEvent mouseEvent) {
-        System.out.println(this.triangleFirst);
         if (!this.model.isEditing()) return;
         switch (this.model.getShapeToDraw()) {
             case Line -> lineFirstPoint(mouseEvent);
