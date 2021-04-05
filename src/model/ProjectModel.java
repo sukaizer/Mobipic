@@ -39,12 +39,19 @@ public class ProjectModel {
         this.shapeToDraw = shapeToDraw;
     }
 
-    public boolean isEditing() {
-        return editing;
+    public boolean isNotEditing() {
+        return !editing;
     }
 
     public void setEditing(boolean editing) {
         this.editing = editing;
+    }
+
+    public void layersToString(){
+        for (Layer l:this.layerArrayList) {
+            System.out.println(l.getClass().getName());
+        }
+        System.out.println();
     }
 
     /**

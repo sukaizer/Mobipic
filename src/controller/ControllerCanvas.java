@@ -3,14 +3,10 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import model.*;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ControllerCanvas implements Initializable {
@@ -39,7 +35,7 @@ public class ControllerCanvas implements Initializable {
     }
     @FXML
     public void setOnMousePressed(MouseEvent mouseEvent) {
-        if (!this.model.isEditing()) return;
+        if (this.model.isNotEditing()) return;
         switch (this.model.getShapeToDraw()) {
             case Line -> lineFirstPoint(mouseEvent);
             case Square -> squareFirstPoint(mouseEvent);
@@ -54,7 +50,7 @@ public class ControllerCanvas implements Initializable {
 
     @FXML
     public void setOnMouseDragged(MouseEvent mouseEvent) {
-        if (!this.model.isEditing()) return;
+        if (this.model.isNotEditing()) return;
         switch (this.model.getShapeToDraw()) {
             case Line -> lineSetNewPoint(mouseEvent);
             case Square -> squareSetNewPoint(mouseEvent);
@@ -69,16 +65,19 @@ public class ControllerCanvas implements Initializable {
 
     @FXML
     public void setOnMouseReleased(MouseEvent mouseEvent) {
-        if (!this.model.isEditing()) return;
+        if (this.model.isNotEditing()) return;
         setOnMouseDragged(mouseEvent);
         if (this.model.getShapeToDraw().equals(ShapeToDraw.Triangle) && this.triangleFirst == 3) {
             this.model.setShapeToDraw(ShapeToDraw.nothing);
+            this.model.setEditing(false);
         } else if (!this.model.getShapeToDraw().equals(ShapeToDraw.Triangle)) {
             this.model.setShapeToDraw(ShapeToDraw.nothing);
+            this.model.setEditing(false);
         }
         if (this.triangleFirst == 3) {
             this.triangleFirst = 0;
         }
+        this.model.layersToString();
     }
 
     public void lineFirstPoint(MouseEvent e) {
@@ -144,8 +143,8 @@ public class ControllerCanvas implements Initializable {
 
     public void triangleFirstPoint(MouseEvent e) {
         if (this.triangleFirst == 0) {
-            currentLayer.setX(e.getX());
-            currentLayer.setY(e.getY());
+            ((Triangle) currentLayer).setX1(e.getX());
+            ((Triangle) currentLayer).setY1(e.getY());
             ((Triangle) currentLayer).setX2(e.getX());
             ((Triangle) currentLayer).setY2(e.getY());
             ((Triangle) currentLayer).setX3(e.getX());
