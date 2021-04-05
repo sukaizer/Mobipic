@@ -42,6 +42,7 @@ public class ControllerMain implements Initializable {
     private ProjectModel model;
     private ControllerCanvas controllerCanvas;
     private Canvas canvas;
+    private ControllerLayers controllerLayers;
     @FXML
     public MenuItem newShapeMenu;
     @FXML
@@ -50,7 +51,8 @@ public class ControllerMain implements Initializable {
     public AnchorPane mainPane;
     @FXML
     public Button newShapeButton;
-
+    @FXML
+    public AnchorPane layersPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -106,6 +108,13 @@ public class ControllerMain implements Initializable {
                 this.mainPane.setMinWidth(base.getWidth());
                 this.canvas.setWidth(base.getWidth());
                 this.canvas.setHeight(base.getHeight());
+
+                loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("../ressources/fxmlFiles/layers.fxml"));
+                Parent pane2 = loader.load();
+                this.controllerLayers = loader.getController();
+                this.controllerLayers.init(this.model);
+                this.layersPane.getChildren().add(pane2);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -113,7 +122,8 @@ public class ControllerMain implements Initializable {
             this.newShapeButton.setDisable(false);
             this.exportButton.setDisable(false);
             this.model.paintLayers();
-        }catch(NullPointerException ignored){}
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @FXML
@@ -132,7 +142,7 @@ public class ControllerMain implements Initializable {
         FXMLLoader loader = setNewStage(path, name);
         assert loader != null;
         ControllerShapesMenu controllerShapesMenu = loader.getController();
-        controllerShapesMenu.init(this.model,this.controllerCanvas,this.canvas);
+        controllerShapesMenu.init(this.model, this.controllerCanvas, this.canvas);
     }
 
     /**
@@ -234,6 +244,7 @@ public class ControllerMain implements Initializable {
     public void helpButtonAction(ActionEvent actionEvent) {
         try {
             Desktop.getDesktop().browse(new URL("https://github.com/sukaizer/Mobipic").toURI());
-        } catch (IOException | URISyntaxException ignored) {}
+        } catch (IOException | URISyntaxException ignored) {
+        }
     }
 }

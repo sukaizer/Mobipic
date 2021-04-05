@@ -107,7 +107,7 @@
          <children>
             <ScrollPane prefHeight="400.0" prefWidth="250.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                <AnchorPane fx:id="layersPane" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="232.0" />
               </content>
             </ScrollPane>
          </children>
