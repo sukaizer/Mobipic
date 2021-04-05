@@ -20,3 +20,7 @@
 #iconSave {
     -fx-graphic : url("/ressources/images/save.png");
 }
+
+#iconShapes {
+    -fx-graphic : url("/ressources/images/shapes.png");
+}

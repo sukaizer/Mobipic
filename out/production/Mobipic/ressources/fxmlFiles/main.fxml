@@ -93,6 +93,7 @@
                 <Button id="iconOpen" mnemonicParsing="false" onAction="#setOpenMenuAction" />
                   <Button id="iconNew" mnemonicParsing="false" onAction="#setNewMenuAction" />
                   <Button id="iconSave" mnemonicParsing="false" />
+                  <Button id="iconShapes" fx:id="newShapeButton" mnemonicParsing="false" onAction="#addShapeMenu" />
               </items>
             </ToolBar>
             <ScrollPane prefHeight="530.0" prefWidth="750.0" GridPane.rowIndex="2">

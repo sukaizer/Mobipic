@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
@@ -34,6 +35,7 @@ import java.util.logging.Logger;
 
 public class ControllerMain implements Initializable {
 
+
     private Stage primaryStage;
     private FileChooser fileChooser;
     private File file;
@@ -46,11 +48,14 @@ public class ControllerMain implements Initializable {
     public Menu exportButton;
     @FXML
     public AnchorPane mainPane;
+    @FXML
+    public Button newShapeButton;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.newShapeMenu.setDisable(true);
+        this.newShapeButton.setDisable(true);
         this.exportButton.setDisable(true);
         fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
@@ -105,6 +110,7 @@ public class ControllerMain implements Initializable {
                 e.printStackTrace();
             }
             this.newShapeMenu.setDisable(false);
+            this.newShapeButton.setDisable(false);
             this.exportButton.setDisable(false);
             this.model.paintLayers();
         }catch(NullPointerException ignored){}
