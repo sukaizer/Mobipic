@@ -35,7 +35,6 @@ import java.util.logging.Logger;
 
 public class ControllerMain implements Initializable {
 
-
     private Stage primaryStage;
     private FileChooser fileChooser;
     private File file;
@@ -53,11 +52,14 @@ public class ControllerMain implements Initializable {
     public Button newShapeButton;
     @FXML
     public AnchorPane layersPane;
+    @FXML
+    public Button newImageButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.newShapeMenu.setDisable(true);
         this.newShapeButton.setDisable(true);
+        this.newImageButton.setDisable(true);
         this.exportButton.setDisable(true);
         fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
@@ -121,6 +123,7 @@ public class ControllerMain implements Initializable {
             this.newShapeMenu.setDisable(false);
             this.newShapeButton.setDisable(false);
             this.exportButton.setDisable(false);
+            this.newImageButton.setDisable(false);
             this.model.paintLayers();
         } catch (NullPointerException ignored) {
         }
@@ -246,5 +249,19 @@ public class ControllerMain implements Initializable {
             Desktop.getDesktop().browse(new URL("https://github.com/sukaizer/Mobipic").toURI());
         } catch (IOException | URISyntaxException ignored) {
         }
+    }
+
+    @FXML
+    public void addImageLayer(ActionEvent actionEvent) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Fichiers d'image (*.jpg, *.png, *.bmp)", "*.jpg", "*.png", "*.jpeg", "*.bmp"));
+            File file = fileChooser.showOpenDialog(new Stage());
+            Image base = new Image(String.valueOf(file.toURI()));
+            model.Image image = new model.Image(base,0,0,this.canvas.getGraphicsContext2D());
+            this.model.addLayer(image);
+            this.model.paintLayers();
+        } catch (NullPointerException ignored){}
     }
 }
