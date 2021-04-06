@@ -10,13 +10,15 @@ public class Text extends Layer{
     private TextAlignment textAlignment;
     private Font font;
     private FontWeight fontWeight;
+    private double size;
 
-    public Text(double x, double y,String text, GraphicsContext graphicsContext) {
+    public Text(double x, double y, String text, GraphicsContext graphicsContext) {
         super(x, y, graphicsContext);
         this.text = text;
         this.textAlignment = TextAlignment.LEFT;
-        this.font = Font.font("Calibri");
         this.fontWeight = FontWeight.NORMAL;
+        this.size = 10;
+        this.font = Font.font("Calibri",this.fontWeight,this.size);
     }
 
     public void setText(String text){
@@ -39,6 +41,7 @@ public class Text extends Layer{
     public void paint() {
         this.graphicsContext.setFont(this.font);
         this.graphicsContext.fillText(this.text,this.x,this.y);
+
     }
 
     @Override
