@@ -67,7 +67,7 @@
                   <items>
                         <Menu mnemonicParsing="false" text="Nouveau">
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Texte" />
+                            <MenuItem fx:id="newTextMenu" mnemonicParsing="false" onAction="#addTextMenu" text="Texte" />
                               <MenuItem id="menuItemShapes" fx:id="newShapeMenu" mnemonicParsing="false" onAction="#addShapeMenu" text="Forme" />
                               <MenuItem mnemonicParsing="false" text="Filtre" />
                               <MenuItem mnemonicParsing="false" text="Emoji" />

@@ -24,3 +24,7 @@
 #iconShapes {
     -fx-graphic : url("/ressources/images/shapes.png");
 }
+
+#iconImages {
+    -fx-graphic : url("/ressources/images/image.png");
+}

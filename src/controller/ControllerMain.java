@@ -5,21 +5,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import model.ProjectModel;
 
 import javax.imageio.ImageIO;
@@ -31,7 +27,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 public class ControllerMain implements Initializable {
 
@@ -54,10 +49,16 @@ public class ControllerMain implements Initializable {
     public AnchorPane layersPane;
     @FXML
     public Button newImageButton;
+    @FXML
+    public MenuItem newImageMenu;
+    @FXML
+    public MenuItem newTextMenu;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.newShapeMenu.setDisable(true);
+        this.newTextMenu.setDisable(true);
+        this.newImageMenu.setDisable(true);
         this.newShapeButton.setDisable(true);
         this.newImageButton.setDisable(true);
         this.exportButton.setDisable(true);
@@ -121,6 +122,8 @@ public class ControllerMain implements Initializable {
                 e.printStackTrace();
             }
             this.newShapeMenu.setDisable(false);
+            this.newImageMenu.setDisable(false);
+            this.newTextMenu.setDisable(false);
             this.newShapeButton.setDisable(false);
             this.exportButton.setDisable(false);
             this.newImageButton.setDisable(false);
@@ -263,5 +266,15 @@ public class ControllerMain implements Initializable {
             this.model.addLayer(image);
             this.model.paintLayers();
         } catch (NullPointerException ignored){}
+    }
+
+    @FXML
+    public void addTextMenu(ActionEvent actionEvent) {
+        String path = "../ressources/fxmlFiles/text.fxml";
+        String name = "Ajouter un texte";
+        FXMLLoader loader = setNewStage(path, name);
+        assert loader != null;
+        ControllerTextMenu controllerText = loader.getController();
+        controllerText.init(this.model, this.controllerCanvas, this.canvas);
     }
 }
