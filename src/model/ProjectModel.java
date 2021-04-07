@@ -9,6 +9,7 @@ public class ProjectModel {
     private ShapeToDraw shapeToDraw;
     private GraphicsContext graphicsContext;
     private boolean editing;
+    private Layer editingLayer;
     private Image baseLayer;
 
     public ProjectModel(javafx.scene.image.Image baseImage,GraphicsContext graphicsContext) {
@@ -17,6 +18,7 @@ public class ProjectModel {
         this.editing = false;
         this.graphicsContext = graphicsContext;
         this.baseLayer = new Image(baseImage,0,0,this.graphicsContext);
+        this.editingLayer = null;
     }
 
     public ObservableList<Layer> getLayers() {
@@ -62,5 +64,17 @@ public class ProjectModel {
         for (Layer layer:this.layers) {
             layer.paint();
         }
+    }
+
+    public void setEditingLayer(Layer editingLayer) {
+        this.editingLayer = editingLayer;
+    }
+
+    public Layer getEditingLayer() {
+        return editingLayer;
+    }
+
+    public void resetEditingLayer(){
+        this.editingLayer = null;
     }
 }

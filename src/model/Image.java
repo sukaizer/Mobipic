@@ -29,7 +29,7 @@ public class Image extends Layer {
 
     @Override
     public boolean isIn(double x, double y) {
-        return false;
+        return x >= this.x && x <= this.x + this.image.getWidth() && y >= this.y && y <= this.y + this.image.getHeight();
     }
 
     @Override

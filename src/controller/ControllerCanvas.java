@@ -2,8 +2,10 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import model.*;
 
 import java.net.URL;
@@ -13,12 +15,18 @@ public class ControllerCanvas implements Initializable {
     private ProjectModel model;
     private Layer currentLayer;
     private int triangleFirst;
+    private double lastX;
+    private double lastY;
+    private Stage primaryStage;
+
     @FXML
     private Canvas canvas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.triangleFirst = 0;
+        this.lastX = 0;
+        this.lastY = 0;
     }
 
     /**
@@ -26,15 +34,30 @@ public class ControllerCanvas implements Initializable {
      *
      * @param model
      */
-    public void init(ProjectModel model) {
+    public void init(ProjectModel model, Stage primaryStage) {
         this.model = model;
+        this.primaryStage = primaryStage;
     }
 
     public void init(Layer currentLayer){
         this.currentLayer = currentLayer;
     }
+
+    @FXML
+    public void mouseEntered(MouseEvent e) {
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(e.getX(),e.getY())) {
+            this.primaryStage.getScene().setCursor(Cursor.OPEN_HAND);
+        }
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && !this.model.getEditingLayer().isIn(e.getX(),e.getY())) {
+            this.primaryStage.getScene().setCursor(Cursor.DEFAULT);
+        }
+    }
+
     @FXML
     public void setOnMousePressed(MouseEvent mouseEvent) {
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(mouseEvent.getX(),mouseEvent.getY())) {
+            this.moveShapeFirst(mouseEvent);
+        }
         if (this.model.isNotEditing()) return;
         switch (this.model.getShapeToDraw()) {
             case Line -> lineFirstPoint(mouseEvent);
@@ -50,6 +73,9 @@ public class ControllerCanvas implements Initializable {
 
     @FXML
     public void setOnMouseDragged(MouseEvent mouseEvent) {
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(mouseEvent.getX(),mouseEvent.getY())) {
+            this.moveShapeSecond(mouseEvent);
+        }
         if (this.model.isNotEditing()) return;
         switch (this.model.getShapeToDraw()) {
             case Line -> lineSetNewPoint(mouseEvent);
@@ -65,6 +91,8 @@ public class ControllerCanvas implements Initializable {
 
     @FXML
     public void setOnMouseReleased(MouseEvent mouseEvent) {
+        this.model.resetEditingLayer();
+        this.primaryStage.getScene().setCursor(Cursor.DEFAULT);
         if (this.model.isNotEditing()) return;
         setOnMouseDragged(mouseEvent);
         if (this.model.getShapeToDraw().equals(ShapeToDraw.Triangle) && this.triangleFirst == 3) {
@@ -143,8 +171,8 @@ public class ControllerCanvas implements Initializable {
 
     public void triangleFirstPoint(MouseEvent e) {
         if (this.triangleFirst == 0) {
-            ((Triangle) currentLayer).setX1(e.getX());
-            ((Triangle) currentLayer).setY1(e.getY());
+            ((Triangle) currentLayer).setX(e.getX());
+            ((Triangle) currentLayer).setY(e.getY());
             ((Triangle) currentLayer).setX2(e.getX());
             ((Triangle) currentLayer).setY2(e.getY());
             ((Triangle) currentLayer).setX3(e.getX());
@@ -171,8 +199,37 @@ public class ControllerCanvas implements Initializable {
     private void resetTriangle() {
         if (this.triangleFirst != 0) {
             this.triangleFirst = 0;
-            this.model.getLayers().remove(this.model.getLayers().size() - 1);
+            this.model.deleteLastLayer();
             this.model.paintLayers();
         }
     }
+
+    public void moveShapeFirst(MouseEvent e){
+        this.lastX = e.getX();
+        this.lastY = e.getY();
+    }
+
+    public void moveShapeSecond(MouseEvent e){
+        if (this.model.getEditingLayer() instanceof Triangle){
+            this.model.getEditingLayer().setX(this.model.getEditingLayer().getX() + (e.getX() - this.lastX));
+            this.model.getEditingLayer().setY(this.model.getEditingLayer().getY() + (e.getY() - this.lastY));
+            ((Triangle) this.model.getEditingLayer()).setX2(((Triangle) this.model.getEditingLayer()).getX2() + (e.getX() - this.lastX));
+            ((Triangle) this.model.getEditingLayer()).setY2(((Triangle) this.model.getEditingLayer()).getY2() + (e.getY() - this.lastY));
+            ((Triangle) this.model.getEditingLayer()).setX3(((Triangle) this.model.getEditingLayer()).getX3() + (e.getX() - this.lastX));
+            ((Triangle) this.model.getEditingLayer()).setY3(((Triangle) this.model.getEditingLayer()).getY3() + (e.getY() - this.lastY));
+        } else if (this.model.getEditingLayer() instanceof Line){
+            this.model.getEditingLayer().setX(this.model.getEditingLayer().getX() + (e.getX() - this.lastX));
+            this.model.getEditingLayer().setY(this.model.getEditingLayer().getY() + (e.getY() - this.lastY));
+            ((Line) this.model.getEditingLayer()).setX2(((Line) this.model.getEditingLayer()).getX2() + (e.getX() - this.lastX));
+            ((Line) this.model.getEditingLayer()).setY2(((Line) this.model.getEditingLayer()).getY2() + (e.getY() - this.lastY));
+        } else {
+            this.model.getEditingLayer().setX(this.model.getEditingLayer().getX() + (e.getX() - this.lastX));
+            this.model.getEditingLayer().setY(this.model.getEditingLayer().getY() + (e.getY() - this.lastY));
+        }
+        this.lastX = e.getX();
+        this.lastY = e.getY();
+        this.model.paintLayers();
+    }
+
+
 }

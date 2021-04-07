@@ -4,25 +4,16 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class Triangle extends Layer {
 
-    private double x1, y1, x2, y2, x3, y3;
+    private double x2, y2, x3, y3;
 
     public Triangle(double x1, double y1, double x2, double y2, double x3, double y3, GraphicsContext graphicsContext) {
-        super(graphicsContext);
-        this.x1 = x1;
-        this.y1 = y1;
+        super(x1,y1,graphicsContext);
         this.x2 = x2;
         this.y2 = y2;
         this.x3 = x3;
         this.y3 = y3;
     }
 
-    public double getX1() {
-        return this.x1;
-    }
-
-    public double getY1() {
-        return this.y1;
-    }
 
     public double getX2() {
         return this.x2;
@@ -38,14 +29,6 @@ public class Triangle extends Layer {
 
     public double getY3() {
         return this.y3;
-    }
-
-    public void setX1(double x1) {
-        this.x1 = x1;
-    }
-
-    public void setY1(double y1) {
-        this.y1 = y1;
     }
 
     public void setX2(double x2) {
@@ -68,13 +51,13 @@ public class Triangle extends Layer {
     @Override
     public void paint() {
         double[] x = new double[3];
-        x[0] = x1;
-        x[1] = x2;
-        x[2] = x3;
+        x[0] = this.x;
+        x[1] = this.x2;
+        x[2] = this.x3;
         double[] y = new double[3];
-        y[0] = y1;
-        y[1] = y2;
-        y[2] = y3;
+        y[0] = this.y;
+        y[1] = this.y2;
+        y[2] = this.y3;
         if (this.isFilled){
             this.graphicsContext.setFill(this.color);
             this.graphicsContext.setLineWidth(this.lineWidth);
@@ -88,14 +71,14 @@ public class Triangle extends Layer {
 
     @Override
     public boolean isIn(double xS, double yS) {
-        double xA = x1;
-        double yA = y1;
-        double xB = x2 - x1;
-        double yB = y2 - y1;
-        double xC = x3 - x1;
-        double yC = y3 - y1;
-        double x = xS - x1;
-        double y = yS - y1;
+        double xA = this.x;
+        double yA = this.y;
+        double xB = this.x2 - this.x;
+        double yB = this.y2 - this.y;
+        double xC = this.x3 - this.x;
+        double yC = this.y3 - this.y;
+        double x = xS - this.x;
+        double y = yS - this.y;
 
         double d = xB*yC - xC*yB;
 

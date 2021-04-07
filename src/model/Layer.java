@@ -13,10 +13,14 @@ public abstract class Layer {
     protected double lineWidth;
     protected Paint color;
     protected GraphicsContext graphicsContext;
+    protected boolean isMoving;
+    protected boolean isResizing;
 
     public Layer(double x, double y, GraphicsContext graphicsContext) {
         this.isFilled = false;
         this.isFocused = false;
+        this.isMoving = false;
+        this.isResizing = false;
         this.lineWidth = 1.0;
         this.color = Color.BLACK;
         this.x = x;
@@ -85,5 +89,26 @@ public abstract class Layer {
 
     public boolean isFocused() {
         return isFocused;
+    }
+
+    public boolean isMoving() {
+        return isMoving;
+    }
+
+    public void setMoving(boolean moving) {
+        isMoving = moving;
+    }
+
+    public boolean isResizing() {
+        return isResizing;
+    }
+
+    public void setResizing(boolean resizing) {
+        isResizing = resizing;
+    }
+
+    public void resetModifiers(){
+        this.isResizing = false;
+        this.isMoving = false;
     }
 }

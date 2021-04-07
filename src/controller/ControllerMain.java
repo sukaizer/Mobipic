@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -104,7 +105,7 @@ public class ControllerMain implements Initializable {
                 this.controllerCanvas = loader.getController();
                 this.canvas = this.controllerCanvas.getCanvas();
                 this.model = new ProjectModel(base, this.canvas.getGraphicsContext2D());
-                this.controllerCanvas.init(this.model);
+                this.controllerCanvas.init(this.model, this.primaryStage);
                 this.mainPane.getChildren().add(pane);
                 this.mainPane.setMinHeight(base.getHeight());
                 this.mainPane.setMinWidth(base.getWidth());
@@ -286,9 +287,28 @@ public class ControllerMain implements Initializable {
 
     @FXML
     public void moveLayer(ActionEvent actionEvent) {
+        try {
+            for (Layer layer: this.model.getLayers()) {
+                layer.resetModifiers();
+                if (layer.isFocused()) {
+                    layer.setMoving(true);
+                    this.model.setEditingLayer(layer);
+                }
+            }
+        } catch(Exception ignored) {}
     }
 
     @FXML
     public void resizeLayer(ActionEvent actionEvent) {
+        try {
+            for (Layer layer: this.model.getLayers()) {
+                layer.resetModifiers();
+                if (layer.isFocused()) {
+                    layer.setResizing(true);
+                    this.model.setEditingLayer(layer);
+                }
+            }
+        } catch(Exception ignored) {}
     }
+
 }
