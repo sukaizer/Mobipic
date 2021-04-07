@@ -15,6 +15,17 @@ public class Triangle extends Layer {
         this.y3 = y3;
     }
 
+    public Triangle(Triangle triangle){
+        super(triangle.x,triangle.y,triangle.graphicsContext);
+        this.x2 = triangle.x2;
+        this.y2 = triangle.y2;
+        this.x3 = triangle.x3;
+        this.y3 = triangle.y3;
+        this.isFilled = triangle.isFilled;
+        this.lineWidth = triangle.lineWidth;
+        this.color = triangle.color;
+    }
+
 
     public double getX2() {
         return this.x2;

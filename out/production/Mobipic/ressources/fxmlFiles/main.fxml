@@ -76,10 +76,10 @@
                           </items>
                         </Menu>
                         <MenuItem mnemonicParsing="false" text="Renommer" />
-                        <MenuItem mnemonicParsing="false" text="Redimensionner" />
-                        <MenuItem mnemonicParsing="false" text="Duppliquer" />
-                        <MenuItem mnemonicParsing="false" text="Supprimer" />
-                        <MenuItem mnemonicParsing="false" text="Fusionner" />
+                        <MenuItem mnemonicParsing="false" onAction="#resizeLayer" text="Redimensionner" />
+                        <MenuItem mnemonicParsing="false" onAction="#duplicateLayer" text="Duppliquer" />
+                        <MenuItem mnemonicParsing="false" onAction="#deleteLayer" text="Supprimer" />
+                        <MenuItem mnemonicParsing="false" onAction="#moveLayer" text="Déplacer" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aide">
@@ -96,6 +96,8 @@
                   <Button id="iconSave" mnemonicParsing="false" />
                   <Button id="iconShapes" fx:id="newShapeButton" mnemonicParsing="false" onAction="#addShapeMenu" />
                   <Button id="iconImages" fx:id="newImageButton" mnemonicParsing="false" onAction="#addImageLayer" />
+                  <Button mnemonicParsing="false" onAction="#zoomPlus" text="+" />
+                  <Button mnemonicParsing="false" onAction="#zoomMinus" text="-" />
               </items>
             </ToolBar>
             <ScrollPane prefHeight="530.0" prefWidth="750.0" GridPane.rowIndex="2">

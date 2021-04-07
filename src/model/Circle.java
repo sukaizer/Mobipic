@@ -11,6 +11,14 @@ public class Circle extends Layer{
         this.r = r;
     }
 
+    public Circle(Circle circle){
+        super(circle.x, circle.y, circle.graphicsContext);
+        this.r = circle.r;
+        this.isFilled = circle.isFilled;
+        this.lineWidth = circle.lineWidth;
+        this.color = circle.color;
+    }
+
     public double getRadius() {
         return r;
     }

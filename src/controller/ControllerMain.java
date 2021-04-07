@@ -55,9 +55,15 @@ public class ControllerMain implements Initializable {
     public Menu layersMenuBar;
     @FXML
     public ButtonBar layersModifyBar;
+    @FXML
+    public Button zoomPlus;
+    @FXML
+    public Button zoomMinus;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.zoomMinus.setDisable(true);
+        this.zoomPlus.setDisable(true);
         this.layersModifyBar.setDisable(true);
         this.layersMenuBar.setDisable(true);
         this.newShapeButton.setDisable(true);
@@ -127,6 +133,8 @@ public class ControllerMain implements Initializable {
             this.newShapeButton.setDisable(false);
             this.exportButton.setDisable(false);
             this.newImageButton.setDisable(false);
+            this.zoomMinus.setDisable(false);
+            this.zoomPlus.setDisable(false);
             this.model.paintLayers();
         } catch (NullPointerException ignored) {
         }
@@ -312,4 +320,45 @@ public class ControllerMain implements Initializable {
         } catch(Exception ignored) {}
     }
 
+    @FXML
+    public void duplicateLayer(ActionEvent actionEvent) {
+        try {
+            for (int i = 0; i < this.model.getLayers().size(); i++) {
+                if (this.model.getLayers().get(i).isFocused()){
+                    if (this.model.getLayers().get(i) instanceof Line) {
+                        Line line = new Line((Line) this.model.getLayers().get(i));
+                        this.model.getLayers().add(i+1,line);
+                    } else if (this.model.getLayers().get(i) instanceof Square) {
+                        Square square = new Square((Square) this.model.getLayers().get(i));
+                        this.model.getLayers().add(i+1,square);
+                    } else if (this.model.getLayers().get(i) instanceof Rectangle) {
+                        Rectangle rectangle = new Rectangle((Rectangle) this.model.getLayers().get(i));
+                        this.model.getLayers().add(i+1,rectangle);
+                    } else if (this.model.getLayers().get(i) instanceof Circle) {
+                        Circle circle = new Circle((Circle) this.model.getLayers().get(i));
+                        this.model.getLayers().add(i+1,circle);
+                    } else if (this.model.getLayers().get(i) instanceof Triangle) {
+                        Triangle triangle = new Triangle((Triangle) this.model.getLayers().get(i));
+                        this.model.getLayers().add(i+1,triangle);
+                    } else if (this.model.getLayers().get(i) instanceof model.Image) {
+                        model.Image image = new model.Image((model.Image) this.model.getLayers().get(i));
+                        this.model.getLayers().add(i+1,image);
+                    }
+                }
+            }
+            this.model.paintLayers();
+        } catch(Exception ignored) {}
+    }
+
+    @FXML
+    public void zoomPlus(ActionEvent actionEvent) {
+        this.canvas.setScaleX(this.canvas.getScaleX()*1.2);
+        this.canvas.setScaleY(this.canvas.getScaleY()*1.2);
+    }
+
+    @FXML
+    public void zoomMinus(ActionEvent actionEvent) {
+        this.canvas.setScaleX(this.canvas.getScaleX()*0.8);
+        this.canvas.setScaleY(this.canvas.getScaleY()*0.8);
+    }
 }

@@ -15,6 +15,16 @@ public class Image extends Layer {
         this.h = image.getHeight();
     }
 
+    public Image(Image image){
+        super(image.x, image.y, image.graphicsContext);
+        this.image = image.image;
+        this.w = image.image.getWidth();
+        this.h = image.image.getHeight();
+        this.isFilled = image.isFilled;
+        this.lineWidth = image.lineWidth;
+        this.color = image.color;
+    }
+
     public double getW() {
         return w;
     }

@@ -12,6 +12,14 @@ public class Square extends Layer{
         this.side = s;
     }
 
+    public Square(Square square){
+        super(square.x, square.y, square.graphicsContext);
+        this.side = square.side;
+        this.isFilled = square.isFilled;
+        this.lineWidth = square.lineWidth;
+        this.color = square.color;
+    }
+
     public double getSide(){
         return this.side;
     }

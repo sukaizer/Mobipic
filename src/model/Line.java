@@ -12,6 +12,15 @@ public class Line extends Layer{
         this.y2 = y2;
     }
 
+    public Line(Line line){
+        super(line.x, line.y, line.graphicsContext);
+        this.x2 = line.x2;
+        this.y2 = line.y2;
+        this.isFilled = line.isFilled;
+        this.lineWidth = line.lineWidth;
+        this.color = line.color;
+    }
+
     public double getX2() {
         return x2;
     }

@@ -13,6 +13,15 @@ public class Rectangle extends Layer{
         this.width = w;
     }
 
+    public Rectangle(Rectangle rectangle){
+        super(rectangle.x, rectangle.y, rectangle.graphicsContext);
+        this.height = rectangle.height;
+        this.width = rectangle.width;
+        this.isFilled = rectangle.isFilled;
+        this.lineWidth = rectangle.lineWidth;
+        this.color = rectangle.color;
+    }
+
     public double getHeight(){
         return this.height;
     }
