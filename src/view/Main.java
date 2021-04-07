@@ -6,7 +6,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import javax.swing.*;
+import java.io.FileInputStream;
+import java.net.URL;
 
 public class Main extends Application {
 
@@ -20,8 +25,9 @@ public class Main extends Application {
         controllerMain.init(primaryStage);
         Scene scene = new Scene(root);
         scene.setRoot(root);
-
         primaryStage.setTitle("Mobipic");
+        Image icon = new Image(new FileInputStream("src/ressources/images/iconeMobi.png"));
+        primaryStage.getIcons().add(icon);
         primaryStage.centerOnScreen();
         primaryStage.setScene(scene);
         primaryStage.show();
