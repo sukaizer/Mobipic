@@ -34,9 +34,6 @@ public class ControllerLayers implements Initializable {
                 l.setFocused(false);
             }
             this.layersList.getSelectionModel().getSelectedItem().setFocused(true);
-            for (Layer l : this.model.getLayers()) {
-                System.out.println(l.isFocused());
-            }
         }catch(Exception ignored){}
     }
 }
