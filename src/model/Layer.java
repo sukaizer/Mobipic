@@ -82,4 +82,8 @@ public abstract class Layer {
     public void setColor(Paint color) {
         this.color = color;
     }
+
+    public boolean isFocused() {
+        return isFocused;
+    }
 }
