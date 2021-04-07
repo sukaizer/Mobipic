@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Square extends Layer{
 
@@ -40,5 +41,14 @@ public class Square extends Layer{
     @Override
     public String toString() {
         return "Carré";
+    }
+
+    @Override
+    public Square setSamePositions() {
+        Square layer1 = new Square(this.getX(), this.getY(), this.getSide(), graphicsContext);
+        layer1.setFilled(false);
+        layer1.setLineWidth(3);
+        layer1.setColor(new Color(0,0,0,1));
+        return layer1;
     }
 }

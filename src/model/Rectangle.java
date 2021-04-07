@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Rectangle extends Layer{
 
@@ -49,5 +50,14 @@ public class Rectangle extends Layer{
     @Override
     public String toString() {
         return "Rectangle";
+    }
+
+    @Override
+    public Rectangle setSamePositions() {
+        Rectangle layer1 = new Rectangle(this.getX(), this.getY(), this.getHeight(), this.getWidth(), graphicsContext);
+        layer1.setFilled(false);
+        layer1.setLineWidth(3);
+        layer1.setColor(new Color(0,0,0,1));
+        return layer1;
     }
 }

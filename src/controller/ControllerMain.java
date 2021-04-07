@@ -16,10 +16,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.Layer;
-import model.ProjectModel;
+import model.*;
+import model.Rectangle;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -116,7 +117,7 @@ public class ControllerMain implements Initializable {
                 loader.setLocation(getClass().getResource("../ressources/fxmlFiles/layers.fxml"));
                 Parent pane2 = loader.load();
                 this.controllerLayers = loader.getController();
-                this.controllerLayers.init(this.model);
+                this.controllerLayers.init(this.model,this.canvas);
                 this.layersPane.getChildren().add(pane2);
             } catch (IOException e) {
                 e.printStackTrace();

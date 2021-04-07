@@ -111,4 +111,6 @@ public abstract class Layer {
         this.isResizing = false;
         this.isMoving = false;
     }
+
+    public abstract Layer setSamePositions();
 }

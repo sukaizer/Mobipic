@@ -43,6 +43,7 @@ public class ControllerCanvas implements Initializable {
         this.currentLayer = currentLayer;
     }
 
+
     @FXML
     public void mouseEntered(MouseEvent e) {
         if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(e.getX(),e.getY())) {
@@ -57,6 +58,8 @@ public class ControllerCanvas implements Initializable {
     public void setOnMousePressed(MouseEvent mouseEvent) {
         if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(mouseEvent.getX(),mouseEvent.getY())) {
             this.moveShapeFirst(mouseEvent);
+            this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
+            this.model.getHelpLayer().paint();
         }
         if (this.model.isNotEditing()) return;
         switch (this.model.getShapeToDraw()) {
@@ -75,6 +78,8 @@ public class ControllerCanvas implements Initializable {
     public void setOnMouseDragged(MouseEvent mouseEvent) {
         if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(mouseEvent.getX(),mouseEvent.getY())) {
             this.moveShapeSecond(mouseEvent);
+            this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
+            this.model.getHelpLayer().paint();
         }
         if (this.model.isNotEditing()) return;
         switch (this.model.getShapeToDraw()) {
@@ -92,6 +97,7 @@ public class ControllerCanvas implements Initializable {
     @FXML
     public void setOnMouseReleased(MouseEvent mouseEvent) {
         this.model.resetEditingLayer();
+        this.model.resetHelpLayer();
         this.primaryStage.getScene().setCursor(Cursor.DEFAULT);
         if (this.model.isNotEditing()) return;
         setOnMouseDragged(mouseEvent);

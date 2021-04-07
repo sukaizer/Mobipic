@@ -53,4 +53,9 @@ public class Text extends Layer{
     public String toString() {
         return "Texte";
     }
+
+    @Override
+    public Text setSamePositions() {
+    return null;
+    }
 }

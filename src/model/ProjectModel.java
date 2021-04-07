@@ -10,6 +10,7 @@ public class ProjectModel {
     private GraphicsContext graphicsContext;
     private boolean editing;
     private Layer editingLayer;
+    private Layer helpLayer;
     private Image baseLayer;
 
     public ProjectModel(javafx.scene.image.Image baseImage,GraphicsContext graphicsContext) {
@@ -76,5 +77,17 @@ public class ProjectModel {
 
     public void resetEditingLayer(){
         this.editingLayer = null;
+    }
+
+    public Layer getHelpLayer() {
+        return helpLayer;
+    }
+
+    public void setHelpLayer(Layer helpLayer) {
+        this.helpLayer = helpLayer;
+    }
+
+    public void resetHelpLayer(){
+        this.helpLayer = null;
     }
 }

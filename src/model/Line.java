@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Line extends Layer{
     double x2,y2;
@@ -44,5 +45,13 @@ public class Line extends Layer{
     @Override
     public String toString() {
         return "Ligne";
+    }
+
+    @Override
+    public Line setSamePositions() {
+        Line layer1 = new Line(this.getX(),this.getY(), this.getX2(), this.getY2(), graphicsContext);
+        layer1.setLineWidth(3);
+        layer1.setColor(new Color(0,0,0,1));
+        return layer1;
     }
 }

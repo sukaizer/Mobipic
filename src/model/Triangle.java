@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Triangle extends Layer {
 
@@ -92,5 +93,14 @@ public class Triangle extends Layer {
     @Override
     public String toString() {
         return "Triangle";
+    }
+
+    @Override
+    public Triangle setSamePositions() {
+        Triangle layer1 = new Triangle(this.getX(), this.getY(), this.getX2(), this.getY2(), this.getX3(), this.getY3(), graphicsContext);
+        layer1.setFilled(false);
+        layer1.setLineWidth(3);
+        layer1.setColor(new Color(0,0,0,1));
+        return layer1;
     }
 }
