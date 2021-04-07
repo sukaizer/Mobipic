@@ -37,4 +37,9 @@ public class Circle extends Layer{
         double yc = this.y + this.r;
         return (x-xc)*(x-xc)+(y-yc)*(y-yc) <= this.r*this.r;
     }
+
+    @Override
+    public String toString() {
+        return "Cercle";
+    }
 }

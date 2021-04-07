@@ -31,4 +31,9 @@ public class Image extends Layer {
     public boolean isIn(double x, double y) {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Image";
+    }
 }

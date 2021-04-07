@@ -45,4 +45,9 @@ public class Rectangle extends Layer{
     public boolean isIn(double x, double y) {
         return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height;
     }
+
+    @Override
+    public String toString() {
+        return "Rectangle";
+    }
 }

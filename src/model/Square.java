@@ -36,4 +36,9 @@ public class Square extends Layer{
     public boolean isIn(double x, double y) {
         return x >= this.x && x <= this.x + this.side && y >= this.y && y <= this.y + this.side;
     }
+
+    @Override
+    public String toString() {
+        return "Carré";
+    }
 }

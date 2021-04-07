@@ -1,11 +1,11 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
 
-import java.util.ArrayList;
-
 public class ProjectModel {
-    private ArrayList<Layer> layerArrayList;
+    private ObservableList<Layer> layers;
     private ShapeToDraw shapeToDraw;
     private GraphicsContext graphicsContext;
     private boolean editing;
@@ -13,22 +13,22 @@ public class ProjectModel {
 
     public ProjectModel(javafx.scene.image.Image baseImage,GraphicsContext graphicsContext) {
         this.shapeToDraw = ShapeToDraw.nothing;
-        this.layerArrayList = new ArrayList<>();
+        this.layers = FXCollections.observableArrayList();
         this.editing = false;
         this.graphicsContext = graphicsContext;
         this.baseLayer = new Image(baseImage,0,0,this.graphicsContext);
     }
 
-    public ArrayList<Layer> getLayerArrayList() {
-        return layerArrayList;
+    public ObservableList<Layer> getLayers() {
+        return layers;
     }
 
     public void addLayer(Layer layer){
-        this.layerArrayList.add(layer);
+        this.layers.add(layer);
     }
 
     public void deleteLastLayer(){
-        this.layerArrayList.remove(this.layerArrayList.size()-1);
+        this.layers.remove(this.layers.size()-1);
     }
 
     public ShapeToDraw getShapeToDraw() {
@@ -48,7 +48,7 @@ public class ProjectModel {
     }
 
     public void layersToString(){
-        for (Layer l:this.layerArrayList) {
+        for (Layer l:this.layers) {
             System.out.println(l.getClass().getName());
         }
         System.out.println();
@@ -59,7 +59,7 @@ public class ProjectModel {
      */
     public void paintLayers(){
         this.baseLayer.paint();
-        for (Layer layer:this.layerArrayList) {
+        for (Layer layer:this.layers) {
             layer.paint();
         }
     }

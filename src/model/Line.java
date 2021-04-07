@@ -40,4 +40,9 @@ public class Line extends Layer{
         double height = Math.abs(y2 - this.y);
         return x >= this.x && x <= this.x + width && y >= this.y && y <= this.y + height;
     }
+
+    @Override
+    public String toString() {
+        return "Ligne";
+    }
 }

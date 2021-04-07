@@ -171,7 +171,7 @@ public class ControllerCanvas implements Initializable {
     private void resetTriangle() {
         if (this.triangleFirst != 0) {
             this.triangleFirst = 0;
-            this.model.getLayerArrayList().remove(this.model.getLayerArrayList().size() - 1);
+            this.model.getLayers().remove(this.model.getLayers().size() - 1);
             this.model.paintLayers();
         }
     }

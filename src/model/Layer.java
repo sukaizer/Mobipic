@@ -69,6 +69,8 @@ public abstract class Layer {
 
     public abstract boolean isIn(double x, double y);
 
+    public abstract String toString();
+
     public void setFilled(boolean filled) {
         isFilled = filled;
     }

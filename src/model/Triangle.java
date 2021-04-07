@@ -94,4 +94,9 @@ public class Triangle extends Layer {
         double yb = Math.min(this.y1, Math.min(this.y2, this.y3));
         return x >= xa && x <= xb && y >= ya && y <= yb;
     }
+
+    @Override
+    public String toString() {
+        return "Triangle";
+    }
 }
