@@ -114,10 +114,11 @@ public class ControllerMain implements Initializable {
                 this.model = new ProjectModel(base, this.canvas.getGraphicsContext2D());
                 this.controllerCanvas.init(this.model, this.primaryStage);
                 this.mainPane.getChildren().add(pane);
-                this.mainPane.setMinHeight(base.getHeight());
-                this.mainPane.setMinWidth(base.getWidth());
+                this.mainPane.setMaxHeight(base.getHeight());
+                this.mainPane.setMaxWidth(base.getWidth());
                 this.canvas.setWidth(base.getWidth());
                 this.canvas.setHeight(base.getHeight());
+
 
                 loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../ressources/fxmlFiles/layers.fxml"));

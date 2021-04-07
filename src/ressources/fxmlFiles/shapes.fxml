@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 
 <VBox prefHeight="300.0" prefWidth="500.0" stylesheets="@../cssFiles/shapesStage.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerShapesMenu">
    <children>
@@ -49,7 +50,7 @@
                </HBox.margin>
             </CheckBox>
             <Slider fx:id="slider" blockIncrement="0.5" majorTickUnit="10.0" max="10.0" min="1.0" minorTickCount="10" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
-            <Label fx:id="sliderLabel" text="Label" />
+            <Line fx:id="widthIndicator" endX="100.0" startX="133.7928924560547" startY="0.08578646183013916" />
          </children>
          <VBox.margin>
             <Insets />

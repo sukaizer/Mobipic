@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,34 +15,42 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ControllerShapesMenu implements Initializable {
-    @FXML public ColorPicker colorPicker;
-    @FXML public CheckBox fillCheck;
-    @FXML public Button validateButton;
-    @FXML public Slider slider;
-    @FXML public Label sliderLabel;
-    @FXML public Label descriptionLabel;
+    @FXML
+    public ColorPicker colorPicker;
+    @FXML
+    public CheckBox fillCheck;
+    @FXML
+    public Button validateButton;
+    @FXML
+    public Slider slider;
+    @FXML
+    public Label descriptionLabel;
+    @FXML
+    public javafx.scene.shape.Line widthIndicator;
+
     private ProjectModel model;
     private Canvas canvas;
     private ControllerCanvas controllerCanvas;
     private Layer currentLayer;
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.sliderLabel.textProperty().bind(
-                Bindings.format(
-                        "%.2f",
-                        slider.valueProperty()
-                )
+        this.widthIndicator.strokeWidthProperty().bind(
+                slider.valueProperty()
+        );
+
+        this.widthIndicator.strokeProperty().bind(
+                colorPicker.valueProperty()
         );
         this.descriptionLabel.setVisible(false);
     }
 
     /**
      * Initialise la classe en lui passant le modèle
+     *
      * @param model
      */
-    public void init(ProjectModel model,ControllerCanvas controllerCanvas,Canvas canvas){
+    public void init(ProjectModel model, ControllerCanvas controllerCanvas, Canvas canvas) {
         this.model = model;
         this.controllerCanvas = controllerCanvas;
         this.canvas = canvas;
@@ -86,11 +95,11 @@ public class ControllerShapesMenu implements Initializable {
 
     public void validateChoice(ActionEvent actionEvent) {
         switch (this.model.getShapeToDraw()) {
-            case Line -> this.currentLayer = new Line(0,0,0,0, this.canvas.getGraphicsContext2D());
-            case Square -> this.currentLayer = new Square(0,0,0, this.canvas.getGraphicsContext2D());
-            case Rectangle -> this.currentLayer = new Rectangle(0,0,0,0, this.canvas.getGraphicsContext2D());
-            case Circle -> this.currentLayer = new Circle(0,0,0, this.canvas.getGraphicsContext2D());
-            case Triangle -> this.currentLayer = new Triangle(0,0,0,0, 0,0,this.canvas.getGraphicsContext2D());
+            case Line -> this.currentLayer = new Line(0, 0, 0, 0, this.canvas.getGraphicsContext2D());
+            case Square -> this.currentLayer = new Square(0, 0, 0, this.canvas.getGraphicsContext2D());
+            case Rectangle -> this.currentLayer = new Rectangle(0, 0, 0, 0, this.canvas.getGraphicsContext2D());
+            case Circle -> this.currentLayer = new Circle(0, 0, 0, this.canvas.getGraphicsContext2D());
+            case Triangle -> this.currentLayer = new Triangle(0, 0, 0, 0, 0, 0, this.canvas.getGraphicsContext2D());
         }
         this.currentLayer.setFilled(this.fillCheck.isSelected());
         this.currentLayer.setLineWidth(this.slider.getValue());

@@ -46,9 +46,10 @@ public class Line extends Layer{
 
     @Override
     public boolean isIn(double x, double y) {
-        double width = Math.abs(x2 - this.x);
-        double height = Math.abs(y2 - this.y);
-        return x >= this.x && x <= this.x + width && y >= this.y && y <= this.y + height;
+        double width = Math.abs(this.x2 - this.x);
+        double height = Math.abs(this.y2 - this.y);
+
+        return x >= Math.min(this.x,this.x2) && x <= Math.min(this.x,this.x2) + width && y >= Math.min(this.y,this.y2) && y <= Math.min(this.y,this.y2) + height;
     }
 
     @Override

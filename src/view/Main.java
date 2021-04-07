@@ -49,7 +49,7 @@ public class Main extends Application {
 
         new Thread(() -> {
             try {
-                Thread.sleep(0);
+                Thread.sleep(3000);
                 Platform.runLater(() -> {
                     primaryStage.close();
                     stage.show();
