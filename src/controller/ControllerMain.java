@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -16,6 +17,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.Layer;
 import model.ProjectModel;
 
 import javax.imageio.ImageIO;
@@ -38,8 +40,6 @@ public class ControllerMain implements Initializable {
     private Canvas canvas;
     private ControllerLayers controllerLayers;
     @FXML
-    public MenuItem newShapeMenu;
-    @FXML
     public Menu exportButton;
     @FXML
     public AnchorPane mainPane;
@@ -50,15 +50,14 @@ public class ControllerMain implements Initializable {
     @FXML
     public Button newImageButton;
     @FXML
-    public MenuItem newImageMenu;
+    public Menu layersMenuBar;
     @FXML
-    public MenuItem newTextMenu;
+    public ButtonBar layersModifyBar;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.newShapeMenu.setDisable(true);
-        this.newTextMenu.setDisable(true);
-        this.newImageMenu.setDisable(true);
+        this.layersModifyBar.setDisable(true);
+        this.layersMenuBar.setDisable(true);
         this.newShapeButton.setDisable(true);
         this.newImageButton.setDisable(true);
         this.exportButton.setDisable(true);
@@ -121,9 +120,8 @@ public class ControllerMain implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            this.newShapeMenu.setDisable(false);
-            this.newImageMenu.setDisable(false);
-            this.newTextMenu.setDisable(false);
+            this.layersMenuBar.setDisable(false);
+            this.layersModifyBar.setDisable(false);
             this.newShapeButton.setDisable(false);
             this.exportButton.setDisable(false);
             this.newImageButton.setDisable(false);
@@ -276,5 +274,21 @@ public class ControllerMain implements Initializable {
         assert loader != null;
         ControllerTextMenu controllerText = loader.getController();
         controllerText.init(this.model, this.controllerCanvas, this.canvas);
+    }
+
+    @FXML
+    public void deleteLayer(ActionEvent actionEvent) {
+        try {
+            this.model.getLayers().removeIf(Layer::isFocused);
+        } catch(Exception ignored) {}
+        this.model.paintLayers();
+    }
+
+    @FXML
+    public void moveLayer(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void resizeLayer(ActionEvent actionEvent) {
     }
 }

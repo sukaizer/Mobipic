@@ -87,12 +87,23 @@ public class Triangle extends Layer {
     }
 
     @Override
-    public boolean isIn(double x, double y) {
-        double xa = Math.min(this.x1, Math.min(this.x2, this.x3));
-        double xb = Math.max(this.x1, Math.min(this.x2, this.x3));
-        double ya = Math.min(this.y1, Math.min(this.y2, this.y3));
-        double yb = Math.min(this.y1, Math.min(this.y2, this.y3));
-        return x >= xa && x <= xb && y >= ya && y <= yb;
+    public boolean isIn(double xS, double yS) {
+        double xA = x1;
+        double yA = y1;
+        double xB = x2 - x1;
+        double yB = y2 - y1;
+        double xC = x3 - x1;
+        double yC = y3 - y1;
+        double x = xS - x1;
+        double y = yS - y1;
+
+        double d = xB*yC - xC*yB;
+
+        double wA = (x*(yB-yC) + y*(xC-xB) + xB*yC - xC*yB)/d;
+        double wB = (x*yC - y*xC)/d;
+        double wC = (y*xB - yB*x)/d;
+
+        return(wA > 0 && wA < 1 && wB > 0 && wB < 1 && wC > 0 && wC < 1);
     }
 
     @Override

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -63,15 +64,15 @@
                         <MenuItem mnemonicParsing="false" text="Redimensionner" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Calque">
+                <Menu fx:id="layersMenuBar" mnemonicParsing="false" text="Calque">
                   <items>
                         <Menu mnemonicParsing="false" text="Nouveau">
                           <items>
-                            <MenuItem fx:id="newTextMenu" mnemonicParsing="false" onAction="#addTextMenu" text="Texte" />
-                              <MenuItem id="menuItemShapes" fx:id="newShapeMenu" mnemonicParsing="false" onAction="#addShapeMenu" text="Forme" />
+                            <MenuItem mnemonicParsing="false" onAction="#addTextMenu" text="Texte" />
+                              <MenuItem id="menuItemShapes" mnemonicParsing="false" onAction="#addShapeMenu" text="Forme" />
                               <MenuItem mnemonicParsing="false" text="Filtre" />
                               <MenuItem mnemonicParsing="false" text="Emoji" />
-                              <MenuItem id="menuItemImage" fx:id="newImageMenu" mnemonicParsing="false" onAction="#addImageLayer" text="Image" />
+                              <MenuItem id="menuItemImage" mnemonicParsing="false" onAction="#addImageLayer" text="Image" />
                           </items>
                         </Menu>
                         <MenuItem mnemonicParsing="false" text="Renommer" />
@@ -111,6 +112,13 @@
                 <AnchorPane fx:id="layersPane" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="232.0" />
               </content>
             </ScrollPane>
+            <ButtonBar fx:id="layersModifyBar" prefHeight="86.0" prefWidth="250.0">
+              <buttons>
+                <Button mnemonicParsing="false" onAction="#deleteLayer" text="Supprimer" />
+                  <Button mnemonicParsing="false" onAction="#moveLayer" text="Déplacer" />
+                  <Button minWidth="40.0" mnemonicParsing="false" onAction="#resizeLayer" prefHeight="27.0" text="Redimensionner" />
+              </buttons>
+            </ButtonBar>
          </children>
       </VBox>
    </children>
