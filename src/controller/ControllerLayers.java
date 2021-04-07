@@ -25,8 +25,4 @@ public class ControllerLayers implements Initializable {
         this.layersList.setItems(this.model.getLayers());
     }
 
-
-    public void update(){
-        //this.layersList.setItems(this.model.getLayers());
-    }
 }

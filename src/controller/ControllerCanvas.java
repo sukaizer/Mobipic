@@ -18,6 +18,7 @@ public class ControllerCanvas implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.triangleFirst = 0;
     }
 
     /**
@@ -31,7 +32,6 @@ public class ControllerCanvas implements Initializable {
 
     public void init(Layer currentLayer){
         this.currentLayer = currentLayer;
-        this.triangleFirst = 0;
     }
     @FXML
     public void setOnMousePressed(MouseEvent mouseEvent) {
