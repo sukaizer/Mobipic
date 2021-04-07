@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../cssFiles/startScreen.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerStart">
    <children>
-      <ProgressBar id="bar" layoutX="180.0" layoutY="312.0" prefHeight="20.0" prefWidth="241.0" />
+      <ProgressBar layoutX="180.0" layoutY="312.0" prefHeight="20.0" prefWidth="241.0" />
       <ImageView fx:id="image" fitHeight="241.0" fitWidth="241.0" layoutX="182.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="41.0" layoutY="253.0" prefHeight="32.0" prefWidth="173.0" text="by Paul Catillon" />
+      <Label layoutX="41.0" layoutY="285.0" text="and Alexandre Ciorascu" />
    </children>
 </AnchorPane>

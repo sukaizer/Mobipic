@@ -2,6 +2,11 @@
     -fx-background-color: #5f9dec;
 }
 
-#bar {
+.label {
+    -fx-font-family: "Chalkboard SE";
+    -fx-font-size: 20;
+}
 
+.progress-bar > .track {
+    -fx-control-inner-background: palegreen;
 }
