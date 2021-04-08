@@ -1,15 +1,23 @@
 package model;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 public class Text extends Layer{
     private String text;
     private TextAlignment textAlignment;
-    private Font font;
+    private String font;
+    private Font finalFont;
     private FontWeight fontWeight;
+    private FontPosture fontPosture;
     private double size;
 
     public Text(double x, double y, String text, GraphicsContext graphicsContext) {
@@ -17,31 +25,86 @@ public class Text extends Layer{
         this.text = text;
         this.textAlignment = TextAlignment.LEFT;
         this.fontWeight = FontWeight.NORMAL;
+        this.fontPosture = FontPosture.REGULAR;
         this.size = 10;
-        this.font = Font.font("Calibri",this.fontWeight,this.size);
+        this.font = "Calibri";
+        this.finalFont = Font.font(this.font,this.fontWeight,this.fontPosture,this.size);
+        this.isFilled = true;
+        this.color = Color.BLACK;
+    }
+
+    public Text(Text text) {
+        super(text.x,text.y,text.graphicsContext);
+        this.text = text.text;
+        this.textAlignment = text.textAlignment;
+        this.fontWeight = text.fontWeight;
+        this.fontPosture = text.fontPosture;
+        this.size = text.size;
+        this.finalFont = text.finalFont;
+        this.isFilled = true;
+        this.color = text.color;
+
     }
 
     public void setText(String text){
         this.text = text;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public String getFont() {
+        return font;
+    }
+
+    @Override
+    public void setColor(Paint color) {
+        this.color = color;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+    }
+
     public void setTextAlignment(TextAlignment textAlignment) {
         this.textAlignment = textAlignment;
     }
 
-    public void setFont(Font font){
+    public void setFont(String font){
         this.font = font;
+    }
+
+    public void setFinalFont(Font finalFont) {
+        this.finalFont = finalFont;
     }
 
     public void setFontWeight(FontWeight fontWeight) {
         this.fontWeight = fontWeight;
     }
 
+    public void setFontPosture(FontPosture fontPosture) {
+        this.fontPosture = fontPosture;
+    }
+
+    public FontWeight getFontWeight() {
+        return fontWeight;
+    }
+
+    public FontPosture getFontPosture() {
+        return fontPosture;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
     @Override
     public void paint() {
-        this.graphicsContext.setFont(this.font);
+        this.graphicsContext.setFont(this.finalFont);
+        this.graphicsContext.setTextAlign(this.textAlignment);
+        this.graphicsContext.setStroke(this.color);
         this.graphicsContext.fillText(this.text,this.x,this.y);
-
     }
 
     @Override
@@ -55,7 +118,11 @@ public class Text extends Layer{
     }
 
     @Override
-    public Text setSamePositions() {
-    return null;
+    public Rectangle setSamePositions() {
+        Rectangle layer1 = new Rectangle(this.getX(), this.getY(), 10, 10, graphicsContext);
+        layer1.setFilled(false);
+        layer1.setLineWidth(6);
+        layer1.setColor(new Color(0,0,0,1));
+        return layer1;
     }
 }
