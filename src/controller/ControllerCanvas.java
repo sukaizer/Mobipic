@@ -52,6 +52,12 @@ public class ControllerCanvas implements Initializable {
         if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && !this.model.getEditingLayer().isIn(e.getX(),e.getY())) {
             this.primaryStage.getScene().setCursor(Cursor.DEFAULT);
         }
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && this.model.getEditingLayer().isIn(e.getX(),e.getY())) {
+            this.primaryStage.getScene().setCursor(Cursor.CROSSHAIR);
+        }
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && !this.model.getEditingLayer().isIn(e.getX(),e.getY())) {
+            this.primaryStage.getScene().setCursor(Cursor.DEFAULT);
+        }
     }
 
     @FXML
