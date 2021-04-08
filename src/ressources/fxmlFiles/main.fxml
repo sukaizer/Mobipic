@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerMain">
+<GridPane onKeyPressed="#keyAction" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerMain">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="75.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" />
@@ -38,7 +38,7 @@
                   <Menu mnemonicParsing="false" text="Fichier">
                     <items>
                       <MenuItem id="menuItemOpen" mnemonicParsing="false" onAction="#setOpenMenuAction" text="Ouvrir..." />
-                        <MenuItem id="menuItemNew" mnemonicParsing="false" onAction="#setNewMenuAction" text="Nouveau" />
+                        <MenuItem id="menuItemNew" mnemonicParsing="false" onAction="#setNewMenuAction" text="Nouveau             (Ctrl+N)" />
                         <MenuItem id="menuItemSave" mnemonicParsing="false" text="Enregistrer          (Ctrl+S)" />
                         <MenuItem mnemonicParsing="false" text="Enregistrer sous..." />
                         <MenuItem mnemonicParsing="false" text="Fermer" />
@@ -111,7 +111,7 @@
          <children>
             <ScrollPane prefHeight="400.0" prefWidth="250.0">
               <content>
-                <AnchorPane fx:id="layersPane" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="232.0" />
+                <AnchorPane fx:id="layersPane" maxHeight="1000.0" maxWidth="1000.0" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="245.0" />
               </content>
             </ScrollPane>
             <ButtonBar fx:id="layersModifyBar" prefHeight="86.0" prefWidth="250.0">

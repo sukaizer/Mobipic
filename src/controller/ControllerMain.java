@@ -2,21 +2,23 @@ package controller;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.*;
@@ -41,6 +43,10 @@ public class ControllerMain implements Initializable {
     private ControllerCanvas controllerCanvas;
     private Canvas canvas;
     private ControllerLayers controllerLayers;
+
+    final KeyCombination keyCombinationControlN = new KeyCodeCombination(
+            KeyCode.N, KeyCombination.CONTROL_DOWN);
+
     @FXML
     public Menu exportButton;
     @FXML
@@ -79,6 +85,7 @@ public class ControllerMain implements Initializable {
         this.primaryStage = primaryStage;
     }
 
+
     /**
      * Ouvre la fenetre contextuelle de choix de fichiers
      */
@@ -98,7 +105,7 @@ public class ControllerMain implements Initializable {
     }
 
     @FXML
-    public void setNewMenuAction(ActionEvent actionEvent) {
+    public void setNewMenuAction(Event actionEvent) {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().addAll(
@@ -361,5 +368,22 @@ public class ControllerMain implements Initializable {
     public void zoomMinus(ActionEvent actionEvent) {
         this.canvas.setScaleX(this.canvas.getScaleX()*0.8);
         this.canvas.setScaleY(this.canvas.getScaleY()*0.8);
+    }
+
+    @FXML
+    public void keyAction(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ESCAPE) {
+            this.controllerLayers.getLayersList().getSelectionModel().clearSelection();
+            try {
+                for (Layer l : this.model.getLayers()) {
+                    l.setFocused(false);
+                }
+                this.controllerLayers.clear();
+                this.model.paintLayers();
+            }catch(Exception ignored){}
+        }
+        if (this.keyCombinationControlN.match(keyEvent)) {
+            this.setNewMenuAction(keyEvent);
+        }
     }
 }

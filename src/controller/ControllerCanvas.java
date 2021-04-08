@@ -68,6 +68,7 @@ public class ControllerCanvas implements Initializable {
             case Rectangle -> rectangleFirstPoint(mouseEvent);
             case Circle -> circleFirstPoint(mouseEvent);
             case Triangle -> triangleFirstPoint(mouseEvent);
+            case Ellipse -> ellipseFirstPoint(mouseEvent);
         }
         clear();
         this.model.paintLayers();
@@ -87,6 +88,7 @@ public class ControllerCanvas implements Initializable {
             case Square -> squareSetNewPoint(mouseEvent);
             case Rectangle -> rectangleSetNewPoint(mouseEvent);
             case Circle -> circleSetNewPoint(mouseEvent);
+            case Ellipse -> ellipseSetNewPoint(mouseEvent);
             case Triangle -> {
             }
         }
@@ -173,6 +175,23 @@ public class ControllerCanvas implements Initializable {
         resetTriangle();
         double r = Math.abs(currentLayer.getX() - e.getX()) / 2;
         ((Circle) currentLayer).setRadius(r);
+    }
+
+    public void ellipseFirstPoint(MouseEvent e) {
+        resetTriangle();
+        currentLayer.setX(e.getX());
+        currentLayer.setY(e.getY());
+        ((Ellipse) currentLayer).setR1(0);
+        ((Ellipse) currentLayer).setR2(0);
+        this.model.addLayer(currentLayer);
+    }
+
+    public void ellipseSetNewPoint(MouseEvent e) {
+        resetTriangle();
+        double r1 = Math.abs(currentLayer.getX() - e.getX()) / 2;
+        double r2 = Math.abs(currentLayer.getY() - e.getY()) / 2;
+        ((Ellipse) currentLayer).setR1(r1);
+        ((Ellipse) currentLayer).setR2(r2);
     }
 
     public void triangleFirstPoint(MouseEvent e) {

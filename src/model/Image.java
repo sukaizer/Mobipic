@@ -52,7 +52,7 @@ public class Image extends Layer {
     public Rectangle setSamePositions() {
         Rectangle layer1 = new Rectangle(this.getX(), this.getY(), this.image.getHeight(), this.image.getWidth(), graphicsContext);
         layer1.setFilled(false);
-        layer1.setLineWidth(3);
+        layer1.setLineWidth(6);
         layer1.setColor(new Color(0,0,0,1));
         return layer1;
     }

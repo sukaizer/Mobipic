@@ -23,6 +23,28 @@
 
 #ok {
     -fx-alignment: bottom-center;
-
 }
 
+#circle {
+    -fx-graphic : url("/ressources/images/circle.png");
+}
+
+#triangle {
+    -fx-graphic : url("/ressources/images/triangle.png");
+}
+
+#square {
+    -fx-graphic : url("/ressources/images/square.png");
+}
+
+#rectangle {
+    -fx-graphic : url("/ressources/images/rectangle.png");
+}
+
+#line {
+    -fx-graphic : url("/ressources/images/line.png");
+}
+
+#ellipse {
+    -fx-graphic : url("/ressources/images/ellipse.png");
+}

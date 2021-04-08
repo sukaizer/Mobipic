@@ -53,7 +53,7 @@ public class ControllerLayers implements Initializable {
         }
     }
 
-    private void selectLayer() {
+    public void selectLayer() {
         try {
             for (Layer l : this.model.getLayers()) {
                 l.setFocused(false);
@@ -74,5 +74,7 @@ public class ControllerLayers implements Initializable {
         this.canvas.getGraphicsContext2D().clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
     }
 
-
+    public ListView<Layer> getLayersList() {
+        return layersList;
+    }
 }

@@ -8,29 +8,35 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
 
 <VBox prefHeight="300.0" prefWidth="500.0" stylesheets="@../cssFiles/shapesStage.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerShapesMenu">
    <children>
       <HBox id="hbox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="49.0" prefWidth="432.0">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#drawLine" text="Ligne">
+            <Button id="line" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#drawLine">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
-            <Button mnemonicParsing="false" onAction="#drawSquare" text="Carré">
+            <Button id="square" mnemonicParsing="false" onAction="#drawSquare">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
-            <Button mnemonicParsing="false" onAction="#drawRectangle" text="Rectangle">
+            <Button id="rectangle" mnemonicParsing="false" onAction="#drawRectangle">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
-            <Button mnemonicParsing="false" onAction="#drawCircle" text="Cercle">
+            <Button id="circle" mnemonicParsing="false" onAction="#drawCircle">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
-            <Button mnemonicParsing="false" onAction="#drawTriangle" text="Triangle">
+            <Button id="ellipse" mnemonicParsing="false" onAction="#drawEllipse">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button id="triangle" mnemonicParsing="false" onAction="#drawTriangle">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Button>
@@ -40,6 +46,9 @@
       <HBox alignment="CENTER">
          <children>
             <ColorPicker fx:id="colorPicker">
+               <value>
+                  <Color red="0.0" green="0.0" blue="0.0" />
+               </value>
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>
