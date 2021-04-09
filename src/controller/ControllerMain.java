@@ -327,6 +327,28 @@ public class ControllerMain implements Initializable {
                 if (layer.isFocused()) {
                     layer.setResizing(true);
                     this.model.setEditingLayer(layer);
+                    if (layer instanceof Triangle){
+                        Square l1 = new Square(layer.getX() - 5, layer.getY() - 5,10,this.canvas.getGraphicsContext2D());
+                        Square l2 = new Square(((Triangle) layer).getX2() - 5, ((Triangle) layer).getY2() - 5,10,this.canvas.getGraphicsContext2D());
+                        Square l3 = new Square(((Triangle) layer).getX3() - 5, ((Triangle) layer).getY3() - 5,10,this.canvas.getGraphicsContext2D());
+                        l1.setFilled(true);
+                        l2.setFilled(true);
+                        l3.setFilled(true);
+                        l1.paint();
+                        l2.paint();
+                        l3.paint();
+                    } else if(layer instanceof Line){
+                        Square l1 = new Square(layer.getX() - 5, layer.getY() - 5,10,this.canvas.getGraphicsContext2D());
+                        Square l2 = new Square(((Line) layer).getX2() - 5, ((Line) layer).getY2() - 5,10,this.canvas.getGraphicsContext2D());
+                        l1.setFilled(true);
+                        l2.setFilled(true);
+                        l1.paint();
+                        l2.paint();
+                    } else {
+                        Square l1 = new Square(layer.getX() - 5, layer.getY() - 5,10,this.canvas.getGraphicsContext2D());
+                        l1.setFilled(true);
+                        l1.paint();
+                    }
                 }
             }
         } catch(Exception ignored) {}

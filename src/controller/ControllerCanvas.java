@@ -70,25 +70,30 @@ public class ControllerCanvas implements Initializable {
         if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(mouseEvent.getX(),mouseEvent.getY())) {
             this.moveShapeFirst(mouseEvent);
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
+            clear();
+            this.model.paintLayers();
             this.model.getHelpLayer().paint();
-        }
-        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && isTouchingEdge(mouseEvent,this.model.getEditingLayer())) {
+        } else if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && isTouchingEdge(mouseEvent,this.model.getEditingLayer())) {
             this.resizeShapeFirst(mouseEvent);
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
-            this.model.getHelpLayer().paint();
             this.resizing = true;
+            clear();
+            this.model.paintLayers();
+            this.model.getHelpLayer().paint();
+            paintResizeSquare();
+        } else if (this.model.isNotEditing()) {}
+        else {
+            switch (this.model.getShapeToDraw()) {
+                case Line -> lineFirstPoint(mouseEvent);
+                case Square -> squareFirstPoint(mouseEvent);
+                case Rectangle -> rectangleFirstPoint(mouseEvent);
+                case Circle -> circleFirstPoint(mouseEvent);
+                case Triangle -> triangleFirstPoint(mouseEvent);
+                case Ellipse -> ellipseFirstPoint(mouseEvent);
+            }
+            clear();
+            this.model.paintLayers();
         }
-        if (this.model.isNotEditing()) return;
-        switch (this.model.getShapeToDraw()) {
-            case Line -> lineFirstPoint(mouseEvent);
-            case Square -> squareFirstPoint(mouseEvent);
-            case Rectangle -> rectangleFirstPoint(mouseEvent);
-            case Circle -> circleFirstPoint(mouseEvent);
-            case Triangle -> triangleFirstPoint(mouseEvent);
-            case Ellipse -> ellipseFirstPoint(mouseEvent);
-        }
-        clear();
-        this.model.paintLayers();
     }
 
 
@@ -97,37 +102,42 @@ public class ControllerCanvas implements Initializable {
         if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(mouseEvent.getX(),mouseEvent.getY())) {
             this.moveShapeSecond(mouseEvent);
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
+            clear();
+            this.model.paintLayers();
             this.model.getHelpLayer().paint();
-        }
-        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && this.resizing) {
+        } else if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && this.resizing) {
             this.resizeShapeSecond(mouseEvent);
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
+            clear();
+            this.model.paintLayers();
             this.model.getHelpLayer().paint();
-        }
-        clear();
-        this.model.paintLayers();
-        if (this.model.isNotEditing()) return;
-        switch (this.model.getShapeToDraw()) {
-            case Line -> lineSetNewPoint(mouseEvent);
-            case Square -> squareSetNewPoint(mouseEvent);
-            case Rectangle -> rectangleSetNewPoint(mouseEvent);
-            case Circle -> circleSetNewPoint(mouseEvent);
-            case Ellipse -> ellipseSetNewPoint(mouseEvent);
-            case Triangle -> {
+            paintResizeSquare();
+        } else if (this.model.isNotEditing()){}
+         else {
+            switch (this.model.getShapeToDraw()) {
+                case Line -> lineSetNewPoint(mouseEvent);
+                case Square -> squareSetNewPoint(mouseEvent);
+                case Rectangle -> rectangleSetNewPoint(mouseEvent);
+                case Circle -> circleSetNewPoint(mouseEvent);
+                case Ellipse -> ellipseSetNewPoint(mouseEvent);
+                case Triangle -> {
+                }
             }
+            clear();
+            this.model.paintLayers();
         }
-        clear();
-        this.model.paintLayers();
     }
 
     @FXML
     public void setOnMouseReleased(MouseEvent mouseEvent) {
         this.resizing = false;
         this.model.resetEditingLayer();
-        this.model.resetHelpLayer();
         this.primaryStage.getScene().setCursor(Cursor.DEFAULT);
         clear();
         this.model.paintLayers();
+        try{
+            this.model.getHelpLayer().paint();
+        } catch (NullPointerException ignored){}
         if (this.model.isNotEditing()) return;
         setOnMouseDragged(mouseEvent);
         if (this.model.getShapeToDraw().equals(ShapeToDraw.Triangle) && this.triangleFirst == 3) {
@@ -372,6 +382,31 @@ public class ControllerCanvas implements Initializable {
             return false;
         }
         return ((e.getX() >= layer.getX() - 5 && e.getX() <= layer.getX() + 5) && (e.getY() >= layer.getY() - 5 && e.getY() <= layer.getY() + 5));
+    }
+
+    public void paintResizeSquare(){
+        if (this.model.getEditingLayer() instanceof Triangle){
+            Square l1 = new Square(this.model.getEditingLayer().getX() - 5, this.model.getEditingLayer().getY() - 5,10,this.canvas.getGraphicsContext2D());
+            Square l2 = new Square(((Triangle) this.model.getEditingLayer()).getX2() - 5, ((Triangle) this.model.getEditingLayer()).getY2() - 5,10,this.canvas.getGraphicsContext2D());
+            Square l3 = new Square(((Triangle) this.model.getEditingLayer()).getX3() - 5, ((Triangle) this.model.getEditingLayer()).getY3() - 5,10,this.canvas.getGraphicsContext2D());
+            l1.setFilled(true);
+            l2.setFilled(true);
+            l3.setFilled(true);
+            l1.paint();
+            l2.paint();
+            l3.paint();
+        } else if(this.model.getEditingLayer() instanceof Line){
+            Square l1 = new Square(this.model.getEditingLayer().getX() - 5, this.model.getEditingLayer().getY() - 5,10,this.canvas.getGraphicsContext2D());
+            Square l2 = new Square(((Line) this.model.getEditingLayer()).getX2() - 5, ((Line) this.model.getEditingLayer()).getY2() - 5,10,this.canvas.getGraphicsContext2D());
+            l1.setFilled(true);
+            l2.setFilled(true);
+            l1.paint();
+            l2.paint();
+        } else {
+            Square l1 = new Square(this.model.getEditingLayer().getX() - 5, this.model.getEditingLayer().getY() - 5,10,this.canvas.getGraphicsContext2D());
+            l1.setFilled(true);
+            l1.paint();
+        }
     }
 
 
