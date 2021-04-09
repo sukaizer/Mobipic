@@ -4,6 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProjectModel {
     private ObservableList<Layer> layers;
     private ShapeToDraw shapeToDraw;
@@ -90,4 +93,5 @@ public class ProjectModel {
     public void resetHelpLayer(){
         this.helpLayer = null;
     }
+
 }

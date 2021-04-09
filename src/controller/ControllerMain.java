@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -19,6 +21,8 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.*;
@@ -31,6 +35,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -63,14 +69,21 @@ public class ControllerMain implements Initializable {
     @FXML
     public Menu layersMenuBar;
     @FXML
-    public ButtonBar layersModifyBar;
+    public VBox layersModifyBar;
     @FXML
     public Button zoomPlus;
     @FXML
     public Button zoomMinus;
+    @FXML
+    public HBox hboxLayersModify;
+    @FXML
+    public Button up;
+    @FXML
+    public Button down;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.hboxLayersModify.setDisable(true);
         this.zoomMinus.setDisable(true);
         this.zoomPlus.setDisable(true);
         this.layersModifyBar.setDisable(true);
@@ -134,7 +147,7 @@ public class ControllerMain implements Initializable {
                 loader.setLocation(getClass().getResource("../ressources/fxmlFiles/layers.fxml"));
                 Parent pane2 = loader.load();
                 this.controllerLayers = loader.getController();
-                this.controllerLayers.init(this.model,this.canvas);
+                this.controllerLayers.init(this.model,this.canvas,this.up,this.down);
                 this.layersPane.getChildren().add(pane2);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -145,6 +158,7 @@ public class ControllerMain implements Initializable {
             this.exportButton.setDisable(false);
             this.newImageButton.setDisable(false);
             this.zoomMinus.setDisable(false);
+            this.hboxLayersModify.setDisable(false);
             this.zoomPlus.setDisable(false);
             this.model.paintLayers();
         } catch (NullPointerException ignored) {
@@ -385,6 +399,40 @@ public class ControllerMain implements Initializable {
             }
             this.model.paintLayers();
         } catch(Exception ignored) {}
+    }
+
+    @FXML
+    public void sendBack(ActionEvent actionEvent) {
+        for (int i = 0; i < this.model.getLayers().size(); i++) {
+            if (this.model.getLayers().get(i).isFocused()){
+                Collections.swap(this.model.getLayers(),i,i-1);
+                this.controllerCanvas.clear();
+                this.model.paintLayers();
+                this.model.getLayers().get(i-1).setFocused(false);
+                this.controllerLayers.clearSelection();
+                this.up.setDisable(true);
+                this.down.setDisable(true);
+                return;
+            }
+        }
+    }
+
+    @FXML
+    public void sendForward(ActionEvent actionEvent) {
+        for (int i = 0; i < this.model.getLayers().size(); i++) {
+            if (this.model.getLayers().get(i).isFocused()){
+                System.out.println("down");
+                Collections.swap(this.model.getLayers(),i,i+1);
+                this.controllerCanvas.clear();
+                this.model.paintLayers();
+                this.model.getLayers().get(i).setFocused(false);
+                this.model.getLayers().get(i+1).setFocused(false);
+                this.controllerLayers.clearSelection();
+                this.up.setDisable(true);
+                this.down.setDisable(true);
+                return;
+            }
+        }
     }
 
     @FXML

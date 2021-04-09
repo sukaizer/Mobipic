@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.input.KeyCode;
@@ -22,15 +23,19 @@ public class ControllerLayers implements Initializable {
     public ListView<Layer> layersList = new ListView<>();
     private ProjectModel model;
     private Canvas canvas;
+    private Button up;
+    private Button down;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
-    public void init(ProjectModel model, Canvas canvas) {
+    public void init(ProjectModel model, Canvas canvas,Button up, Button down) {
         this.model = model;
         this.layersList.setItems(this.model.getLayers());
         this.canvas = canvas;
+        this.up = up;
+        this.down = down;
     }
 
     @FXML
@@ -42,6 +47,8 @@ public class ControllerLayers implements Initializable {
     public void actionKey(KeyEvent keyEvent) {
         selectLayer();
         if (keyEvent.getCode() == KeyCode.ESCAPE) {
+            this.up.setDisable(true);
+            this.down.setDisable(true);
             this.layersList.getSelectionModel().clearSelection();
             try {
                 for (Layer l : this.model.getLayers()) {
@@ -61,11 +68,26 @@ public class ControllerLayers implements Initializable {
             this.layersList.getSelectionModel().getSelectedItem().setFocused(true);
             clear();
             this.model.paintLayers();
+            int i = 0;
             for (Layer l : this.model.getLayers()) {
                 if (l.isFocused()) {
                     this.model.setHelpLayer(l.setSamePositions());
                     this.model.getHelpLayer().paint();
+                    if (i > 0 && i < this.model.getLayers().size() - 1){
+                        this.up.setDisable(false);
+                        this.down.setDisable(false);
+                    } else if (i == 0 && i == this.model.getLayers().size() - 1){
+                        this.up.setDisable(true);
+                        this.down.setDisable(true);
+                    } else if (i > 0 && i == this.model.getLayers().size() - 1){
+                        this.up.setDisable(false);
+                        this.down.setDisable(true);
+                    } else if (i == 0 && i < this.model.getLayers().size() - 1){
+                        this.up.setDisable(true);
+                        this.down.setDisable(false);
+                    }
                 }
+                i++;
             }
         }catch(Exception ignored){}
     }
@@ -76,5 +98,9 @@ public class ControllerLayers implements Initializable {
 
     public ListView<Layer> getLayersList() {
         return layersList;
+    }
+
+    public void clearSelection(){
+        this.layersList.getSelectionModel().clearSelection();
     }
 }

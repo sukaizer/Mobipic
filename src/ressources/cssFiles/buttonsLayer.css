@@ -1,0 +1,15 @@
+.vbox {
+    -fx-alignment: CENTER;
+    -fx-spacing: 10;
+}
+.button {
+    -fx-focus-color: #b22222;
+    -fx-alignment: CENTER;
+    -fx-pref-width: 110;
+    -fx-pref-height: 40;
+}
+
+.button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /*effet d'ombre*/
+    -fx-cursor: hand;
+}
