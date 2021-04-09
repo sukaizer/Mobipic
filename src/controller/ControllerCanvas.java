@@ -104,6 +104,8 @@ public class ControllerCanvas implements Initializable {
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
             this.model.getHelpLayer().paint();
         }
+        clear();
+        this.model.paintLayers();
         if (this.model.isNotEditing()) return;
         switch (this.model.getShapeToDraw()) {
             case Line -> lineSetNewPoint(mouseEvent);
