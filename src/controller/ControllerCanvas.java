@@ -124,6 +124,8 @@ public class ControllerCanvas implements Initializable {
         this.model.resetEditingLayer();
         this.model.resetHelpLayer();
         this.primaryStage.getScene().setCursor(Cursor.DEFAULT);
+        clear();
+        this.model.paintLayers();
         if (this.model.isNotEditing()) return;
         setOnMouseDragged(mouseEvent);
         if (this.model.getShapeToDraw().equals(ShapeToDraw.Triangle) && this.triangleFirst == 3) {
