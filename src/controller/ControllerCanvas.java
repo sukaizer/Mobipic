@@ -350,7 +350,7 @@ public class ControllerCanvas implements Initializable {
                 return true;
             }
             if (b3){
-                ((Triangle) layer).setPoint(2);
+                ((Triangle) layer).setPoint(3);
                 return true;
             }
             return false;
