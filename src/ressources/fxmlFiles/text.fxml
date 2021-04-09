@@ -12,8 +12,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1" fx:controller="controller.ControllerTextMenu">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerTextMenu">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -22,7 +23,7 @@
     <RowConstraints maxHeight="310.0" minHeight="10.0" prefHeight="305.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TextField fx:id="textField" prefHeight="40.0" prefWidth="600.0" />
+      <TextField fx:id="textField" prefHeight="40.0" prefWidth="600.0" promptText="Mettez votre texte ici" />
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
          <children>
             <Separator prefWidth="600.0" />
@@ -33,7 +34,6 @@
                   <Button mnemonicParsing="false" onAction="#alignmentRight" text="alidroite" />
                   <Button mnemonicParsing="false" onAction="#bold" text="gras" />
                   <Button mnemonicParsing="false" onAction="#italic" text="italique" />
-                  <Button mnemonicParsing="false" onAction="#underlined" text="souligné" />
                   <Slider fx:id="fontSize" max="50.0" min="5.0" prefHeight="16.0" />
               </buttons>
                <VBox.margin>
@@ -45,6 +45,9 @@
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
+               <value>
+                  <Color />
+               </value>
             </ColorPicker>
             <Button fx:id="validateButton" alignment="CENTER" mnemonicParsing="false" onAction="#validate" text="OK">
                <VBox.margin>

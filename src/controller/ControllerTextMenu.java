@@ -36,7 +36,6 @@ public class ControllerTextMenu implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //this.validateButton.setDisable(true);
     }
 
     public void init(ProjectModel model, Canvas canvas){
@@ -70,10 +69,6 @@ public class ControllerTextMenu implements Initializable {
         this.text.setFontPosture(FontPosture.ITALIC);
     }
 
-    @FXML
-    public void underlined(ActionEvent actionEvent) {
-        this.text.setFontWeight(FontWeight.BOLD);
-    }
 
     public void validate(ActionEvent actionEvent) {
         this.text.setText(this.textField.getText());
