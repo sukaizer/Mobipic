@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -80,9 +81,12 @@ public class ControllerMain implements Initializable {
     public Button up;
     @FXML
     public Button down;
+    @FXML
+    public Button newTextButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.newTextButton.setDisable(true);
         this.hboxLayersModify.setDisable(true);
         this.zoomMinus.setDisable(true);
         this.zoomPlus.setDisable(true);
@@ -160,6 +164,8 @@ public class ControllerMain implements Initializable {
             this.zoomMinus.setDisable(false);
             this.hboxLayersModify.setDisable(false);
             this.zoomPlus.setDisable(false);
+            this.newTextButton.setDisable(false);
+
             this.model.paintLayers();
         } catch (NullPointerException ignored) {
         }
@@ -216,7 +222,7 @@ public class ControllerMain implements Initializable {
 
         //Set extension filter
         FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("fichier jpg (*.jpg)", "*.jpg");
+                new FileChooser.ExtensionFilter("fichier jpeg (*.jpeg)", "*.jpeg");
         fileChooser.getExtensionFilters().add(extFilter);
 
         //Show save file dialog
@@ -225,9 +231,9 @@ public class ControllerMain implements Initializable {
         if (file != null) {
             try {
                 WritableImage writableImage = new WritableImage((int) this.canvas.getWidth(), (int) this.canvas.getHeight());
-                canvas.snapshot(null, writableImage);
+                canvas.snapshot(new SnapshotParameters(), writableImage);
                 RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
-                ImageIO.write(renderedImage, "jpg", file);
+                ImageIO.write(renderedImage,"jpeg", file);
             } catch (IOException ignored) {
             }
         }

@@ -28,3 +28,7 @@
 #iconImages {
     -fx-graphic : url("/ressources/images/image.png");
 }
+
+#iconText {
+    -fx-graphic : url("/ressources/images/text.png");
+}
