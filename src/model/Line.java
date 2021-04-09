@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 
 public class Line extends Layer{
     double x2,y2;
+    int point = 0;
 
     public Line(double x, double y, double x2, double y2, GraphicsContext graphicsContext) {
         super(x, y, graphicsContext);
@@ -19,6 +20,15 @@ public class Line extends Layer{
         this.isFilled = line.isFilled;
         this.lineWidth = line.lineWidth;
         this.color = line.color;
+        this.point = line.point;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
     }
 
     public double getX2() {

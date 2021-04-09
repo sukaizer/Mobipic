@@ -52,10 +52,10 @@ public class ControllerCanvas implements Initializable {
         if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && !this.model.getEditingLayer().isIn(e.getX(),e.getY())) {
             this.primaryStage.getScene().setCursor(Cursor.DEFAULT);
         }
-        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && this.model.getEditingLayer().isIn(e.getX(),e.getY())) {
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && isTouchingEdge(e,this.model.getEditingLayer())) {
             this.primaryStage.getScene().setCursor(Cursor.CROSSHAIR);
         }
-        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && !this.model.getEditingLayer().isIn(e.getX(),e.getY())) {
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && !isTouchingEdge(e,this.model.getEditingLayer())) {
             this.primaryStage.getScene().setCursor(Cursor.DEFAULT);
         }
     }
@@ -64,6 +64,11 @@ public class ControllerCanvas implements Initializable {
     public void setOnMousePressed(MouseEvent mouseEvent) {
         if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(mouseEvent.getX(),mouseEvent.getY())) {
             this.moveShapeFirst(mouseEvent);
+            this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
+            this.model.getHelpLayer().paint();
+        }
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && isTouchingEdge(mouseEvent,this.model.getEditingLayer())) {
+            this.resizeShapeFirst(mouseEvent);
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
             this.model.getHelpLayer().paint();
         }
@@ -85,6 +90,11 @@ public class ControllerCanvas implements Initializable {
     public void setOnMouseDragged(MouseEvent mouseEvent) {
         if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(mouseEvent.getX(),mouseEvent.getY())) {
             this.moveShapeSecond(mouseEvent);
+            this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
+            this.model.getHelpLayer().paint();
+        }
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing()) {
+            this.resizeShapeSecond(mouseEvent);
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
             this.model.getHelpLayer().paint();
         }
@@ -260,6 +270,57 @@ public class ControllerCanvas implements Initializable {
         this.lastX = e.getX();
         this.lastY = e.getY();
         this.model.paintLayers();
+    }
+
+    public void resizeShapeFirst(MouseEvent e){
+        if (isTouchingEdge(e,this.model.getEditingLayer())) {
+            this.lastX = e.getX();
+            this.lastY = e.getY();
+        }
+    }
+
+    public void resizeShapeSecond(MouseEvent e) {
+        if (this.model.getEditingLayer() instanceof Square) {
+            double d = Math.max(e.getX() - this.lastX,e.getY() - this.lastY);
+            ((Square) this.model.getEditingLayer()).setSide(Math.abs(((Square) this.model.getEditingLayer()).getSide() + d));
+        }
+        this.lastX = e.getX();
+        this.lastY = e.getY();
+        this.model.paintLayers();
+    }
+
+    public boolean isTouchingEdge(MouseEvent e, Layer layer){
+        if (layer instanceof Triangle) {
+            boolean b1 = ((e.getX() >= layer.getX() - 5 && e.getX() <= layer.getX() + 5) && (e.getY() >= layer.getY() - 5 && e.getY() <= layer.getY() + 5));
+            boolean b2 = ((e.getX() >= ((Triangle) layer).getX2() - 5 && e.getX() <= ((Triangle) layer).getX2() + 5) && (e.getY() >= ((Triangle) layer).getY2() - 5 && e.getY() <= ((Triangle) layer).getY2() + 5));
+            boolean b3 = ((e.getX() >= ((Triangle) layer).getX3() - 5 && e.getX() <= ((Triangle) layer).getX3() + 5) && (e.getY() >= ((Triangle) layer).getY3() - 5 && e.getY() <= ((Triangle) layer).getY3() + 5));
+            if (b1){
+                ((Triangle) layer).setPoint(1);
+                return true;
+            }
+            if (b2){
+                ((Triangle) layer).setPoint(2);
+                return true;
+            }
+            if (b3){
+                ((Triangle) layer).setPoint(2);
+                return true;
+            }
+            return false;
+        } else if (layer instanceof Line) {
+            boolean b1 = ((e.getX() >= layer.getX() - 5 && e.getX() <= layer.getX() + 5) && (e.getY() >= layer.getY() - 5 && e.getY() <= layer.getY() + 5));
+            boolean b2 = ((e.getX() >= ((Line) layer).getX2() - 5 & e.getX() <= ((Line) layer).getX2() + 5) && (e.getY() >= ((Line) layer).getY2() - 5 && e.getY() <= ((Line) layer).getY2() + 5));
+            if (b1){
+                ((Line) layer).setPoint(1);
+                return true;
+            }
+            if (b2){
+                ((Line) layer).setPoint(2);
+                return true;
+            }
+            return false;
+        }
+        return ((e.getX() >= layer.getX() - 5 && e.getX() <= layer.getX() + 5) && (e.getY() >= layer.getY() - 5 && e.getY() <= layer.getY() + 5));
     }
 
 

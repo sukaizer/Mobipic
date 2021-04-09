@@ -45,6 +45,7 @@ public class Main extends Application {
         scene.setRoot(root);
         stage.setTitle("Mobipic");
         stage.centerOnScreen();
+        stage.getIcons().add(icon);
         stage.setScene(scene);
 
         new Thread(() -> {

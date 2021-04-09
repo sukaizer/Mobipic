@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 public class Triangle extends Layer {
 
     private double x2, y2, x3, y3;
+    private int point;
 
     public Triangle(double x1, double y1, double x2, double y2, double x3, double y3, GraphicsContext graphicsContext) {
         super(x1,y1,graphicsContext);
@@ -24,8 +25,16 @@ public class Triangle extends Layer {
         this.isFilled = triangle.isFilled;
         this.lineWidth = triangle.lineWidth;
         this.color = triangle.color;
+        this.point = triangle.point;
     }
 
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
 
     public double getX2() {
         return this.x2;
