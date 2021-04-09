@@ -305,6 +305,9 @@ public class ControllerCanvas implements Initializable {
             } else if (this.model.getEditingLayer() instanceof Ellipse) {
                 this.width = ((Ellipse) this.model.getEditingLayer()).getR1();
                 this.height = ((Ellipse) this.model.getEditingLayer()).getR2();
+            } else if (this.model.getEditingLayer() instanceof Image) {
+                this.width = ((Image) this.model.getEditingLayer()).getW();
+                this.height = ((Image) this.model.getEditingLayer()).getH();
             }
         }
     }
@@ -318,6 +321,11 @@ public class ControllerCanvas implements Initializable {
             double h = e.getY() - this.model.getEditingLayer().getY();
             ((Rectangle) this.model.getEditingLayer()).setWidth(Math.abs((this.width + w)));
             ((Rectangle) this.model.getEditingLayer()).setHeight(Math.abs((this.height + h)));
+        } else if (this.model.getEditingLayer() instanceof Image) {
+            double w = e.getX() - this.model.getEditingLayer().getX();
+            double h = e.getY() - this.model.getEditingLayer().getY();
+            ((Image) this.model.getEditingLayer()).setW(Math.abs((this.width + w)));
+            ((Image) this.model.getEditingLayer()).setH(Math.abs((this.height + h)));
         } else if (this.model.getEditingLayer() instanceof Circle) {
             double d = Math.max(e.getX() - this.model.getEditingLayer().getX(),e.getY() - this.model.getEditingLayer().getY());
             ((Circle) this.model.getEditingLayer()).setRadius(Math.abs((this.side + d)));

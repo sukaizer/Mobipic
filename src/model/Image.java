@@ -33,14 +33,22 @@ public class Image extends Layer {
         return h;
     }
 
+    public void setW(double w) {
+        this.w = w;
+    }
+
+    public void setH(double h) {
+        this.h = h;
+    }
+
     @Override
     public void paint() {
-        this.graphicsContext.drawImage(this.image, this.x, this.y);
+        this.graphicsContext.drawImage(this.image, this.x, this.y, this.w, this.h);
     }
 
     @Override
     public boolean isIn(double x, double y) {
-        return x >= this.x && x <= this.x + this.image.getWidth() && y >= this.y && y <= this.y + this.image.getHeight();
+        return x >= this.x && x <= this.x + this.getW() && y >= this.y && y <= this.y + this.getH();
     }
 
     @Override
@@ -50,7 +58,7 @@ public class Image extends Layer {
 
     @Override
     public Rectangle setSamePositions() {
-        Rectangle layer1 = new Rectangle(this.getX(), this.getY(), this.image.getHeight(), this.image.getWidth(), graphicsContext);
+        Rectangle layer1 = new Rectangle(this.getX(), this.getY(), this.h, this.w, graphicsContext);
         layer1.setFilled(false);
         layer1.setLineWidth(6);
         layer1.setColor(new Color(0,0,0,1));
