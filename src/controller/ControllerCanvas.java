@@ -17,7 +17,11 @@ public class ControllerCanvas implements Initializable {
     private int triangleFirst;
     private double lastX;
     private double lastY;
+    private double side;
+    private double width;
+    private double height;
     private Stage primaryStage;
+    private boolean resizing;
 
     @FXML
     private Canvas canvas;
@@ -37,6 +41,7 @@ public class ControllerCanvas implements Initializable {
     public void init(ProjectModel model, Stage primaryStage) {
         this.model = model;
         this.primaryStage = primaryStage;
+        this.resizing = false;
     }
 
     public void init(Layer currentLayer){
@@ -71,6 +76,7 @@ public class ControllerCanvas implements Initializable {
             this.resizeShapeFirst(mouseEvent);
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
             this.model.getHelpLayer().paint();
+            this.resizing = true;
         }
         if (this.model.isNotEditing()) return;
         switch (this.model.getShapeToDraw()) {
@@ -93,7 +99,7 @@ public class ControllerCanvas implements Initializable {
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
             this.model.getHelpLayer().paint();
         }
-        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing()) {
+        if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isResizing() && this.resizing) {
             this.resizeShapeSecond(mouseEvent);
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());
             this.model.getHelpLayer().paint();
@@ -114,6 +120,7 @@ public class ControllerCanvas implements Initializable {
 
     @FXML
     public void setOnMouseReleased(MouseEvent mouseEvent) {
+        this.resizing = false;
         this.model.resetEditingLayer();
         this.model.resetHelpLayer();
         this.primaryStage.getScene().setCursor(Cursor.DEFAULT);
@@ -274,18 +281,58 @@ public class ControllerCanvas implements Initializable {
 
     public void resizeShapeFirst(MouseEvent e){
         if (isTouchingEdge(e,this.model.getEditingLayer())) {
-            this.lastX = e.getX();
-            this.lastY = e.getY();
+            if (this.model.getEditingLayer() instanceof Square) {
+                this.side = ((Square) this.model.getEditingLayer()).getSide();
+            } else if (this.model.getEditingLayer() instanceof Rectangle) {
+                this.width = ((Rectangle) this.model.getEditingLayer()).getWidth();
+                this.height = ((Rectangle) this.model.getEditingLayer()).getHeight();
+            } else if (this.model.getEditingLayer() instanceof Circle) {
+                this.side = ((Circle) this.model.getEditingLayer()).getRadius();
+            } else if (this.model.getEditingLayer() instanceof Ellipse) {
+                this.width = ((Ellipse) this.model.getEditingLayer()).getR1();
+                this.height = ((Ellipse) this.model.getEditingLayer()).getR2();
+            }
         }
     }
 
     public void resizeShapeSecond(MouseEvent e) {
         if (this.model.getEditingLayer() instanceof Square) {
-            double d = Math.max(e.getX() - this.lastX,e.getY() - this.lastY);
-            ((Square) this.model.getEditingLayer()).setSide(Math.abs(((Square) this.model.getEditingLayer()).getSide() + d));
+            double d = Math.max(e.getX() - this.model.getEditingLayer().getX(),e.getY() - this.model.getEditingLayer().getY());
+            ((Square) this.model.getEditingLayer()).setSide(Math.abs((this.side + d)));
+        } else if (this.model.getEditingLayer() instanceof Rectangle) {
+            double w = e.getX() - this.model.getEditingLayer().getX();
+            double h = e.getY() - this.model.getEditingLayer().getY();
+            ((Rectangle) this.model.getEditingLayer()).setWidth(Math.abs((this.width + w)));
+            ((Rectangle) this.model.getEditingLayer()).setHeight(Math.abs((this.height + h)));
+        } else if (this.model.getEditingLayer() instanceof Circle) {
+            double d = Math.max(e.getX() - this.model.getEditingLayer().getX(),e.getY() - this.model.getEditingLayer().getY());
+            ((Circle) this.model.getEditingLayer()).setRadius(Math.abs((this.side + d)));
+        } else if (this.model.getEditingLayer() instanceof Ellipse){
+            double r1 = e.getX() - this.model.getEditingLayer().getX();
+            double r2 = e.getY() - this.model.getEditingLayer().getY();
+            ((Ellipse) this.model.getEditingLayer()).setR1(Math.abs((this.width + r1)));
+            ((Ellipse) this.model.getEditingLayer()).setR2(Math.abs((this.height + r2)));
+        } else if (this.model.getEditingLayer() instanceof Line) {
+            if (((Line) this.model.getEditingLayer()).getPoint() == 1){
+                this.model.getEditingLayer().setX(e.getX());
+                this.model.getEditingLayer().setY(e.getY());
+            } else if (((Line) this.model.getEditingLayer()).getPoint() == 2){
+                ((Line) this.model.getEditingLayer()).setX2(e.getX());
+                ((Line) this.model.getEditingLayer()).setY2(e.getY());
+            }
+        } else if (this.model.getEditingLayer() instanceof Triangle) {
+            if (((Triangle) this.model.getEditingLayer()).getPoint() == 1){
+                this.model.getEditingLayer().setX(e.getX());
+                this.model.getEditingLayer().setY(e.getY());
+            } else if (((Triangle) this.model.getEditingLayer()).getPoint() == 2){
+                ((Triangle) this.model.getEditingLayer()).setX2(e.getX());
+                ((Triangle) this.model.getEditingLayer()).setY2(e.getY());
+            } else if (((Triangle) this.model.getEditingLayer()).getPoint() == 3){
+                ((Triangle) this.model.getEditingLayer()).setX3(e.getX());
+                ((Triangle) this.model.getEditingLayer()).setY3(e.getY());
+            }
         }
-        this.lastX = e.getX();
-        this.lastY = e.getY();
+        clear();
         this.model.paintLayers();
     }
 

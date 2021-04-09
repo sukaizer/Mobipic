@@ -299,6 +299,7 @@ public class ControllerMain implements Initializable {
         try {
             this.model.getLayers().removeIf(Layer::isFocused);
         } catch(Exception ignored) {}
+        this.controllerCanvas.clear();
         this.model.paintLayers();
     }
 
