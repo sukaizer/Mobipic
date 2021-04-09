@@ -47,6 +47,9 @@ public class ControllerMain implements Initializable {
     final KeyCombination keyCombinationControlN = new KeyCodeCombination(
             KeyCode.N, KeyCombination.CONTROL_DOWN);
 
+    final KeyCombination keyCombinationControlSuppr = new KeyCodeCombination(
+            KeyCode.BACK_SPACE, KeyCombination.CONTROL_DOWN);
+
     @FXML
     public Menu exportButton;
     @FXML
@@ -295,7 +298,7 @@ public class ControllerMain implements Initializable {
     }
 
     @FXML
-    public void deleteLayer(ActionEvent actionEvent) {
+    public void deleteLayer(Event actionEvent) {
         try {
             this.model.getLayers().removeIf(Layer::isFocused);
         } catch(Exception ignored) {}
@@ -388,6 +391,8 @@ public class ControllerMain implements Initializable {
         }
         if (this.keyCombinationControlN.match(keyEvent)) {
             this.setNewMenuAction(keyEvent);
+        } else if (this.keyCombinationControlSuppr.match(keyEvent)) {
+            this.deleteLayer(keyEvent);
         }
     }
 }
