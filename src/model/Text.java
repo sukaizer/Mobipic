@@ -103,7 +103,7 @@ public class Text extends Layer{
     public void paint() {
         this.graphicsContext.setFont(this.finalFont);
         this.graphicsContext.setTextAlign(this.textAlignment);
-        this.graphicsContext.setStroke(this.color);
+        this.graphicsContext.setFill(this.color);
         this.graphicsContext.fillText(this.text,this.x,this.y);
     }
 

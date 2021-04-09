@@ -67,6 +67,9 @@ public class ControllerCanvas implements Initializable {
 
     @FXML
     public void setOnMousePressed(MouseEvent mouseEvent) {
+        if (this.model.getLayers().size() == 0) {
+            this.model.resetHelpLayer();
+        }
         if (this.model.getEditingLayer() != null && this.model.getEditingLayer().isMoving() && this.model.getEditingLayer().isIn(mouseEvent.getX(),mouseEvent.getY())) {
             this.moveShapeFirst(mouseEvent);
             this.model.setHelpLayer(this.model.getEditingLayer().setSamePositions());

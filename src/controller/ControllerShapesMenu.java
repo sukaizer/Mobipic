@@ -123,6 +123,5 @@ public class ControllerShapesMenu implements Initializable {
         this.controllerCanvas.init(this.currentLayer);
         this.model.setEditing(true);
         stage.close();
-        this.model.layersToString();
     }
 }

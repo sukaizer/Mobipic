@@ -3,12 +3,14 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import model.Layer;
 import model.ProjectModel;
 import model.Text;
@@ -30,8 +32,6 @@ public class ControllerTextMenu implements Initializable {
 
     private ProjectModel model;
     private Canvas canvas;
-    private ControllerCanvas controllerCanvas;
-    private Layer currentLayer;
     private Text text;
 
     @Override
@@ -39,9 +39,8 @@ public class ControllerTextMenu implements Initializable {
         //this.validateButton.setDisable(true);
     }
 
-    public void init(ProjectModel model, ControllerCanvas controllerCanvas, Canvas canvas){
+    public void init(ProjectModel model, Canvas canvas){
         this.model = model;
-        this.controllerCanvas = controllerCanvas;
         this.canvas = canvas;
         this.text = new Text(this.canvas.getWidth()/2,this.canvas.getHeight()/2,"",this.canvas.getGraphicsContext2D());
     }
@@ -78,13 +77,15 @@ public class ControllerTextMenu implements Initializable {
 
     public void validate(ActionEvent actionEvent) {
         this.text.setText(this.textField.getText());
-        this.text.setFont(this.fontPicker.getValue());
-        Font finalfont = Font.font(this.text.getFont(),this.text.getFontWeight(),this.text.getFontPosture(),this.text.getSize());
+        this.text.setSize(this.fontSize.getValue());
+        Font finalfont = Font.font(this.fontPicker.getValue(),this.text.getFontWeight(),this.text.getFontPosture(),this.text.getSize());
         this.text.setColor(this.colorPicker.getValue());
-        this.text.setSize(fontSize.getValue());
         this.text.setFinalFont(finalfont);
 
         this.model.addLayer(this.text);
         this.model.paintLayers();
+        Node source = (Node) actionEvent.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 }

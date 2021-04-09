@@ -308,7 +308,7 @@ public class ControllerMain implements Initializable {
         FXMLLoader loader = setNewStage(path, name);
         assert loader != null;
         ControllerTextMenu controllerText = loader.getController();
-        controllerText.init(this.model, this.controllerCanvas, this.canvas);
+        controllerText.init(this.model, this.canvas);
     }
 
     @FXML
