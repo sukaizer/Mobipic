@@ -31,6 +31,14 @@
     -fx-graphic : url("/ressources/images/image.png");
 }
 
+#menuItemText .label {
+    -fx-graphic : url("/ressources/images/text.png");
+}
+
+#menuItemFilter .label {
+    -fx-graphic : url("/ressources/images/filter.png");
+}
+
 .context-menu {
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;

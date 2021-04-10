@@ -70,7 +70,11 @@
                           <items>
                             <MenuItem id="menuItemText" mnemonicParsing="false" onAction="#addTextMenu" text="Texte" />
                               <MenuItem id="menuItemShapes" mnemonicParsing="false" onAction="#addShapeMenu" text="Forme" />
-                              <MenuItem mnemonicParsing="false" text="Filtre" />
+                              <Menu id="menuItemFilter" mnemonicParsing="false" text="Filtre">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" text="Noir et Blanc" />
+                                </items>
+                              </Menu>
                               <MenuItem mnemonicParsing="false" text="Emoji" />
                               <MenuItem id="menuItemImage" mnemonicParsing="false" onAction="#addImageLayer" text="Image" />
                           </items>
@@ -117,8 +121,8 @@
             </ScrollPane>
             <HBox fx:id="hboxLayersModify" styleClass="button-bar" stylesheets="@../cssFiles/switchLayers.css">
                <children>
-                <Button fx:id="up" alignment="CENTER" mnemonicParsing="false" onAction="#sendBack" text="up" textAlignment="CENTER" />
-                  <Button fx:id="down" mnemonicParsing="false" onAction="#sendForward" text="down" />
+                <Button id="up" fx:id="up" alignment="CENTER" mnemonicParsing="false" onAction="#sendBack" textAlignment="CENTER" />
+                  <Button id="down" fx:id="down" mnemonicParsing="false" onAction="#sendForward" />
                </children>
             </HBox>
             <VBox fx:id="layersModifyBar" prefHeight="200.0" prefWidth="250.0" styleClass="vbox" stylesheets="@../cssFiles/buttonsLayer.css">

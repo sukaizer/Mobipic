@@ -2,6 +2,7 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,17 +26,19 @@ public class ControllerLayers implements Initializable {
     private Canvas canvas;
     private Button up;
     private Button down;
+    private ControllerMain controllerMain;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
-    public void init(ProjectModel model, Canvas canvas,Button up, Button down) {
+    public void init(ProjectModel model, Canvas canvas,Button up, Button down, ControllerMain controllerMain) {
         this.model = model;
         this.layersList.setItems(this.model.getLayers());
         this.canvas = canvas;
         this.up = up;
         this.down = down;
+        this.controllerMain = controllerMain;
     }
 
     @FXML
@@ -102,5 +105,25 @@ public class ControllerLayers implements Initializable {
 
     public void clearSelection(){
         this.layersList.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    public void deleteLayer(ActionEvent actionEvent) {
+        this.controllerMain.deleteLayer(actionEvent);
+    }
+
+    @FXML
+    public void moveLayer(ActionEvent actionEvent) {
+        this.controllerMain.moveLayer(actionEvent);
+    }
+
+    @FXML
+    public void resizeLayer(ActionEvent actionEvent) {
+        this.controllerMain.resizeLayer(actionEvent);
+    }
+
+    @FXML
+    public void duplicateLayer(ActionEvent actionEvent) {
+        this.controllerMain.duplicateLayer(actionEvent);
     }
 }

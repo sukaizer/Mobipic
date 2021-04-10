@@ -6,9 +6,19 @@
 .button {
     -fx-focus-color: #b22222;
     -fx-alignment: CENTER;
+    -fx-pref-width: 30;
+    -fx-pref-height: 30;
 }
 
 .button:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /*effet d'ombre*/
     -fx-cursor: hand;
+}
+
+#up {
+    -fx-graphic : url("/ressources/images/up.png");
+}
+
+#down {
+    -fx-graphic : url("/ressources/images/down.png");
 }

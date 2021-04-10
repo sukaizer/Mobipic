@@ -151,7 +151,7 @@ public class ControllerMain implements Initializable {
                 loader.setLocation(getClass().getResource("../ressources/fxmlFiles/layers.fxml"));
                 Parent pane2 = loader.load();
                 this.controllerLayers = loader.getController();
-                this.controllerLayers.init(this.model,this.canvas,this.up,this.down);
+                this.controllerLayers.init(this.model,this.canvas,this.up,this.down,this);
                 this.layersPane.getChildren().add(pane2);
             } catch (IOException e) {
                 e.printStackTrace();
