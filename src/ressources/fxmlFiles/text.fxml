@@ -29,15 +29,12 @@
             <Separator prefWidth="600.0" />
             <ButtonBar prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                <Button mnemonicParsing="false" onAction="#alignmentLeft" text="aligauche" />
-                  <Button mnemonicParsing="false" onAction="#alignmentCenter" text="alicentre" />
-                  <Button mnemonicParsing="false" onAction="#alignmentRight" text="alidroite" />
-                  <Button mnemonicParsing="false" onAction="#bold" text="gras" />
-                  <Button mnemonicParsing="false" onAction="#italic" text="italique" />
-                  <Slider fx:id="fontSize" max="50.0" min="5.0" prefHeight="16.0" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#bold" text="gras" />
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#italic" text="italique" />
+                  <Slider fx:id="fontSize" max="80.0" min="20.0" prefHeight="16.0" />
               </buttons>
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
             </ButtonBar>
             <ChoiceBox fx:id="fontPicker" prefWidth="150.0" />

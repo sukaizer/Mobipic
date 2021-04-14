@@ -42,6 +42,8 @@ public class ControllerTextMenu implements Initializable {
         this.model = model;
         this.canvas = canvas;
         this.text = new Text(this.canvas.getWidth()/2,this.canvas.getHeight()/2,"",this.canvas.getGraphicsContext2D());
+        this.fontPicker.getItems().addAll("Calibri","Verdana","Times New Roman");
+        this.fontPicker.getSelectionModel().select("Calibri");
     }
 
     @FXML

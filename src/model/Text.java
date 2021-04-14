@@ -109,7 +109,9 @@ public class Text extends Layer{
 
     @Override
     public boolean isIn(double x, double y) {
-        return false;
+        double xc = this.x - 20 + 15;
+        double yc = this.y - 20 + 15;
+        return (x-xc)*(x-xc)+(y-yc)*(y-yc) <= 15*15;
     }
 
     @Override
@@ -118,8 +120,8 @@ public class Text extends Layer{
     }
 
     @Override
-    public Rectangle setSamePositions() {
-        Rectangle layer1 = new Rectangle(this.getX(), this.getY(), 10, 10, graphicsContext);
+    public Circle setSamePositions() {
+        Circle layer1 = new Circle(this.x - 20,this.y - 20, 15,graphicsContext);
         layer1.setFilled(false);
         layer1.setLineWidth(6);
         layer1.setColor(new Color(0,0,0,1));
