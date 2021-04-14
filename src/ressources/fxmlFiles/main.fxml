@@ -72,11 +72,7 @@
                           <items>
                             <MenuItem id="menuItemText" mnemonicParsing="false" onAction="#addTextMenu" text="Texte" />
                               <MenuItem id="menuItemShapes" mnemonicParsing="false" onAction="#addShapeMenu" text="Forme" />
-                              <Menu id="menuItemFilter" mnemonicParsing="false" text="Filtre">
-                                <items>
-                                  <MenuItem mnemonicParsing="false" text="Noir et Blanc" />
-                                </items>
-                              </Menu>
+                            <MenuItem id="menuItemFilter" mnemonicParsing="false" text="Filtres" />
                               <MenuItem mnemonicParsing="false" text="Emoji" />
                               <MenuItem id="menuItemImage" mnemonicParsing="false" onAction="#addImageLayer" text="Image" />
                           </items>
