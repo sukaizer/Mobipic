@@ -417,6 +417,9 @@ public class ControllerMain implements Initializable {
                     } else if (this.model.getLayers().get(i) instanceof Ellipse) {
                         Ellipse ellipse = new Ellipse((Ellipse) this.model.getLayers().get(i));
                         this.model.getLayers().add(i+1,ellipse);
+                    } else if (this.model.getLayers().get(i) instanceof Text) {
+                        Text text = new Text((Text) this.model.getLayers().get(i));
+                        this.model.getLayers().add(i+1,text);
                     }
                 }
             }

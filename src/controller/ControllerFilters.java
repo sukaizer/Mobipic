@@ -28,11 +28,13 @@ public class ControllerFilters implements Initializable {
 
         @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        choiceBox.getItems().addAll("Normal","Midnight Blue","Harlequin Green");
+        choiceBox.getItems().addAll("Aucun","Bleu","Vert","Rose","Rouge");
         colors = new Color[]{
                 Color.color(0,0,0,0),
                 Color.web("#0066ff",0.4),
-                Color.web("#00ff00",0.4)
+                Color.web("#00ff00",0.4),
+                Color.web("#ff66ff",0.4),
+                Color.web("#ff0000",0.4)
         };
         this.choiceBox.getSelectionModel().selectedIndexProperty().addListener((observableValue, number, t1) -> {
             for (int i = 0; i < model.getLayers().size(); i++) {

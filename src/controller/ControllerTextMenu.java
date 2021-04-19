@@ -49,7 +49,7 @@ public class ControllerTextMenu implements Initializable {
         this.model = model;
         this.canvas = canvas;
         this.text = new Text(this.canvas.getWidth()/2,this.canvas.getHeight()/2,"",this.canvas.getGraphicsContext2D());
-        this.fontPicker.getItems().addAll("Verdana","Times New Roman");
+        this.fontPicker.getItems().addAll("Verdana","Times New Roman","Arial");
         this.fontPicker.getSelectionModel().select("Verdana");
         this.label.setFont(Font.font(this.fontPicker.getValue(),this.fontSize.getValue()));
         label.setTextFill(this.colorPicker.getValue());
