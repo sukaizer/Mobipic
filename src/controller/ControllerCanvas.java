@@ -141,7 +141,9 @@ public class ControllerCanvas implements Initializable {
         try{
             this.model.getHelpLayer().paint();
         } catch (NullPointerException ignored){}
-        if (this.model.isNotEditing()) return;
+        if (this.model.isNotEditing()) {
+            return;
+        }
         setOnMouseDragged(mouseEvent);
         if (this.model.getShapeToDraw().equals(ShapeToDraw.Triangle) && this.triangleFirst == 3) {
             this.model.setShapeToDraw(ShapeToDraw.nothing);
@@ -153,7 +155,7 @@ public class ControllerCanvas implements Initializable {
         if (this.triangleFirst == 3) {
             this.triangleFirst = 0;
         }
-        this.model.layersToString();
+        //this.model.layersToString();
     }
 
     public void lineFirstPoint(MouseEvent e) {

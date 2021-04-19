@@ -1,7 +1,5 @@
 package controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -12,9 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
@@ -26,8 +24,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.*;
 import model.Rectangle;
+import model.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -36,12 +34,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ControllerMain implements Initializable {
+
 
     private Stage primaryStage;
     private FileChooser fileChooser;
@@ -56,6 +54,13 @@ public class ControllerMain implements Initializable {
 
     final KeyCombination keyCombinationControlSuppr = new KeyCodeCombination(
             KeyCode.BACK_SPACE, KeyCombination.CONTROL_DOWN);
+
+    final KeyCombination keyCombinationControlZ = new KeyCodeCombination(
+            KeyCode.Z, KeyCombination.CONTROL_DOWN);
+
+    final KeyCombination keyCombinationControlY = new KeyCodeCombination(
+            KeyCode.Y, KeyCombination.CONTROL_DOWN);
+
 
     @FXML
     public Menu exportButton;
@@ -83,6 +88,8 @@ public class ControllerMain implements Initializable {
     public Button down;
     @FXML
     public Button newTextButton;
+    @FXML
+    public MenuItem addFilterMenu;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -197,7 +204,7 @@ public class ControllerMain implements Initializable {
      * @param name nom de la fenetre
      * @return FXMLLoader
      */
-    private FXMLLoader setNewStage(String path, String name) {
+    public FXMLLoader setNewStage(String path, String name) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(path));
@@ -315,6 +322,16 @@ public class ControllerMain implements Initializable {
         assert loader != null;
         ControllerTextMenu controllerText = loader.getController();
         controllerText.init(this.model, this.canvas);
+    }
+
+    @FXML
+    public void addFilter(ActionEvent actionEvent) {
+        String path = "../ressources/fxmlFiles/filters.fxml";
+        String name = "Appliquer un filtre";
+        FXMLLoader loader = setNewStage(path, name);
+        assert loader != null;
+        ControllerFilters controller = loader.getController();
+        controller.init(this.model, this.controllerCanvas);
     }
 
     @FXML
@@ -469,6 +486,22 @@ public class ControllerMain implements Initializable {
             this.setNewMenuAction(keyEvent);
         } else if (this.keyCombinationControlSuppr.match(keyEvent)) {
             this.deleteLayer(keyEvent);
+        } else if (this.keyCombinationControlZ.match(keyEvent)) {
+            this.undoAction(keyEvent);
+        } else if (this.keyCombinationControlY.match(keyEvent)) {
+            this.redoAction(keyEvent);
         }
     }
+
+    public void undoAction(Event actionEvent) {
+    }
+
+    public void redoAction(Event actionEvent) {
+    }
+
+    public ControllerCanvas getControllerCanvas() {
+        return controllerCanvas;
+    }
+
+
 }

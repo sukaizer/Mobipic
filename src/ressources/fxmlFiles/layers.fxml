@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ContextMenu?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.Pane?>
-
 <Pane maxHeight="1000.0" maxWidth="1000.0" prefHeight="400.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerLayers">
    <children>
       <ListView fx:id="layersList" maxHeight="1000.0" maxWidth="1000.0" onKeyPressed="#actionKey" onMouseClicked="#action" prefHeight="400.0" prefWidth="250.0">
@@ -15,6 +12,7 @@
                   <MenuItem mnemonicParsing="false" text="Déplacer" onAction="#moveLayer" />
                   <MenuItem mnemonicParsing="false" text="Redimensionner" onAction="#resizeLayer" />
                   <MenuItem mnemonicParsing="false" text="Duppliquer" onAction="#duplicateLayer" />
+                  <MenuItem mnemonicParsing="false" text="Filtre" onAction="#filterMenu" fx:id="filters"/>
               </items>
             </ContextMenu>
          </contextMenu></ListView>

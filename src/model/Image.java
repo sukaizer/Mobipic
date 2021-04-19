@@ -13,6 +13,7 @@ public class Image extends Layer {
         this.image = image;
         this.w = image.getWidth();
         this.h = image.getHeight();
+        this.color = Color.color(0,0,0,0);
     }
 
     public Image(Image image){
@@ -44,6 +45,8 @@ public class Image extends Layer {
     @Override
     public void paint() {
         this.graphicsContext.drawImage(this.image, this.x, this.y, this.w, this.h);
+        this.graphicsContext.setFill(this.color);
+        this.graphicsContext.fillRect(this.x,this.y,this.w,this.h);
     }
 
     @Override

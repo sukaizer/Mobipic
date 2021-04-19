@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../cssFiles/startScreen.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerStart">
    <children>
       <ProgressBar layoutX="180.0" layoutY="312.0" prefHeight="20.0" prefWidth="241.0" />

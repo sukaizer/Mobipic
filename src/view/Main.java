@@ -1,8 +1,6 @@
 package view;
 
 import controller.ControllerMain;
-import controller.ControllerShapesMenu;
-import controller.ControllerStart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -11,11 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
 
 public class Main extends Application {
 

@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-
-<GridPane onKeyPressed="#keyAction" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerMain">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane onKeyPressed="#keyAction" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerMain">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="75.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" />
@@ -57,13 +44,8 @@
                   </Menu>
                 <Menu mnemonicParsing="false" text="Édition">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Défaire         (Ctrl+Z)" />
-                        <MenuItem mnemonicParsing="false" text="Refaire         (Ctrl+Y)" />
-                        <MenuItem mnemonicParsing="false" text="Couper         (Ctrl+X)" />
-                        <MenuItem mnemonicParsing="false" text="Copier          (Ctrl+C)" />
-                        <MenuItem mnemonicParsing="false" text="Coller           (Ctrl+V)" />
-                        <MenuItem mnemonicParsing="false" text="Effacer" />
-                        <MenuItem mnemonicParsing="false" text="Redimensionner" />
+                    <MenuItem mnemonicParsing="false" onAction="#undoAction" text="Défaire         (Ctrl+Z)" />
+                        <MenuItem mnemonicParsing="false" onAction="#redoAction" text="Refaire         (Ctrl+Y)" />
                   </items>
                 </Menu>
                 <Menu fx:id="layersMenuBar" mnemonicParsing="false" text="Calque">
@@ -72,7 +54,7 @@
                           <items>
                             <MenuItem id="menuItemText" mnemonicParsing="false" onAction="#addTextMenu" text="Texte" />
                               <MenuItem id="menuItemShapes" mnemonicParsing="false" onAction="#addShapeMenu" text="Forme" />
-                            <MenuItem id="menuItemFilter" mnemonicParsing="false" text="Filtres" />
+                            <MenuItem id="menuItemFilter" fx:id="addFilterMenu" mnemonicParsing="false" onAction="#addFilter" text="Filtres" />
                               <MenuItem mnemonicParsing="false" text="Emoji" />
                               <MenuItem id="menuItemImage" mnemonicParsing="false" onAction="#addImageLayer" text="Image" />
                           </items>

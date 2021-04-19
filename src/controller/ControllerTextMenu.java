@@ -11,7 +11,6 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import model.Layer;
 import model.ProjectModel;
 import model.Text;
 

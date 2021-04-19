@@ -1,27 +1,31 @@
 package controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.cell.ComboBoxListCell;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import model.Image;
 import model.Layer;
 import model.ProjectModel;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ControllerLayers implements Initializable {
     public ListView<Layer> layersList = new ListView<>();
+    @FXML
+    public MenuItem filters;
     private ProjectModel model;
     private Canvas canvas;
     private Button up;
@@ -39,6 +43,9 @@ public class ControllerLayers implements Initializable {
         this.up = up;
         this.down = down;
         this.controllerMain = controllerMain;
+        this.filters.setDisable(true);
+        this.filters.setVisible(false);
+        this.controllerMain.addFilterMenu.setDisable(true);
     }
 
     @FXML
@@ -74,6 +81,15 @@ public class ControllerLayers implements Initializable {
             int i = 0;
             for (Layer l : this.model.getLayers()) {
                 if (l.isFocused()) {
+                    if (l instanceof Image){
+                        this.filters.setDisable(false);
+                        this.filters.setVisible(true);
+                        this.controllerMain.addFilterMenu.setDisable(false);
+                    } else {
+                        this.filters.setDisable(true);
+                        this.filters.setVisible(false);
+                        this.controllerMain.addFilterMenu.setDisable(true);
+                    }
                     this.model.setHelpLayer(l.setSamePositions());
                     this.model.getHelpLayer().paint();
                     if (i > 0 && i < this.model.getLayers().size() - 1){
@@ -125,5 +141,26 @@ public class ControllerLayers implements Initializable {
     @FXML
     public void duplicateLayer(ActionEvent actionEvent) {
         this.controllerMain.duplicateLayer(actionEvent);
+    }
+
+    @FXML
+    public void filterMenu(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../ressources/fxmlFiles/filters.fxml"));
+            Parent root1 = loader.load();
+            ControllerFilters controller = loader.getController();
+            controller.init(this.model, this.controllerMain.getControllerCanvas());
+            Scene scene1 = new Scene(root1);
+            scene1.setRoot(root1);
+            Stage stage = new Stage();
+            stage.setTitle("Appliquer un filtre");
+            stage.centerOnScreen();
+            stage.setScene(scene1);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

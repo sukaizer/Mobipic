@@ -4,12 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProjectModel {
     private ObservableList<Layer> layers;
-    private ArrayList<ObservableList<Layer>> state;
     private ShapeToDraw shapeToDraw;
     private GraphicsContext graphicsContext;
     private boolean editing;
@@ -18,7 +14,6 @@ public class ProjectModel {
     private Image baseLayer;
 
     public ProjectModel(javafx.scene.image.Image baseImage,GraphicsContext graphicsContext) {
-        this.state = new ArrayList<>();
         this.shapeToDraw = ShapeToDraw.nothing;
         this.layers = FXCollections.observableArrayList();
         this.editing = false;
@@ -94,18 +89,5 @@ public class ProjectModel {
 
     public void resetHelpLayer(){
         this.helpLayer = null;
-    }
-
-    public void addNewState(){
-        if (this.state.size() < 10){
-            this.state.add(this.layers);
-        } else {
-            this.state.add(this.layers);
-            this.state.remove(0);
-        }
-    }
-
-    public ArrayList<ObservableList<Layer>> getState() {
-        return state;
     }
 }
