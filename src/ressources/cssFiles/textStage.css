@@ -1,0 +1,50 @@
+.button {
+    -fx-focus-color: #b22222;
+}
+
+.toggle-button {
+    -fx-focus-color: #b22222;
+    -fx-pref-width: 30;
+    -fx-pref-height: 30;
+}
+
+.toggle-button:hover {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /*effet d'ombre*/
+}
+
+.toggle-button:selected {
+    -fx-border-color: #ff0000;
+    -fx-border-width: 3;
+}
+
+.button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /*effet d'ombre*/
+    -fx-cursor: hand;
+}
+
+.color-picker:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /*effet d'ombre*/
+    -fx-cursor: hand;
+}
+
+.choice-box:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /*effet d'ombre*/
+    -fx-cursor: hand;
+}
+
+.slider {
+    -fx-cursor: hand;
+}
+
+#button-bar {
+    -fx-alignment: center;
+}
+
+#bold {
+    -fx-graphic : url("/ressources/images/bold.png");
+}
+
+#italic {
+    -fx-graphic : url("/ressources/images/italic.png");
+}

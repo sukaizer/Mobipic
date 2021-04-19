@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -50,6 +51,8 @@ public class ControllerTextMenu implements Initializable {
         this.text = new Text(this.canvas.getWidth()/2,this.canvas.getHeight()/2,"",this.canvas.getGraphicsContext2D());
         this.fontPicker.getItems().addAll("Verdana","Times New Roman");
         this.fontPicker.getSelectionModel().select("Verdana");
+        this.label.setFont(Font.font(this.fontPicker.getValue(),this.fontSize.getValue()));
+        label.setTextFill(this.colorPicker.getValue());
     }
 
     public void validate(ActionEvent actionEvent) {
@@ -97,6 +100,11 @@ public class ControllerTextMenu implements Initializable {
         actualize();
     }
 
+    @FXML
+    public void color(MouseEvent mouseEvent) {
+        actualize();
+    }
+
     public void actualize(){
         if (this.bold.isSelected() && this.italic.isSelected()){
             this.label.setFont(Font.font(this.fontPicker.getValue(),FontWeight.BOLD,FontPosture.ITALIC,this.fontSize.getValue()));
@@ -107,7 +115,7 @@ public class ControllerTextMenu implements Initializable {
         } else if (this.bold.isSelected() && !this.italic.isSelected()){
             this.label.setFont(Font.font(this.fontPicker.getValue(),FontWeight.BOLD,FontPosture.REGULAR,this.fontSize.getValue()));
         }
+        label.setTextFill(this.colorPicker.getValue());
     }
-
 
 }

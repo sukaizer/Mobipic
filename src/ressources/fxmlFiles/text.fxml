@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
@@ -12,11 +11,12 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerTextMenu">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="650.0" stylesheets="@../cssFiles/textStage.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerTextMenu">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -25,23 +25,35 @@
     <RowConstraints maxHeight="310.0" minHeight="10.0" prefHeight="305.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TextField fx:id="textField" prefHeight="40.0" prefWidth="600.0" promptText="Mettez votre texte ici" />
+      <TextField fx:id="textField" alignment="CENTER" prefHeight="40.0" prefWidth="600.0" promptText="Mettez votre texte ici" />
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
          <children>
             <Separator prefWidth="600.0" />
             <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" prefHeight="117.0" prefWidth="441.0" text="Example" />
-            <ButtonBar prefHeight="40.0" prefWidth="200.0">
-              <buttons>
-                  <ToggleButton fx:id="bold" minWidth="43.0" mnemonicParsing="false" onAction="#setBold" prefHeight="26.0" text="gras" />
-                  <ToggleButton fx:id="italic" mnemonicParsing="false" onAction="#setItalic" text="italique" />
-                  <Slider fx:id="fontSize" max="80.0" min="20.0" onMouseReleased="#actualizeSampleText" prefHeight="16.0" showTickLabels="true" showTickMarks="true" />
-              </buttons>
+            <HBox id="button-bar">
+               <children>
+                  <ToggleButton id="bold" fx:id="bold" mnemonicParsing="false" onAction="#setBold">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </ToggleButton>
+                  <ToggleButton id="italic" fx:id="italic" mnemonicParsing="false" onAction="#setItalic">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </ToggleButton>
+                  <Slider fx:id="fontSize" max="80.0" min="20.0" onMouseReleased="#actualizeSampleText" prefHeight="16.0" showTickLabels="true" showTickMarks="true">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Slider>
+               </children>
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" />
+                  <Insets />
                </VBox.margin>
-            </ButtonBar>
+            </HBox>
             <ChoiceBox fx:id="fontPicker" onMouseExited="#actualizeFont" onMouseReleased="#actualizeFont" prefWidth="150.0" />
-            <ColorPicker fx:id="colorPicker">
+            <ColorPicker fx:id="colorPicker" onMouseExited="#color" onMouseReleased="#color">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
