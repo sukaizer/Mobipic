@@ -27,3 +27,11 @@ We were asked to implement features, and here they are :
 * Add a color filter to an image
 * Send a layer to the front or to the back (the base layer is not concerned)
 * Export the image to jpg (only available at the moment)
+
+### Keyboard Shortcuts
+
+Some actions can be achieved by simply pressing a key, here is a list :
+* _CTRL+BACKSPACE_ : delete the selected layer
+* _CTRL+N_ : load an image as a new project
+
+### Trivia
