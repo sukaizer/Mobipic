@@ -68,15 +68,14 @@
                             <MenuItem id="menuItemText" mnemonicParsing="false" onAction="#addTextMenu" text="Texte" />
                               <MenuItem id="menuItemShapes" mnemonicParsing="false" onAction="#addShapeMenu" text="Forme" />
                             <MenuItem id="menuItemFilter" fx:id="addFilterMenu" mnemonicParsing="false" onAction="#addFilter" text="Filtres" />
-                              <MenuItem mnemonicParsing="false" text="Emoji" />
                               <MenuItem id="menuItemImage" mnemonicParsing="false" onAction="#addImageLayer" text="Image" />
                           </items>
                         </Menu>
                         <MenuItem mnemonicParsing="false" text="Renommer" />
-                        <MenuItem mnemonicParsing="false" onAction="#deleteLayer" text="Supprimer" />
-                        <MenuItem mnemonicParsing="false" onAction="#moveLayer" text="Déplacer" />
-                        <MenuItem mnemonicParsing="false" onAction="#resizeLayer" text="Redimensionner" />
-                        <MenuItem mnemonicParsing="false" onAction="#duplicateLayer" text="Duppliquer" />
+                        <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#deleteLayer" text="Supprimer" />
+                        <MenuItem fx:id="moveMenuItem" mnemonicParsing="false" onAction="#moveLayer" text="Déplacer" />
+                        <MenuItem fx:id="resizeMenuItem" mnemonicParsing="false" onAction="#resizeLayer" text="Redimensionner" />
+                        <MenuItem fx:id="duplicateMenuItem" mnemonicParsing="false" onAction="#duplicateLayer" text="Duppliquer" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aide">
@@ -127,10 +126,10 @@
             <Separator prefWidth="200.0" />
             <VBox fx:id="layersModifyBar" prefHeight="200.0" prefWidth="250.0" styleClass="vbox" stylesheets="@../cssFiles/buttonsLayer.css">
                <children>
-                <Button alignment="CENTER" mnemonicParsing="false" onAction="#deleteLayer" text="Supprimer" />
-                  <Button mnemonicParsing="false" onAction="#moveLayer" text="Déplacer" />
-                  <Button minWidth="40.0" mnemonicParsing="false" onAction="#resizeLayer" prefHeight="24.0" prefWidth="201.0" text="Redimensionner" />
-                  <Button mnemonicParsing="false" onAction="#duplicateLayer" text="Duppliquer" />
+                <Button fx:id="deleteButton" alignment="CENTER" mnemonicParsing="false" onAction="#deleteLayer" text="Supprimer" />
+                  <Button fx:id="moveButton" mnemonicParsing="false" onAction="#moveLayer" text="Déplacer" />
+                  <Button fx:id="resizeButton" minWidth="40.0" mnemonicParsing="false" onAction="#resizeLayer" prefHeight="24.0" prefWidth="201.0" text="Redimensionner" />
+                  <Button fx:id="duplicateButton" mnemonicParsing="false" onAction="#duplicateLayer" text="Duppliquer" />
                </children>
             </VBox>
          </children>

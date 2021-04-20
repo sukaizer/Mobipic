@@ -25,8 +25,18 @@ import java.util.ResourceBundle;
 
 public class ControllerLayers implements Initializable {
     public ListView<Layer> layersList = new ListView<>();
+
     @FXML
     public MenuItem filters;
+    @FXML
+    public MenuItem delete;
+    @FXML
+    public MenuItem move;
+    @FXML
+    public MenuItem resize;
+    @FXML
+    public MenuItem duplicate;
+
     private ProjectModel model;
     private Canvas canvas;
     private Button up;
@@ -44,8 +54,11 @@ public class ControllerLayers implements Initializable {
         this.up = up;
         this.down = down;
         this.controllerMain = controllerMain;
+
         this.filters.setDisable(true);
         this.filters.setVisible(false);
+        disableContextMenu();
+
         this.controllerMain.addFilterMenu.setDisable(true);
         this.up.setDisable(true);
         this.down.setDisable(true);
@@ -110,19 +123,41 @@ public class ControllerLayers implements Initializable {
                             this.down.setDisable(false);
                         }
                         this.controllerMain.setDisableItems(false);
+                        this.delete.setDisable(false);
+                        this.delete.setVisible(true);
+                        this.move.setDisable(false);
+                        this.move.setVisible(true);
+                        this.resize.setDisable(false);
+                        this.resize.setVisible(true);
+                        this.duplicate.setDisable(false);
+                        this.duplicate.setVisible(true);
                     } else {
                         this.up.setDisable(true);
                         this.down.setDisable(true);
                         this.controllerMain.setDisableItems(true);
+                        disableContextMenu();
                     }
                     if (l instanceof Text){
                         this.controllerMain.resizeButton.setDisable(true);
                         this.controllerMain.resizeMenuItem.setDisable(true);
+                        this.resize.setDisable(true);
+                        this.resize.setVisible(false);
                     }
                 }
                 i++;
             }
         }catch(Exception ignored){}
+    }
+
+    public void disableContextMenu() {
+        this.delete.setDisable(true);
+        this.delete.setVisible(false);
+        this.move.setDisable(true);
+        this.move.setVisible(false);
+        this.resize.setDisable(true);
+        this.resize.setVisible(false);
+        this.duplicate.setDisable(true);
+        this.duplicate.setVisible(false);
     }
 
     public void clear() {
@@ -159,22 +194,6 @@ public class ControllerLayers implements Initializable {
 
     @FXML
     public void filterMenu(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("../ressources/fxmlFiles/filters.fxml"));
-            Parent root1 = loader.load();
-            ControllerFilters controller = loader.getController();
-            controller.init(this.model, this.controllerMain.getControllerCanvas());
-            Scene scene1 = new Scene(root1);
-            scene1.setRoot(root1);
-            Stage stage = new Stage();
-            stage.setTitle("Appliquer un filtre");
-            stage.centerOnScreen();
-            stage.setScene(scene1);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        this.controllerMain.addFilter(actionEvent);
     }
 }

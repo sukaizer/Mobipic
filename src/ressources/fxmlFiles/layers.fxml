@@ -8,11 +8,11 @@
          <contextMenu>
             <ContextMenu>
               <items>
-                  <MenuItem mnemonicParsing="false" text="Supprimer" onAction="#deleteLayer" />
-                  <MenuItem mnemonicParsing="false" text="Déplacer" onAction="#moveLayer" />
-                  <MenuItem mnemonicParsing="false" text="Redimensionner" onAction="#resizeLayer" />
-                  <MenuItem mnemonicParsing="false" text="Duppliquer" onAction="#duplicateLayer" />
-                  <MenuItem mnemonicParsing="false" text="Filtre" onAction="#filterMenu" fx:id="filters"/>
+                  <MenuItem fx:id="delete" mnemonicParsing="false" text="Supprimer" onAction="#deleteLayer" />
+                  <MenuItem fx:id="move" mnemonicParsing="false" text="Déplacer" onAction="#moveLayer" />
+                  <MenuItem fx:id="resize" mnemonicParsing="false" text="Redimensionner" onAction="#resizeLayer" />
+                  <MenuItem fx:id="duplicate" mnemonicParsing="false" text="Duppliquer" onAction="#duplicateLayer" />
+                  <MenuItem fx:id="filters" mnemonicParsing="false" text="Filtre" onAction="#filterMenu" />
               </items>
             </ContextMenu>
          </contextMenu></ListView>
