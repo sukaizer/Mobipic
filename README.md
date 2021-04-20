@@ -1,7 +1,7 @@
 # Mobipic
 
-Welcome to **Mobipic**, a third year project at Paris-Saclay University ! 
-It is a basic photo editor
+Welcome to **Mobipic**, a third year project at Paris-Saclay University.    
+It is a basic photo editor written in Java using JavaFx
 
 ### Contributors
 * @sukaizer
