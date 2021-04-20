@@ -19,7 +19,9 @@ public class ProjectModel {
         this.editing = false;
         this.graphicsContext = graphicsContext;
         this.baseLayer = new Image(baseImage,0,0,this.graphicsContext);
+        this.baseLayer.setBaseLayer(true);
         this.editingLayer = null;
+        this.layers.add(baseLayer);
     }
 
     public ObservableList<Layer> getLayers() {
@@ -61,7 +63,7 @@ public class ProjectModel {
      * Dessine toutes les formes présentes
      */
     public void paintLayers(){
-        this.baseLayer.paint();
+        //this.baseLayer.paint();
         for (Layer layer:this.layers) {
             layer.paint();
         }

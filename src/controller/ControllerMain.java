@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
 
 public class ControllerMain implements Initializable {
 
-
+    
     private Stage primaryStage;
     private FileChooser fileChooser;
     private File file;
@@ -90,9 +90,26 @@ public class ControllerMain implements Initializable {
     public Button newTextButton;
     @FXML
     public MenuItem addFilterMenu;
+    @FXML
+    public Button deleteButton;
+    @FXML
+    public Button moveButton;
+    @FXML
+    public Button resizeButton;
+    @FXML
+    public Button duplicateButton;
+    @FXML
+    public MenuItem deleteMenuItem;
+    @FXML
+    public MenuItem moveMenuItem;
+    @FXML
+    public MenuItem resizeMenuItem;
+    @FXML
+    public MenuItem duplicateMenuItem;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setDisableItems(true);
         this.newTextButton.setDisable(true);
         this.hboxLayersModify.setDisable(true);
         this.zoomMinus.setDisable(true);
@@ -106,6 +123,18 @@ public class ControllerMain implements Initializable {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Project Files", "*.mbpc"),
                 new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.jpeg", "*.bmp"));
+    }
+
+    public void setDisableItems(boolean b) {
+        this.deleteMenuItem.setDisable(b);
+        this.moveMenuItem.setDisable(b);
+        this.resizeMenuItem.setDisable(b);
+        this.duplicateMenuItem.setDisable(b);
+
+        this.deleteButton.setDisable(b);
+        this.moveButton.setDisable(b);
+        this.resizeButton.setDisable(b);
+        this.duplicateButton.setDisable(b);
     }
 
     public void init(Stage primaryStage) {
@@ -337,7 +366,7 @@ public class ControllerMain implements Initializable {
     @FXML
     public void deleteLayer(Event actionEvent) {
         try {
-            this.model.getLayers().removeIf(Layer::isFocused);
+            this.model.getLayers().removeIf(layer -> layer.isFocused() && !layer.isBaseLayer());
         } catch(Exception ignored) {}
         this.controllerCanvas.clear();
         this.model.paintLayers();
@@ -348,7 +377,7 @@ public class ControllerMain implements Initializable {
         try {
             for (Layer layer: this.model.getLayers()) {
                 layer.resetModifiers();
-                if (layer.isFocused()) {
+                if (layer.isFocused() && !layer.isBaseLayer()) {
                     layer.setMoving(true);
                     this.model.setEditingLayer(layer);
                 }
@@ -361,7 +390,7 @@ public class ControllerMain implements Initializable {
         try {
             for (Layer layer: this.model.getLayers()) {
                 layer.resetModifiers();
-                if (layer.isFocused()) {
+                if (layer.isFocused() && !layer.isBaseLayer()) {
                     layer.setResizing(true);
                     this.model.setEditingLayer(layer);
                     if (layer instanceof Triangle){
@@ -395,7 +424,7 @@ public class ControllerMain implements Initializable {
     public void duplicateLayer(ActionEvent actionEvent) {
         try {
             for (int i = 0; i < this.model.getLayers().size(); i++) {
-                if (this.model.getLayers().get(i).isFocused()){
+                if (this.model.getLayers().get(i).isFocused() && !this.model.getLayers().get(i).isBaseLayer()){
                     if (this.model.getLayers().get(i) instanceof Line) {
                         Line line = new Line((Line) this.model.getLayers().get(i));
                         this.model.getLayers().add(i+1,line);
@@ -430,7 +459,7 @@ public class ControllerMain implements Initializable {
     @FXML
     public void sendBack(ActionEvent actionEvent) {
         for (int i = 0; i < this.model.getLayers().size(); i++) {
-            if (this.model.getLayers().get(i).isFocused()){
+            if (this.model.getLayers().get(i).isFocused() && !this.model.getLayers().get(i).isBaseLayer()){
                 Collections.swap(this.model.getLayers(),i,i-1);
                 this.controllerCanvas.clear();
                 this.model.paintLayers();
@@ -446,7 +475,7 @@ public class ControllerMain implements Initializable {
     @FXML
     public void sendForward(ActionEvent actionEvent) {
         for (int i = 0; i < this.model.getLayers().size(); i++) {
-            if (this.model.getLayers().get(i).isFocused()){
+            if (this.model.getLayers().get(i).isFocused() && !this.model.getLayers().get(i).isBaseLayer()){
                 System.out.println("down");
                 Collections.swap(this.model.getLayers(),i,i+1);
                 this.controllerCanvas.clear();

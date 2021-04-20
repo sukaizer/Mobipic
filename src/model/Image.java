@@ -56,6 +56,9 @@ public class Image extends Layer {
 
     @Override
     public String toString() {
+        if (this.isBaseLayer()){
+            return "Base Image";
+        }
         return "Image";
     }
 

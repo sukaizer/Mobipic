@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import model.Image;
 import model.Layer;
 import model.ProjectModel;
+import model.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,6 +47,8 @@ public class ControllerLayers implements Initializable {
         this.filters.setDisable(true);
         this.filters.setVisible(false);
         this.controllerMain.addFilterMenu.setDisable(true);
+        this.up.setDisable(true);
+        this.down.setDisable(true);
     }
 
     @FXML
@@ -90,20 +93,31 @@ public class ControllerLayers implements Initializable {
                         this.filters.setVisible(false);
                         this.controllerMain.addFilterMenu.setDisable(true);
                     }
-                    this.model.setHelpLayer(l.setSamePositions());
-                    this.model.getHelpLayer().paint();
-                    if (i > 0 && i < this.model.getLayers().size() - 1){
-                        this.up.setDisable(false);
-                        this.down.setDisable(false);
-                    } else if (i == 0 && i == this.model.getLayers().size() - 1){
+                    if(!l.isBaseLayer()){
+                        this.model.setHelpLayer(l.setSamePositions());
+                        this.model.getHelpLayer().paint();
+                        if (i > 1 && i < this.model.getLayers().size() - 1){ //cas ni premier ni dernier
+                            this.up.setDisable(false);
+                            this.down.setDisable(false);
+                        } else if (i == 1 && this.model.getLayers().size() == 2){//cas premier et dernier
+                            this.up.setDisable(true);
+                            this.down.setDisable(true);
+                        } else if (i > 1 && i == this.model.getLayers().size() - 1){//cas dernier
+                            this.up.setDisable(false);
+                            this.down.setDisable(true);
+                        } else if (i == 1 && i < this.model.getLayers().size() - 1){//cas premier
+                            this.up.setDisable(true);
+                            this.down.setDisable(false);
+                        }
+                        this.controllerMain.setDisableItems(false);
+                    } else {
                         this.up.setDisable(true);
                         this.down.setDisable(true);
-                    } else if (i > 0 && i == this.model.getLayers().size() - 1){
-                        this.up.setDisable(false);
-                        this.down.setDisable(true);
-                    } else if (i == 0 && i < this.model.getLayers().size() - 1){
-                        this.up.setDisable(true);
-                        this.down.setDisable(false);
+                        this.controllerMain.setDisableItems(true);
+                    }
+                    if (l instanceof Text){
+                        this.controllerMain.resizeButton.setDisable(true);
+                        this.controllerMain.resizeMenuItem.setDisable(true);
                     }
                 }
                 i++;

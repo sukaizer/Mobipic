@@ -15,8 +15,10 @@ public abstract class Layer {
     protected GraphicsContext graphicsContext;
     protected boolean isMoving;
     protected boolean isResizing;
+    protected boolean baseLayer;
 
     public Layer(double x, double y, GraphicsContext graphicsContext) {
+        this.baseLayer = false;
         this.isFilled = false;
         this.isFocused = false;
         this.isMoving = false;
@@ -113,4 +115,12 @@ public abstract class Layer {
     }
 
     public abstract Layer setSamePositions();
+
+    public boolean isBaseLayer() {
+        return baseLayer;
+    }
+
+    public void setBaseLayer(boolean baseLayer) {
+        this.baseLayer = baseLayer;
+    }
 }
