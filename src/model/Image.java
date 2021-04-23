@@ -85,7 +85,7 @@ public class Image extends Layer {
     @Override
     public String save() {
         if (this.isBaseLayer()) {
-            return "";
+            return this.color.toString();
         }
         return "Image" + "\n" + this.x + "\n" + this.y + "\n" + this.w + "\n" + this.h + "\n" + this.color;
     }

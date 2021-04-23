@@ -183,10 +183,11 @@ public class ControllerMain implements Initializable {
         try {
             file = fileChooser.showOpenDialog(new Stage());
             Scanner scanner = new Scanner(file);
-            scanner.nextLine();
+            Color colorBase = Color.web(scanner.nextLine());
             String pathToImage = "file:" + scanner.nextLine();
             System.out.println(pathToImage);
             Image base = new Image(pathToImage);
+            //scanner.nextLine();
 
             try {
                 FXMLLoader loader = new FXMLLoader();
@@ -197,11 +198,11 @@ public class ControllerMain implements Initializable {
                 this.model = new ProjectModel(base, this.canvas.getGraphicsContext2D());
                 this.controllerCanvas.init(this.model, this.primaryStage);
                 this.mainPane.getChildren().add(pane);
-                this.mainPane.setMaxHeight(base.getHeight());
-                this.mainPane.setMaxWidth(base.getWidth());
+                this.mainPane.setMinHeight(base.getHeight());
+                this.mainPane.setMinWidth(base.getWidth());
                 this.canvas.setWidth(base.getWidth());
                 this.canvas.setHeight(base.getHeight());
-
+                this.model.getLayers().get(0).setColor(colorBase);
 
                 loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../ressources/fxmlFiles/layers.fxml"));
@@ -424,8 +425,8 @@ public class ControllerMain implements Initializable {
                 this.model = new ProjectModel(base, this.canvas.getGraphicsContext2D());
                 this.controllerCanvas.init(this.model, this.primaryStage);
                 this.mainPane.getChildren().add(pane);
-                this.mainPane.setMaxHeight(base.getHeight());
-                this.mainPane.setMaxWidth(base.getWidth());
+                this.mainPane.setMinHeight(base.getHeight());
+                this.mainPane.setMinWidth(base.getWidth());
                 this.canvas.setWidth(base.getWidth());
                 this.canvas.setHeight(base.getHeight());
 
