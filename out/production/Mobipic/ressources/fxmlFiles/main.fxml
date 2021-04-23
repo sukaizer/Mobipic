@@ -39,11 +39,9 @@
               <menus>
                   <Menu mnemonicParsing="false" text="Fichier">
                     <items>
-                      <MenuItem id="menuItemOpen" mnemonicParsing="false" onAction="#setOpenMenuAction" text="Ouvrir..." />
+                      <MenuItem id="menuItemOpen" mnemonicParsing="false" onAction="#setOpenMenuAction" text="Ouvrir...             (Ctrl+O)" />
                         <MenuItem id="menuItemNew" mnemonicParsing="false" onAction="#setNewMenuAction" text="Nouveau             (Ctrl+N)" />
                         <MenuItem id="menuItemSave" mnemonicParsing="false" text="Enregistrer          (Ctrl+S)" />
-                        <MenuItem mnemonicParsing="false" text="Enregistrer sous..." />
-                        <MenuItem mnemonicParsing="false" text="Fermer" />
                         <Menu fx:id="exportButton" mnemonicParsing="false" text="Exporter sous...">
                           <items>
                             <MenuItem mnemonicParsing="false" onAction="#exportToJpg" text=".jpg" />
