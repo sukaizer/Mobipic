@@ -89,7 +89,7 @@
               <items>
                 <Button id="iconOpen" mnemonicParsing="false" onAction="#setOpenMenuAction" />
                   <Button id="iconNew" mnemonicParsing="false" onAction="#setNewMenuAction" />
-                  <Button id="iconSave" mnemonicParsing="false" />
+                  <Button id="iconSave" mnemonicParsing="false" onAction="#saveProject" />
                   <Button id="iconShapes" fx:id="newShapeButton" mnemonicParsing="false" onAction="#addShapeMenu" />
                   <Button id="iconImages" fx:id="newImageButton" mnemonicParsing="false" onAction="#addImageLayer" />
                   <Button id="iconText" fx:id="newTextButton" mnemonicParsing="false" onAction="#addTextMenu" />

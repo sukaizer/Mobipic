@@ -29,11 +29,15 @@ import model.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -536,4 +540,35 @@ public class ControllerMain implements Initializable {
     }
 
 
+    @FXML
+    public void saveProject(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if (file != null) {
+            boolean bool = file.mkdir();
+            FileWriter myfile = new FileWriter(file.getAbsolutePath() + File.separator + file.getName() + ".mbpc");
+            int i = 0;
+            StringBuilder save = new StringBuilder();
+            for (Layer layer: this.model.getLayers()) {
+                save.append(layer.save()).append("\n");
+                if (layer instanceof model.Image){
+                    Image image = ((model.Image) layer).getImage();
+
+                    File outputFile = new File(file.getAbsolutePath() + File.separator + "ours" + i + ".png");
+                    BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
+                    try {
+                        ImageIO.write(bImage, "png", outputFile);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    i++;
+                }
+            }
+            myfile.write(String.valueOf(save));
+            myfile.close();
+        }
+    }
 }

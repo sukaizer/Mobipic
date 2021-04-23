@@ -124,4 +124,9 @@ public class Text extends Layer{
         layer1.setColor(new Color(0,0,0,1));
         return layer1;
     }
+
+    @Override
+    public String save() {
+        return "Texte " + this.x + " " + this.y + " " + this.color + " " + this.font + " obo12" + this.fontPosture + " " + this.fontWeight + " " + this.text;
+    }
 }

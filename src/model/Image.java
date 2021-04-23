@@ -70,4 +70,13 @@ public class Image extends Layer {
         layer1.setColor(new Color(0,0,0,1));
         return layer1;
     }
+
+    @Override
+    public String save() {
+        return "Image " + this.x + " " + this.y + " " + this.w + " " + this.h + " " + this.color + " " + this.lineWidth;
+    }
+
+    public javafx.scene.image.Image getImage() {
+        return image;
+    }
 }

@@ -123,4 +123,9 @@ public class Triangle extends Layer {
         layer1.setColor(new Color(0,0,0,1));
         return layer1;
     }
+
+    @Override
+    public String save() {
+        return "Triangle " + this.x + " " + this.y + " " + this.x2 + " " + this.y2 + " " + this.x3 + " " + this.y3 + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
+    }
 }

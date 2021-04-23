@@ -59,4 +59,9 @@ public class Square extends Layer{
         layer1.setColor(new Color(0,0,0,1));
         return layer1;
     }
+
+    @Override
+    public String save() {
+        return "Carre " + this.x + " " + this.y + " " + this.side + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
+    }
 }

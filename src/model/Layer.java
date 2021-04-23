@@ -123,4 +123,6 @@ public abstract class Layer {
     public void setBaseLayer(boolean baseLayer) {
         this.baseLayer = baseLayer;
     }
+
+    public abstract String save();
 }

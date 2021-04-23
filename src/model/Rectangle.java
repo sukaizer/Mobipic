@@ -69,4 +69,9 @@ public class Rectangle extends Layer{
         layer1.setColor(new Color(0,0,0,1));
         return layer1;
     }
+
+    @Override
+    public String save() {
+        return "Rectangle " + this.x + " " + this.y + " " + this.width + " " + this.height + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
+    }
 }

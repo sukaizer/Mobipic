@@ -71,4 +71,9 @@ public class Ellipse extends Layer{
         layer1.setColor(new Color(0,0,0,1));
         return layer1;
     }
+
+    @Override
+    public String save() {
+        return "Ellipse " + this.x + " " + this.y + " " + this.r1 + " " + this.r2 + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
+    }
 }

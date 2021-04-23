@@ -60,4 +60,9 @@ public class Circle extends Layer{
         layer1.setColor(new Color(0,0,0,1));
         return layer1;
     }
+
+    @Override
+    public String save() {
+        return "Cercle " + this.x + " " + this.y + " " + this.r + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
+    }
 }
