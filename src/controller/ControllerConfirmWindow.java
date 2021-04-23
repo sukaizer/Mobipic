@@ -45,11 +45,13 @@ public class ControllerConfirmWindow implements Initializable {
         } else if (this.n == 1){
             Node source = (Node) actionEvent.getSource();
             Stage stage = (Stage) source.getScene().getWindow();
+            this.controllerMain.getControllerCanvas().clear();
             stage.close();
             this.controllerMain.openProject(actionEvent);
         } else if (this.n == 2){
             Node source = (Node) actionEvent.getSource();
             Stage stage = (Stage) source.getScene().getWindow();
+            this.controllerMain.getControllerCanvas().clear();
             stage.close();
             this.controllerMain.newProject(actionEvent);
         }
