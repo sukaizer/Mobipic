@@ -71,6 +71,6 @@ public class Square extends Layer{
 
     @Override
     public String save() {
-        return "Carre " + this.x + " " + this.y + " " + this.side + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
+        return "Carre" + "\n" + this.x + "\n" + this.y + "\n" + this.side + "\n" + this.color + "\n" + this.lineWidth + "\n" + this.isFilled;
     }
 }
