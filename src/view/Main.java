@@ -44,8 +44,6 @@ public class Main extends Application {
         stage.getIcons().add(icon);
         stage.setScene(scene);
 
-        stage.setOnCloseRequest(controllerMain::quitApp);
-
         new Thread(() -> {
             try {
                 Thread.sleep(3000);

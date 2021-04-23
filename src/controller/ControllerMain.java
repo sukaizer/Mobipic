@@ -29,6 +29,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Rectangle;
 import model.*;
 
@@ -49,7 +50,7 @@ import java.util.Scanner;
 public class ControllerMain implements Initializable {
 
     
-    private Stage primaryStage;
+    public Stage primaryStage;
     private FileChooser fileChooser;
     private File file;
     private ProjectModel model;
@@ -154,6 +155,10 @@ public class ControllerMain implements Initializable {
 
     public void init(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.primaryStage.setOnCloseRequest(event -> {
+            quitApp(event);
+            event.consume();
+        });
     }
 
 
@@ -162,6 +167,19 @@ public class ControllerMain implements Initializable {
      */
     @FXML
     public void setOpenMenuAction(Event e) throws FileNotFoundException {
+        if (this.projectOn) {
+            String path = "../ressources/fxmlFiles/confirm.fxml";
+            String name = "Ouvrir un projet existant";
+            FXMLLoader loader = setNewStage(path, name);
+            assert loader != null;
+            ControllerConfirmWindow controller = loader.getController();
+            controller.init(this, 1);
+        } else {
+            openProject(e);
+        }
+    }
+
+    public void openProject(Event e) throws FileNotFoundException {
         try {
             file = fileChooser.showOpenDialog(new Stage());
             Scanner scanner = new Scanner(file);
@@ -371,11 +389,25 @@ public class ControllerMain implements Initializable {
             this.newTextButton.setDisable(false);
 
             this.model.paintLayers();
+            this.projectOn = true;
         } catch (NullPointerException ignored){}
     }
 
     @FXML
     public void setNewMenuAction(Event actionEvent) {
+        if (this.projectOn) {
+            String path = "../ressources/fxmlFiles/confirm.fxml";
+            String name = "Ouvrir un nouveau projet";
+            FXMLLoader loader = setNewStage(path, name);
+            assert loader != null;
+            ControllerConfirmWindow controller = loader.getController();
+            controller.init(this, 2);
+        } else {
+            newProject(actionEvent);
+        }
+    }
+
+    public void newProject(Event e) {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().addAll(
@@ -404,9 +436,7 @@ public class ControllerMain implements Initializable {
                 this.controllerLayers = loader.getController();
                 this.controllerLayers.init(this.model,this.canvas,this.up,this.down,this);
                 this.layersPane.getChildren().add(pane2);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } catch (IOException ignored) {}
             this.layersMenuBar.setDisable(false);
             this.layersModifyBar.setDisable(false);
             this.newShapeButton.setDisable(false);
@@ -416,15 +446,19 @@ public class ControllerMain implements Initializable {
             this.hboxLayersModify.setDisable(false);
             this.zoomPlus.setDisable(false);
             this.newTextButton.setDisable(false);
-
+            this.projectOn = true;
             this.model.paintLayers();
-        } catch (NullPointerException ignored) {
-        }
+        } catch (NullPointerException ignored) {}
     }
 
     @FXML
     public void quitApp(Event actionEvent) {
-        //TODO confirmation fermeture
+        String path = "../ressources/fxmlFiles/confirm.fxml";
+        String name = "Quitter l'application";
+        FXMLLoader loader = setNewStage(path, name);
+        assert loader != null;
+        ControllerConfirmWindow controller = loader.getController();
+        controller.init(this, 0);
     }
 
     /**
