@@ -2,6 +2,7 @@ package model;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import org.w3c.dom.css.Rect;
 
 public class Rectangle extends Layer{
 
@@ -71,7 +72,16 @@ public class Rectangle extends Layer{
     }
 
     @Override
+    public Layer copy() {
+        Rectangle layer1 = new Rectangle(this.getX(), this.getY(), this.height, this.width, graphicsContext);
+        layer1.setFilled(this.isFilled);
+        layer1.setLineWidth(this.lineWidth);
+        layer1.setColor(this.color);
+        return layer1;
+    }
+
+    @Override
     public String save() {
-        return "Rectangle " + this.x + " " + this.y + " " + this.width + " " + this.height + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
+        return "Rectangle" + "\n" + this.x + "\n" + this.y + "\n" + this.width + "\n" + this.height + "\n" + this.color + "\n" + this.lineWidth + "\n" + this.isFilled;
     }
 }

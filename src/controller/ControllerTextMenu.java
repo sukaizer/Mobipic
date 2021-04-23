@@ -67,6 +67,7 @@ public class ControllerTextMenu implements Initializable {
             this.text.setFontPosture(FontPosture.REGULAR);
         }
 
+        this.text.setFont(this.fontPicker.getValue());
         this.text.setText(this.textField.getText());
         this.text.setSize(this.fontSize.getValue());
         Font finalfont = Font.font(this.fontPicker.getValue(),this.text.getFontWeight(),this.text.getFontPosture(),this.text.getSize());

@@ -72,8 +72,22 @@ public class Image extends Layer {
     }
 
     @Override
+    public Layer copy() {
+        Image layer1 = new Image(this.image,this.getX(), this.getY(), graphicsContext);
+        layer1.setFilled(this.isFilled);
+        layer1.setLineWidth(this.lineWidth);
+        layer1.setColor(this.color);
+        layer1.setW(this.w);
+        layer1.setH(this.h);
+        return layer1;
+    }
+
+    @Override
     public String save() {
-        return "Image " + this.x + " " + this.y + " " + this.w + " " + this.h + " " + this.color + " " + this.lineWidth;
+        if (this.isBaseLayer()) {
+            return "";
+        }
+        return "Image" + "\n" + this.x + "\n" + this.y + "\n" + this.w + "\n" + this.h + "\n" + this.color;
     }
 
     public javafx.scene.image.Image getImage() {

@@ -22,6 +22,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Rectangle;
@@ -31,9 +34,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -41,6 +42,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class ControllerMain implements Initializable {
 
@@ -124,9 +126,7 @@ public class ControllerMain implements Initializable {
         this.newImageButton.setDisable(true);
         this.exportButton.setDisable(true);
         fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Project Files", "*.mbpc"),
-                new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.jpeg", "*.bmp"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Project Files", "*.mbpc"));
     }
 
     public void setDisableItems(boolean b) {
@@ -150,18 +150,215 @@ public class ControllerMain implements Initializable {
      * Ouvre la fenetre contextuelle de choix de fichiers
      */
     @FXML
-    public void setOpenMenuAction(ActionEvent e) {
+    public void setOpenMenuAction(ActionEvent e) throws FileNotFoundException {
         file = fileChooser.showOpenDialog(new Stage());
+        Scanner scanner = new Scanner(file);
+        scanner.nextLine();
+        String pathToImage = "file:" + scanner.nextLine();
+        System.out.println(pathToImage);
+        Image base = new Image(pathToImage);
+
         try {
-            String filename = file.getName();
-            String extension = Optional.of(filename)
-                    .filter(f -> f.contains("."))
-                    .map(f -> f.substring(filename.lastIndexOf(".") + 1)).get();
-            if (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg") || extension.equals("bmp")) {
-                System.out.println("hey");
-            }
-        } catch (NullPointerException ignored) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../ressources/fxmlFiles/canvas.fxml"));
+            Parent pane = loader.load();
+            this.controllerCanvas = loader.getController();
+            this.canvas = this.controllerCanvas.getCanvas();
+            this.model = new ProjectModel(base, this.canvas.getGraphicsContext2D());
+            this.controllerCanvas.init(this.model, this.primaryStage);
+            this.mainPane.getChildren().add(pane);
+            this.mainPane.setMaxHeight(base.getHeight());
+            this.mainPane.setMaxWidth(base.getWidth());
+            this.canvas.setWidth(base.getWidth());
+            this.canvas.setHeight(base.getHeight());
+
+
+            loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../ressources/fxmlFiles/layers.fxml"));
+            Parent pane2 = loader.load();
+            this.controllerLayers = loader.getController();
+            this.controllerLayers.init(this.model,this.canvas,this.up,this.down,this);
+            this.layersPane.getChildren().add(pane2);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
+        String line = scanner.nextLine();
+
+        while (scanner.hasNextLine()){
+            switch (line) {
+                case "":
+                    break;
+                case "Image": {
+                    double x, y, w, h;
+                    Color color;
+                    Image image;
+                    String path;
+                    x = Double.parseDouble(scanner.nextLine());
+                    y = Double.parseDouble(scanner.nextLine());
+                    w = Double.parseDouble(scanner.nextLine());
+                    h = Double.parseDouble(scanner.nextLine());
+                    color = Color.web(scanner.nextLine());
+                    path = "file:" + scanner.nextLine();
+                    image = new Image(path);
+                    model.Image imageLayer = new model.Image(image,x,y,this.canvas.getGraphicsContext2D());
+                    imageLayer.setW(w);
+                    imageLayer.setH(h);
+                    imageLayer.setColor(color);
+                    this.model.addLayer(imageLayer.copy());
+                    break;
+                }
+                case "Carre": {
+                    double x, y, s, lineWidth;
+                    boolean isFilled;
+                    Color color;
+                    x = Double.parseDouble(scanner.nextLine());
+                    y = Double.parseDouble(scanner.nextLine());
+                    s = Double.parseDouble(scanner.nextLine());
+                    color = Color.web(scanner.nextLine());
+                    lineWidth = Double.parseDouble(scanner.nextLine());
+                    isFilled = Boolean.parseBoolean(scanner.nextLine());
+                    Square square = new Square(x, y, s, this.canvas.getGraphicsContext2D());
+                    square.setFilled(isFilled);
+                    square.setColor(color);
+                    square.setLineWidth(lineWidth);
+                    this.model.addLayer(square.copy());
+                    break;
+                }
+                case "Rectangle": {
+                    double x, y, w, h, lineWidth;
+                    boolean isFilled;
+                    Color color;
+                    x = Double.parseDouble(scanner.nextLine());
+                    y = Double.parseDouble(scanner.nextLine());
+                    w = Double.parseDouble(scanner.nextLine());
+                    h = Double.parseDouble(scanner.nextLine());
+                    color = Color.web(scanner.nextLine());
+                    lineWidth = Double.parseDouble(scanner.nextLine());
+                    isFilled = Boolean.parseBoolean(scanner.nextLine());
+                    Rectangle rectangle = new Rectangle(x, y, h, w, this.canvas.getGraphicsContext2D());
+                    rectangle.setFilled(isFilled);
+                    rectangle.setColor(color);
+                    rectangle.setLineWidth(lineWidth);
+                    this.model.addLayer(rectangle.copy());
+                    break;
+                }
+                case "Triangle": {
+                    double x, y, x1, y1, x2, y2, lineWidth;
+                    boolean isFilled;
+                    Color color;
+                    x = Double.parseDouble(scanner.nextLine());
+                    y = Double.parseDouble(scanner.nextLine());
+                    x1 = Double.parseDouble(scanner.nextLine());
+                    y1 = Double.parseDouble(scanner.nextLine());
+                    x2 = Double.parseDouble(scanner.nextLine());
+                    y2 = Double.parseDouble(scanner.nextLine());
+                    color = Color.web(scanner.nextLine());
+                    lineWidth = Double.parseDouble(scanner.nextLine());
+                    isFilled = Boolean.parseBoolean(scanner.nextLine());
+                    Triangle triangle = new Triangle(x, y, x1, y1, x2, y2, this.canvas.getGraphicsContext2D());
+                    triangle.setFilled(isFilled);
+                    triangle.setColor(color);
+                    triangle.setLineWidth(lineWidth);
+                    this.model.addLayer(triangle.copy());
+                    break;
+                }
+                case "Ligne": {
+                    double x, y, x2, y2, lineWidth;
+                    boolean isFilled;
+                    Color color;
+                    x = Double.parseDouble(scanner.nextLine());
+                    y = Double.parseDouble(scanner.nextLine());
+                    x2 = Double.parseDouble(scanner.nextLine());
+                    y2 = Double.parseDouble(scanner.nextLine());
+                    color = Color.web(scanner.nextLine());
+                    lineWidth = Double.parseDouble(scanner.nextLine());
+                    Line ligne = new Line(x, y, x2, y2, this.canvas.getGraphicsContext2D());
+                    ligne.setColor(color);
+                    ligne.setLineWidth(lineWidth);
+                    this.model.addLayer(ligne.copy());
+                    break;
+                }
+                case "Cercle": {
+                    double x, y, r, lineWidth;
+                    boolean isFilled;
+                    Color color;
+                    x = Double.parseDouble(scanner.nextLine());
+                    y = Double.parseDouble(scanner.nextLine());
+                    r = Double.parseDouble(scanner.nextLine());
+                    color = Color.web(scanner.nextLine());
+                    lineWidth = Double.parseDouble(scanner.nextLine());
+                    isFilled = Boolean.parseBoolean(scanner.nextLine());
+                    Circle circle = new Circle(x, y, r, this.canvas.getGraphicsContext2D());
+                    circle.setFilled(isFilled);
+                    circle.setColor(color);
+                    circle.setLineWidth(lineWidth);
+                    this.model.addLayer(circle.copy());
+                    break;
+                }
+                case "Ellipse": {
+                    double x, y, r, r2, lineWidth;
+                    boolean isFilled;
+                    Color color;
+                    x = Double.parseDouble(scanner.nextLine());
+                    y = Double.parseDouble(scanner.nextLine());
+                    r = Double.parseDouble(scanner.nextLine());
+                    r2 = Double.parseDouble(scanner.nextLine());
+                    color = Color.web(scanner.nextLine());
+                    lineWidth = Double.parseDouble(scanner.nextLine());
+                    isFilled = Boolean.parseBoolean(scanner.nextLine());
+                    Ellipse ellipse = new Ellipse(x, y, r, r2, this.canvas.getGraphicsContext2D());
+                    ellipse.setFilled(isFilled);
+                    ellipse.setColor(color);
+                    ellipse.setLineWidth(lineWidth);
+                    this.model.addLayer(ellipse.copy());
+                    break;
+                }
+                case "Texte": {
+                    double size, x, y;
+                    Color color;
+                    String font, texte;
+                    FontPosture fontPosture;
+                    FontWeight fontWeight;
+                    x = Double.parseDouble(scanner.nextLine());
+                    y = Double.parseDouble(scanner.nextLine());
+                    size = Double.parseDouble(scanner.nextLine());
+                    color = Color.web(scanner.nextLine());
+                    font = scanner.nextLine();
+                    if (scanner.nextLine().equals("ITALIC")){
+                        fontPosture = FontPosture.ITALIC;
+                    } else {
+                        fontPosture = FontPosture.REGULAR;
+                    }
+
+                    if (scanner.nextLine().equals("BOLD")){
+                        fontWeight = FontWeight.BOLD;
+                    } else {
+                        fontWeight = FontWeight.NORMAL;
+                    }
+                    texte = scanner.nextLine();
+                    Text text = new Text(x,y,texte,this.canvas.getGraphicsContext2D());
+                    text.setFont(font);
+                    text.setFontPosture(fontPosture);
+                    text.setFontWeight(fontWeight);
+                    text.setFinalFont(javafx.scene.text.Font.font(font,fontWeight,fontPosture,size));
+                    text.setColor(color);
+                    this.model.addLayer(text.copy());
+                    break;
+                }
+            }
+            line = scanner.nextLine();
+        }
+        this.layersMenuBar.setDisable(false);
+        this.layersModifyBar.setDisable(false);
+        this.newShapeButton.setDisable(false);
+        this.exportButton.setDisable(false);
+        this.newImageButton.setDisable(false);
+        this.zoomMinus.setDisable(false);
+        this.hboxLayersModify.setDisable(false);
+        this.zoomPlus.setDisable(false);
+        this.newTextButton.setDisable(false);
+
+        this.model.paintLayers();
     }
 
     @FXML
@@ -172,6 +369,7 @@ public class ControllerMain implements Initializable {
                     new FileChooser.ExtensionFilter("Fichiers d'image (*.jpg, *.png, *.bmp)", "*.jpg", "*.png", "*.jpeg", "*.bmp"));
             File file = fileChooser.showOpenDialog(new Stage());
             Image base = new Image(String.valueOf(file.toURI()));
+            System.out.println(file.toURI());
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../ressources/fxmlFiles/canvas.fxml"));
@@ -563,11 +761,12 @@ public class ControllerMain implements Initializable {
                         throw new RuntimeException(e);
                     }
                     save.append(layer.save());
-                    save.append(" ").append(outputFile.getAbsolutePath());
                     save.append("\n");
+                    save.append(outputFile.getAbsolutePath());
+                    save.append("\n").append("\n");
                     i++;
                 } else {
-                    save.append(layer.save()).append("\n");
+                    save.append(layer.save()).append("\n").append("\n");
                 }
             }
             myfile.write(String.valueOf(save));

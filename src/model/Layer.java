@@ -116,6 +116,8 @@ public abstract class Layer {
 
     public abstract Layer setSamePositions();
 
+    public abstract Layer copy();
+
     public boolean isBaseLayer() {
         return baseLayer;
     }

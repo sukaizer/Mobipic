@@ -61,6 +61,15 @@ public class Square extends Layer{
     }
 
     @Override
+    public Layer copy() {
+        Square layer1 = new Square(this.getX(), this.getY(), this.side, graphicsContext);
+        layer1.setFilled(this.isFilled);
+        layer1.setLineWidth(this.lineWidth);
+        layer1.setColor(this.color);
+        return layer1;
+    }
+
+    @Override
     public String save() {
         return "Carre " + this.x + " " + this.y + " " + this.side + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
     }

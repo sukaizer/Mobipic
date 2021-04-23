@@ -73,7 +73,16 @@ public class Ellipse extends Layer{
     }
 
     @Override
+    public Layer copy() {
+        Ellipse layer1 = new Ellipse(this.getX(), this.getY(), this.getR1(),this.getR2() ,graphicsContext);
+        layer1.setFilled(this.isFilled);
+        layer1.setLineWidth(this.lineWidth);
+        layer1.setColor(this.color);
+        return layer1;
+    }
+
+    @Override
     public String save() {
-        return "Ellipse " + this.x + " " + this.y + " " + this.r1 + " " + this.r2 + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
+        return "Ellipse" + "\n" +this.x + "\n" + this.y + "\n" + this.r1 + "\n" + this.r2 + "\n" + this.color + "\n" + this.lineWidth + "\n" + this.isFilled;
     }
 }

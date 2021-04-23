@@ -125,7 +125,16 @@ public class Triangle extends Layer {
     }
 
     @Override
+    public Layer copy() {
+        Triangle layer1 = new Triangle(this.getX(), this.getY(), this.getX2(), this.getY2(), this.getX3(), this.getY3(), graphicsContext);
+        layer1.setFilled(this.isFilled);
+        layer1.setLineWidth(this.lineWidth);
+        layer1.setColor(this.color);
+        return layer1;
+    }
+
+    @Override
     public String save() {
-        return "Triangle " + this.x + " " + this.y + " " + this.x2 + " " + this.y2 + " " + this.x3 + " " + this.y3 + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
+        return "Triangle" + "\n" +this.x + "\n" + this.y + "\n" + this.x2 + "\n" + this.y2 + "\n" + this.x3 + "\n" + this.y3 + "\n" + this.color + "\n" + this.lineWidth + "\n" + this.isFilled;
     }
 }

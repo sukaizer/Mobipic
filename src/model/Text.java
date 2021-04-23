@@ -126,7 +126,21 @@ public class Text extends Layer{
     }
 
     @Override
+    public Layer copy() {
+        Text layer1 = new Text(this.getX(), this.getY(), this.text, graphicsContext);
+        layer1.setFilled(this.isFilled);
+        layer1.setLineWidth(this.lineWidth);
+        layer1.setColor(this.color);
+        layer1.setFinalFont(this.finalFont);
+        layer1.setFont(this.font);
+        layer1.setFontWeight(this.fontWeight);
+        layer1.setFontPosture(this.fontPosture);
+        layer1.setSize(this.size);
+        return layer1;
+    }
+
+    @Override
     public String save() {
-        return "Texte " + this.x + " " + this.y + " " + this.color + " " + this.font + " obo12" + this.fontPosture + " " + this.fontWeight + " " + this.text;
+        return "Texte" + "\n" + this.x + "\n" + this.y + "\n" + this.size + "\n" + this.color + "\n" + this.font + "\n" + this.fontPosture + "\n" + this.fontWeight + "\n" + this.text;
     }
 }

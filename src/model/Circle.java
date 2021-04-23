@@ -62,7 +62,16 @@ public class Circle extends Layer{
     }
 
     @Override
+    public Layer copy() {
+        Circle layer1 = new Circle(this.getX(), this.getY(), this.getRadius(), graphicsContext);
+        layer1.setFilled(this.isFilled);
+        layer1.setLineWidth(this.lineWidth);
+        layer1.setColor(this.color);
+        return layer1;
+    }
+
+    @Override
     public String save() {
-        return "Cercle " + this.x + " " + this.y + " " + this.r + " " + this.color + " " + this.lineWidth + " " + this.isFilled;
+        return "Cercle" + "\n" + this.x + "\n" + this.y + "\n" + this.r + "\n" + this.color + "\n" + this.lineWidth + "\n" + this.isFilled;
     }
 }

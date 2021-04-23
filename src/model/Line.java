@@ -76,7 +76,16 @@ public class Line extends Layer{
     }
 
     @Override
+    public Layer copy() {
+        Line layer1 = new Line(this.getX(), this.getY(), this.getX2(), this.getY2(), graphicsContext);
+        layer1.setFilled(this.isFilled);
+        layer1.setLineWidth(this.lineWidth);
+        layer1.setColor(this.color);
+        return layer1;
+    }
+
+    @Override
     public String save() {
-        return "Ligne " + this.x + " " + this.y + " " + this.x2 + " " + this.y2 + " " + this.color + " " + this.lineWidth;
+        return "Ligne" + "\n" +this.x + "\n" + this.y + "\n" + this.x2 + "\n" + this.y2 + "\n" + this.color + "\n" + this.lineWidth;
     }
 }
