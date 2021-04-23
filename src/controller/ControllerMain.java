@@ -553,10 +553,8 @@ public class ControllerMain implements Initializable {
             int i = 0;
             StringBuilder save = new StringBuilder();
             for (Layer layer: this.model.getLayers()) {
-                save.append(layer.save()).append("\n");
                 if (layer instanceof model.Image){
                     Image image = ((model.Image) layer).getImage();
-
                     File outputFile = new File(file.getAbsolutePath() + File.separator + "ours" + i + ".png");
                     BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
                     try {
@@ -564,7 +562,12 @@ public class ControllerMain implements Initializable {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                    save.append(layer.save());
+                    save.append(" ").append(outputFile.getAbsolutePath());
+                    save.append("\n");
                     i++;
+                } else {
+                    save.append(layer.save()).append("\n");
                 }
             }
             myfile.write(String.valueOf(save));
