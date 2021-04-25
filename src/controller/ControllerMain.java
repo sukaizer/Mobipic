@@ -66,17 +66,20 @@ public class ControllerMain implements Initializable {
     final KeyCombination keyCombinationControlSuppr = new KeyCodeCombination(
             KeyCode.BACK_SPACE, KeyCombination.CONTROL_DOWN);
 
-    final KeyCombination keyCombinationControlZ = new KeyCodeCombination(
-            KeyCode.Z, KeyCombination.CONTROL_DOWN);
-
-    final KeyCombination keyCombinationControlY = new KeyCodeCombination(
-            KeyCode.Y, KeyCombination.CONTROL_DOWN);
-
     final KeyCombination keyCombinationControlS = new KeyCodeCombination(
             KeyCode.S, KeyCombination.CONTROL_DOWN);
 
     final KeyCombination keyCombinationControlO = new KeyCodeCombination(
             KeyCode.O, KeyCombination.CONTROL_DOWN);
+
+    final KeyCombination keyCombinationControlD = new KeyCodeCombination(
+            KeyCode.D, KeyCombination.CONTROL_DOWN);
+
+    final KeyCombination keyCombinationControlM = new KeyCodeCombination(
+            KeyCode.B, KeyCombination.CONTROL_DOWN);
+
+    final KeyCombination keyCombinationControlR = new KeyCodeCombination(
+            KeyCode.R, KeyCombination.CONTROL_DOWN);
 
 
     @FXML
@@ -623,7 +626,7 @@ public class ControllerMain implements Initializable {
     }
 
     @FXML
-    public void moveLayer(ActionEvent actionEvent) {
+    public void moveLayer(Event actionEvent) {
         try {
             for (Layer layer: this.model.getLayers()) {
                 layer.resetModifiers();
@@ -636,7 +639,7 @@ public class ControllerMain implements Initializable {
     }
 
     @FXML
-    public void resizeLayer(ActionEvent actionEvent) {
+    public void resizeLayer(Event actionEvent) {
         try {
             for (Layer layer: this.model.getLayers()) {
                 layer.resetModifiers();
@@ -671,7 +674,7 @@ public class ControllerMain implements Initializable {
     }
 
     @FXML
-    public void duplicateLayer(ActionEvent actionEvent) {
+    public void duplicateLayer(Event actionEvent) {
         try {
             for (int i = 0; i < this.model.getLayers().size(); i++) {
                 if (this.model.getLayers().get(i).isFocused() && !this.model.getLayers().get(i).isBaseLayer()){
@@ -768,21 +771,17 @@ public class ControllerMain implements Initializable {
             this.setNewMenuAction(keyEvent);
         } else if (this.keyCombinationControlSuppr.match(keyEvent)) {
             this.deleteLayer(keyEvent);
-        } else if (this.keyCombinationControlZ.match(keyEvent)) {
-            this.undoAction(keyEvent);
-        } else if (this.keyCombinationControlY.match(keyEvent)) {
-            this.redoAction(keyEvent);
         } else if (this.keyCombinationControlS.match(keyEvent)) {
             this.saveProject(keyEvent);
         } else if (this.keyCombinationControlO.match(keyEvent)) {
             this.setOpenMenuAction(keyEvent);
+        } else if (this.keyCombinationControlD.match(keyEvent)) {
+            this.duplicateLayer(keyEvent);
+        } else if (this.keyCombinationControlR.match(keyEvent)) {
+            this.resizeLayer(keyEvent);
+        } else if (this.keyCombinationControlM.match(keyEvent)) {
+            this.moveLayer(keyEvent);
         }
-    }
-
-    public void undoAction(Event actionEvent) {
-    }
-
-    public void redoAction(Event actionEvent) {
     }
 
     public ControllerCanvas getControllerCanvas() {

@@ -34,8 +34,9 @@ We were asked to implement features, and here they are :
 
 Some actions can be achieved by simply pressing a key, here is a list :
 * _CTRL+BACKSPACE_ : delete the selected layer
+* _CTRL+B_ : move the selected layer
+* _CTRL+D_ : duplicate the selected layer
+* _CTRL+R_ : resize the selected layer
 * _CTRL+N_ : load an image as a new project
 * _CTRL+O_ : load an existing project
 * _CTRL+S_ : save the current project
-
-### Trivia

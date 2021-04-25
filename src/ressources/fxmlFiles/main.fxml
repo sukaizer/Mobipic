@@ -53,12 +53,6 @@
                         <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Quitter" />
                     </items>
                   </Menu>
-                <Menu mnemonicParsing="false" text="Édition">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#undoAction" text="Défaire         (Ctrl+Z)" />
-                        <MenuItem mnemonicParsing="false" onAction="#redoAction" text="Refaire         (Ctrl+Y)" />
-                  </items>
-                </Menu>
                 <Menu fx:id="layersMenuBar" mnemonicParsing="false" text="Calque">
                   <items>
                         <Menu mnemonicParsing="false" text="Nouveau">
