@@ -371,6 +371,7 @@ public class ControllerMain implements Initializable {
                         text.setFont(font);
                         text.setFontPosture(fontPosture);
                         text.setFontWeight(fontWeight);
+                        text.setSize(size);
                         text.setFinalFont(javafx.scene.text.Font.font(font,fontWeight,fontPosture,size));
                         text.setColor(color);
                         this.model.addLayer(text.copy());
