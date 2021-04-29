@@ -63,7 +63,6 @@
                               <MenuItem id="menuItemImage" mnemonicParsing="false" onAction="#addImageLayer" text="Image" />
                           </items>
                         </Menu>
-                        <MenuItem mnemonicParsing="false" text="Renommer" />
                         <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#deleteLayer" text="Supprimer" />
                         <MenuItem fx:id="moveMenuItem" mnemonicParsing="false" onAction="#moveLayer" text="Déplacer" />
                         <MenuItem fx:id="resizeMenuItem" mnemonicParsing="false" onAction="#resizeLayer" text="Redimensionner" />

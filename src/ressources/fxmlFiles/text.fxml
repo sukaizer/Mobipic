@@ -42,7 +42,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </ToggleButton>
-                  <Slider fx:id="fontSize" max="80.0" min="20.0" onMouseReleased="#actualizeSampleText" prefHeight="16.0" showTickLabels="true" showTickMarks="true">
+                  <Slider fx:id="fontSize" majorTickUnit="50.0" max="200.0" min="20.0" minorTickCount="5" onMouseReleased="#actualizeSampleText" prefHeight="16.0" showTickLabels="true" showTickMarks="true">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
