@@ -45,7 +45,7 @@ Some actions can be achieved by simply pressing a key, here is a list :
 
 #### Icon Bar
 
-What's happening of you're pressing those buttons ?
+What's happening if you're pressing the buttons on the buttons bar ? (in order)
 * Opens a project
 * Opens an image to create a new project
 * Saves the current project wherever you want on your computer
@@ -57,4 +57,4 @@ What's happening of you're pressing those buttons ?
 
 #### Project information
 
-We used version 15 and 16 of Java/Fx and the last version of SceneBuilder
+We used version 15 then 16 of Java/Fx, and the last version of SceneBuilder
