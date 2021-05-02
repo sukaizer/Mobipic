@@ -40,3 +40,21 @@ Some actions can be achieved by simply pressing a key, here is a list :
 * _CTRL+N_ : load an image as a new project
 * _CTRL+O_ : load an existing project
 * _CTRL+S_ : save the current project
+
+### Trivia
+
+#### Icon Bar
+
+What's happening of you're pressing those buttons ?
+* Opens a project
+* Opens an image to create a new project
+* Saves the current project wherever you want on your computer
+* Draws a shape (opens the shape selector)
+* Opens an image to add to the project
+* Adds text (opens the text editor window)
+* Zoom in
+* Zoom out
+
+#### Project information
+
+We used version 15 and 16 of Java/Fx and the last version of SceneBuilder

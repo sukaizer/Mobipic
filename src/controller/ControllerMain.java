@@ -81,6 +81,14 @@ public class ControllerMain implements Initializable {
     final KeyCombination keyCombinationControlR = new KeyCodeCombination(
             KeyCode.R, KeyCombination.CONTROL_DOWN);
 
+    private double firstScaleX;
+
+    private double firstScaleY;
+
+    private double scaleX;
+
+    private double scaleY;
+
 
     @FXML
     public Menu exportButton;
@@ -190,7 +198,6 @@ public class ControllerMain implements Initializable {
             String pathToImage = "file:" + scanner.nextLine();
             System.out.println(pathToImage);
             Image base = new Image(pathToImage);
-            //scanner.nextLine();
 
             try {
                 FXMLLoader loader = new FXMLLoader();
@@ -206,6 +213,9 @@ public class ControllerMain implements Initializable {
                 this.canvas.setWidth(base.getWidth());
                 this.canvas.setHeight(base.getHeight());
                 this.model.getLayers().get(0).setColor(colorBase);
+                this.firstScaleX = this.canvas.getScaleX();
+                this.firstScaleY = this.canvas.getScaleY();
+
 
                 loader = new FXMLLoader();
                 loader.setLocation(getClass().getResource("../ressources/fxmlFiles/layers.fxml"));
@@ -433,6 +443,8 @@ public class ControllerMain implements Initializable {
                 this.mainPane.setMinWidth(base.getWidth());
                 this.canvas.setWidth(base.getWidth());
                 this.canvas.setHeight(base.getHeight());
+                this.firstScaleX = this.canvas.getScaleX();
+                this.firstScaleY = this.canvas.getScaleY();
 
 
                 loader = new FXMLLoader();
@@ -565,10 +577,16 @@ public class ControllerMain implements Initializable {
 
         if (file != null) {
             try {
+                this.scaleX = canvas.getScaleX();
+                this.scaleY = canvas.getScaleY();
+                canvas.setScaleX(this.firstScaleX);
+                canvas.setScaleY(this.firstScaleY);
                 WritableImage writableImage = new WritableImage((int) this.canvas.getWidth(), (int) this.canvas.getHeight());
                 canvas.snapshot(null, writableImage);
                 RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
                 ImageIO.write(renderedImage, "png", file);
+                canvas.setScaleX(this.scaleX);
+                canvas.setScaleY(this.scaleY);
             } catch (IOException ignored) {
             }
         }
