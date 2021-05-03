@@ -208,6 +208,7 @@ public class ControllerMain implements Initializable {
                 this.model = new ProjectModel(base, this.canvas.getGraphicsContext2D());
                 this.controllerCanvas.init(this.model, this.primaryStage);
                 this.mainPane.getChildren().add(pane);
+
                 this.mainPane.setMinHeight(base.getHeight());
                 this.mainPane.setMinWidth(base.getWidth());
                 this.canvas.setWidth(base.getWidth());
@@ -769,8 +770,8 @@ public class ControllerMain implements Initializable {
 
     @FXML
     public void zoomMinus(ActionEvent actionEvent) {
-        this.canvas.setScaleX(this.canvas.getScaleX()*0.8);
-        this.canvas.setScaleY(this.canvas.getScaleY()*0.8);
+        this.canvas.setScaleX(this.canvas.getScaleX()*0.8333);
+        this.canvas.setScaleY(this.canvas.getScaleY()*0.8333);
     }
 
     @FXML
