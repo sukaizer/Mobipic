@@ -19,7 +19,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.application.Platform;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -65,6 +67,21 @@ public final class CanvasController implements ToolContext {
     private TextLayer editing;
     private boolean editingIsNew;
     private String originalText;
+    /**
+     * Changing an option (font size arrow, bold toggle, font list...) moves the keyboard focus to that control;
+     * as in other editors, it goes back to the text being typed so that typing can simply continue.
+     */
+    private final InvalidationListener refocusEditor = obs -> {
+        if (editor != null && canvas.getScene() != null
+                && !(canvas.getScene().getFocusOwner() instanceof TextInputControl)) {
+            TextArea current = editor;
+            Platform.runLater(() -> {
+                if (editor == current) {
+                    current.requestFocus();
+                }
+            });
+        }
+    };
 
     /** Maps canvas pixels back to image coordinates. */
     private final Scale canvasToImage = new Scale(1, 1, 0, 0);
@@ -216,7 +233,13 @@ public final class CanvasController implements ToolContext {
 
     @FXML
     private void onPressed(MouseEvent e) {
-        if (model == null || (e.getButton() != MouseButton.PRIMARY && e.getButton() != MouseButton.SECONDARY)) {
+        if (model == null) {
+            return;
+        }
+        // The press must not reach the enclosing ScrollPane: it takes the keyboard focus on every press,
+        // which would steal it from the text being typed (and from the canvas, for arrow-key nudging)
+        e.consume();
+        if (e.getButton() != MouseButton.PRIMARY && e.getButton() != MouseButton.SECONDARY) {
             return;
         }
         if (editing != null) {
@@ -288,6 +311,7 @@ public final class CanvasController implements ToolContext {
         layoutEditor();
         repaint();
         editor.requestFocus();
+        model.revisionProperty().addListener(refocusEditor);
         editor.end();
     }
 
@@ -329,6 +353,7 @@ public final class CanvasController implements ToolContext {
         editing = null;
         surface.getChildren().remove(editor);
         editor = null;
+        model.revisionProperty().removeListener(refocusEditor);
         if (layer.getText().isBlank()) {
             if (editingIsNew) {
                 model.cancelAdd(layer);
@@ -371,8 +396,9 @@ public final class CanvasController implements ToolContext {
         gc.save();
         gc.scale(renderScaleX, renderScaleY);
         CanvasRenderer.paintLayers(gc, model.getLayers(), editing);
+        // The selection frame belongs to the selection tool: while drawing it would hide what is being drawn
         Layer selected = model.getSelected();
-        if (selected != null && selected != editing) {
+        if (selected != null && selected != editing && toolKind.get() == ToolKind.SELECT) {
             CanvasRenderer.paintSelection(gc, selected, zoom.get());
         }
         if (editing == null) {

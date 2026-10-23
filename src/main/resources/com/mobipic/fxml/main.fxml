@@ -115,25 +115,25 @@
                </MenuBar>
                <ToolBar stylesheets="@../css/toolBar.css">
                  <items>
-                     <Button id="iconOpen" mnemonicParsing="false" onAction="#openProject">
+                     <Button focusTraversable="false" id="iconOpen" mnemonicParsing="false" onAction="#openProject">
                         <tooltip><Tooltip text="%tooltip.open" /></tooltip>
                      </Button>
-                     <Button id="iconNew" mnemonicParsing="false" onAction="#newProject">
+                     <Button focusTraversable="false" id="iconNew" mnemonicParsing="false" onAction="#newProject">
                         <tooltip><Tooltip text="%tooltip.new" /></tooltip>
                      </Button>
-                     <Button id="iconSave" fx:id="saveButton" mnemonicParsing="false" onAction="#saveProject">
+                     <Button focusTraversable="false" id="iconSave" fx:id="saveButton" mnemonicParsing="false" onAction="#saveProject">
                         <tooltip><Tooltip text="%tooltip.save" /></tooltip>
                      </Button>
-                     <Button id="iconImages" fx:id="newImageButton" mnemonicParsing="false" onAction="#addImageLayer">
+                     <Button focusTraversable="false" id="iconImages" fx:id="newImageButton" mnemonicParsing="false" onAction="#addImageLayer">
                         <tooltip><Tooltip text="%tooltip.image" /></tooltip>
                      </Button>
-                     <Button fx:id="zoomPlus" mnemonicParsing="false" onAction="#zoomPlus" text="+">
+                     <Button focusTraversable="false" fx:id="zoomPlus" mnemonicParsing="false" onAction="#zoomPlus" text="+">
                         <tooltip><Tooltip text="%menu.view.zoomIn" /></tooltip>
                      </Button>
-                     <Button fx:id="zoomMinus" mnemonicParsing="false" onAction="#zoomMinus" text="-">
+                     <Button focusTraversable="false" fx:id="zoomMinus" mnemonicParsing="false" onAction="#zoomMinus" text="-">
                         <tooltip><Tooltip text="%menu.view.zoomOut" /></tooltip>
                      </Button>
-                     <Button id="zoomReset" fx:id="zoomReset" mnemonicParsing="false" onAction="#zoomReset" text="1:1">
+                     <Button focusTraversable="false" id="zoomReset" fx:id="zoomReset" mnemonicParsing="false" onAction="#zoomReset" text="1:1">
                         <tooltip><Tooltip text="%menu.view.zoomReset" /></tooltip>
                      </Button>
                  </items>
