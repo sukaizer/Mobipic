@@ -71,7 +71,13 @@ public final class OptionsBarController {
     @FXML
     private Spinner<Double> radiusSpinner;
     @FXML
-    private HBox textGroup;
+    private HBox textFontGroup;
+    @FXML
+    private HBox textStyleGroup;
+    @FXML
+    private HBox textAlignGroup;
+    @FXML
+    private HBox textEffectGroup;
     @FXML
     private ComboBox<String> fontCombo;
     @FXML
@@ -235,7 +241,9 @@ public final class OptionsBarController {
         setShown(fillGroup, shape);
         setShown(widthGroup, stroked);
         setShown(radiusGroup, context == Context.RECTANGLE);
-        setShown(textGroup, context == Context.TEXT);
+        for (Node group : List.of(textFontGroup, textStyleGroup, textAlignGroup, textEffectGroup)) {
+            setShown(group, context == Context.TEXT);
+        }
         setShown(opacityGroup, context != Context.NONE && context != Context.EYEDROPPER);
         setShown(emptyLabel, context == Context.NONE);
         setShown(titleLabel, title != null);

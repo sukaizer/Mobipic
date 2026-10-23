@@ -25,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.image.Image;
 import javafx.scene.input.Clipboard;
@@ -37,6 +38,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -134,6 +136,10 @@ public final class MainController {
 
     // Layer panel
     @FXML
+    private SplitPane mainSplit;
+    @FXML
+    private VBox layerPanel;
+    @FXML
     private LayersController layersViewController;
     @FXML
     private Button up;
@@ -175,6 +181,7 @@ public final class MainController {
         zoomResetMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT0, KeyCombination.SHORTCUT_DOWN));
         renameMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F2));
 
+        SplitPane.setResizableWithParent(layerPanel, false);
         canvasViewController.setSettings(settings);
         toolPaletteViewController.init(settings, canvasViewController.toolKindProperty());
         optionsViewController.init(settings);
@@ -210,6 +217,9 @@ public final class MainController {
             quitApp();
         });
         Scene scene = stage.getScene();
+        // Open the layer panel at its preferred width; afterwards it keeps its width when the window is resized
+        stage.setOnShown(e -> mainSplit.setDividerPositions(
+                Math.max(0.5, 1 - layerPanel.getPrefWidth() / Math.max(1, mainSplit.getWidth()))));
         scene.addEventHandler(KeyEvent.KEY_PRESSED, this::onKeyPressed);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onArrowKey);
         updateTitle();

@@ -6,7 +6,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 
-<ListView fx:id="layersList" editable="true" minHeight="150.0" prefWidth="250.0" stylesheets="@../css/layers.css"
+<ListView fx:id="layersList" editable="true" minHeight="60.0" prefWidth="250.0" stylesheets="@../css/layers.css"
           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="com.mobipic.controller.LayersController">
    <placeholder>

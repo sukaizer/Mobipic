@@ -77,6 +77,9 @@ public final class CanvasController implements ToolContext {
         surface.scaleXProperty().bind(zoom);
         surface.scaleYProperty().bind(zoom);
         canvas.getTransforms().add(canvasToImage);
+        // The surface is sized to the image explicitly: a Pane measures its children without their
+        // transforms, so the (differently sized) canvas must not take part in the layout
+        canvas.setManaged(false);
         canvas.setFocusTraversable(true);
         zoom.addListener(obs -> updateRenderScale()); // also repaints: overlays keep a constant on-screen width
         // Moving the window to a screen with another scaling changes the resolution needed
@@ -123,8 +126,10 @@ public final class CanvasController implements ToolContext {
         if (model == null) {
             canvas.setWidth(0);
             canvas.setHeight(0);
+            setSurfaceSize(0, 0);
             return;
         }
+        setSurfaceSize(model.getWidth(), model.getHeight());
         updateRenderScale();
         model.getLayers().addListener(repaintListener);
         model.selectedProperty().addListener(selectionListener);
@@ -134,6 +139,12 @@ public final class CanvasController implements ToolContext {
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    private void setSurfaceSize(double width, double height) {
+        surface.setMinSize(width, height);
+        surface.setPrefSize(width, height);
+        surface.setMaxSize(width, height);
     }
 
     private static int maxCanvasSize() {

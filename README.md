@@ -63,6 +63,8 @@ The interface is in French by default and in English on English systems
 ### Viewing and saving
 
 * Zoom in and out, with scroll bars and Ctrl + mouse wheel
+* Resizable window down to 640x420: the bars stay visible, the tool palette scrolls and the layer
+  panel can be widened or narrowed by dragging its divider
 * Export the image to jpg, png or bmp, always at 100% scale (hidden layers are not exported)
 * Save your project as a single, portable `.mbpc` file and open it later to continue editing
 * Prompt before losing unsaved changes

@@ -1,7 +1,10 @@
 /* Tool column on the left of the canvas */
 .tool-palette {
     -fx-background-color: #f2f2f2;
-    -fx-border-color: transparent #c8c8c8 transparent transparent;
+    /* Fixed width: two 32 px tool buttons, gap and padding */
+    -fx-min-width: 80;
+    -fx-pref-width: 80;
+    -fx-max-width: 80;
     -fx-padding: 6;
     -fx-spacing: 6;
     -fx-alignment: top-center;
@@ -10,7 +13,7 @@
 .tool-grid {
     -fx-hgap: 3;
     -fx-vgap: 3;
-    -fx-pref-columns: 2;
+    -fx-alignment: top-center;
 }
 
 .tool-button {
@@ -62,8 +65,7 @@
 .palette {
     -fx-hgap: 3;
     -fx-vgap: 3;
-    -fx-pref-columns: 3;
-    -fx-alignment: center;
+    -fx-alignment: top-center;
 }
 
 .palette-swatch {

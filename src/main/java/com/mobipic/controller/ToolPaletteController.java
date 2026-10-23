@@ -11,7 +11,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -31,6 +31,7 @@ public final class ToolPaletteController {
             "#22b14c", "#b5e61d", "#00a2e8", "#99d9ea", "#3f48cc", "#7092be",
             "#a349a4", "#c8bfe7");
     private static final double SWATCH_SIZE = 16;
+    private static final int PALETTE_COLUMNS = 3;
 
     @FXML
     private ToggleGroup toolGroup;
@@ -59,7 +60,7 @@ public final class ToolPaletteController {
     @FXML
     private Rectangle secondarySwatch;
     @FXML
-    private TilePane palette;
+    private GridPane palette;
 
     private ToolSettings settings;
 
@@ -69,7 +70,8 @@ public final class ToolPaletteController {
                 roundedRectangleTool, ToolKind.ROUNDED_RECTANGLE, ellipseTool, ToolKind.ELLIPSE,
                 triangleTool, ToolKind.TRIANGLE, lineTool, ToolKind.LINE, textTool, ToolKind.TEXT,
                 eyedropperTool, ToolKind.EYEDROPPER).forEach(Toggle::setUserData);
-        for (String hex : PALETTE) {
+        for (int i = 0; i < PALETTE.size(); i++) {
+            String hex = PALETTE.get(i);
             Rectangle swatch = new Rectangle(SWATCH_SIZE, SWATCH_SIZE, Color.web(hex));
             swatch.getStyleClass().add("palette-swatch");
             Tooltip.install(swatch, new Tooltip(I18n.get("colors.swatchHelp")));
@@ -79,7 +81,7 @@ public final class ToolPaletteController {
                             .set((Color) swatch.getFill());
                 }
             });
-            palette.getChildren().add(swatch);
+            palette.add(swatch, i % PALETTE_COLUMNS, i / PALETTE_COLUMNS);
         }
     }
 

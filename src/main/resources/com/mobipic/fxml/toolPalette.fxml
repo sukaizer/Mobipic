@@ -5,7 +5,7 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
@@ -16,46 +16,46 @@
       <ToggleGroup fx:id="toolGroup" />
    </fx:define>
    <children>
-      <TilePane prefColumns="2" styleClass="tool-grid">
+      <GridPane styleClass="tool-grid">
          <children>
-            <ToggleButton fx:id="selectTool" toggleGroup="$toolGroup" styleClass="tool-button">
+            <ToggleButton GridPane.columnIndex="0" GridPane.rowIndex="0" fx:id="selectTool" toggleGroup="$toolGroup" styleClass="tool-button">
                <graphic><SVGPath styleClass="icon-fill" content="M5 2 L5 19 L9.5 14.8 L12.6 21.5 L15.3 20.3 L12.2 13.7 L18 13.7 Z" /></graphic>
                <tooltip><Tooltip text="%tool.tip.select" /></tooltip>
             </ToggleButton>
-            <ToggleButton fx:id="brushTool" toggleGroup="$toolGroup" styleClass="tool-button">
+            <ToggleButton GridPane.columnIndex="1" GridPane.rowIndex="0" fx:id="brushTool" toggleGroup="$toolGroup" styleClass="tool-button">
                <graphic><SVGPath styleClass="icon-fill" content="M15.5 3.5 L20.5 8.5 L9 20 L3 21 L4 15 Z M14 5 L19 10" /></graphic>
                <tooltip><Tooltip text="%tool.tip.brush" /></tooltip>
             </ToggleButton>
-            <ToggleButton fx:id="rectangleTool" toggleGroup="$toolGroup" styleClass="tool-button">
+            <ToggleButton GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="rectangleTool" toggleGroup="$toolGroup" styleClass="tool-button">
                <graphic><SVGPath styleClass="icon-stroke" content="M3 6 H21 V18 H3 Z" /></graphic>
                <tooltip><Tooltip text="%tool.tip.rectangle" /></tooltip>
             </ToggleButton>
-            <ToggleButton fx:id="roundedRectangleTool" toggleGroup="$toolGroup" styleClass="tool-button">
+            <ToggleButton GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="roundedRectangleTool" toggleGroup="$toolGroup" styleClass="tool-button">
                <graphic><SVGPath styleClass="icon-stroke" content="M7.5 6 H16.5 Q21 6 21 10.5 V13.5 Q21 18 16.5 18 H7.5 Q3 18 3 13.5 V10.5 Q3 6 7.5 6 Z" /></graphic>
                <tooltip><Tooltip text="%tool.tip.roundedRectangle" /></tooltip>
             </ToggleButton>
-            <ToggleButton fx:id="ellipseTool" toggleGroup="$toolGroup" styleClass="tool-button">
+            <ToggleButton GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="ellipseTool" toggleGroup="$toolGroup" styleClass="tool-button">
                <graphic><SVGPath styleClass="icon-stroke" content="M2 12 A10 7 0 1 0 22 12 A10 7 0 1 0 2 12 Z" /></graphic>
                <tooltip><Tooltip text="%tool.tip.ellipse" /></tooltip>
             </ToggleButton>
-            <ToggleButton fx:id="triangleTool" toggleGroup="$toolGroup" styleClass="tool-button">
+            <ToggleButton GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="triangleTool" toggleGroup="$toolGroup" styleClass="tool-button">
                <graphic><SVGPath styleClass="icon-stroke" content="M12 4 L21 20 H3 Z" /></graphic>
                <tooltip><Tooltip text="%tool.tip.triangle" /></tooltip>
             </ToggleButton>
-            <ToggleButton fx:id="lineTool" toggleGroup="$toolGroup" styleClass="tool-button">
+            <ToggleButton GridPane.columnIndex="0" GridPane.rowIndex="3" fx:id="lineTool" toggleGroup="$toolGroup" styleClass="tool-button">
                <graphic><SVGPath styleClass="icon-stroke" content="M4 20 L20 4" /></graphic>
                <tooltip><Tooltip text="%tool.tip.line" /></tooltip>
             </ToggleButton>
-            <ToggleButton fx:id="textTool" toggleGroup="$toolGroup" styleClass="tool-button">
+            <ToggleButton GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="textTool" toggleGroup="$toolGroup" styleClass="tool-button">
                <graphic><SVGPath styleClass="icon-fill" content="M4 4 H20 V8 H18 V6.5 H13.5 V18 H15.5 V20 H8.5 V18 H10.5 V6.5 H6 V8 H4 Z" /></graphic>
                <tooltip><Tooltip text="%tool.tip.text" /></tooltip>
             </ToggleButton>
-            <ToggleButton fx:id="eyedropperTool" toggleGroup="$toolGroup" styleClass="tool-button">
+            <ToggleButton GridPane.columnIndex="0" GridPane.rowIndex="4" fx:id="eyedropperTool" toggleGroup="$toolGroup" styleClass="tool-button">
                <graphic><SVGPath styleClass="icon-fill" content="M17.5 2.5 Q19.5 1 21.5 3 Q23 5 21.5 6.5 L19 9 L20 10 L18.5 11.5 L12.5 5.5 L14 4 L15 5 Z M11.5 6.5 L17.5 12.5 L8 22 H3 V17 Z" /></graphic>
                <tooltip><Tooltip text="%tool.tip.eyedropper" /></tooltip>
             </ToggleButton>
          </children>
-      </TilePane>
+      </GridPane>
       <Separator />
       <!-- Current colours, Paint style: primary in front, secondary behind. Click to swap. -->
       <Pane fx:id="colorIndicator" styleClass="color-indicator" onMouseClicked="#swapColors">
@@ -64,6 +64,6 @@
             <Rectangle fx:id="primarySwatch" layoutX="10.0" layoutY="2.0" width="26.0" height="26.0" styleClass="indicator-swatch" />
          </children>
       </Pane>
-      <TilePane fx:id="palette" prefColumns="3" styleClass="palette" />
+      <GridPane fx:id="palette" styleClass="palette" />
    </children>
 </VBox>

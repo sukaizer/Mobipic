@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.ToggleButton?>
@@ -54,19 +53,26 @@
          </children>
       </HBox>
 
-      <HBox fx:id="textGroup" styleClass="options-group">
+      <HBox fx:id="textFontGroup" styleClass="options-group">
          <children>
             <ComboBox fx:id="fontCombo" prefWidth="160.0" visibleRowCount="15" />
             <Spinner fx:id="sizeSpinner" editable="true" prefWidth="80.0">
                <tooltip><Tooltip text="%text.size" /></tooltip>
             </Spinner>
+         </children>
+      </HBox>
+      <HBox fx:id="textStyleGroup" styleClass="options-group">
+         <children>
             <ToggleButton fx:id="boldToggle" styleClass="icon-toggle, bold-toggle" text="%text.boldShort">
                <tooltip><Tooltip text="%text.bold" /></tooltip>
             </ToggleButton>
             <ToggleButton fx:id="italicToggle" styleClass="icon-toggle, italic-toggle" text="%text.italicShort">
                <tooltip><Tooltip text="%text.italic" /></tooltip>
             </ToggleButton>
-            <Separator orientation="VERTICAL" />
+         </children>
+      </HBox>
+      <HBox fx:id="textAlignGroup" styleClass="options-group">
+         <children>
             <ToggleButton fx:id="alignLeft" styleClass="icon-toggle" toggleGroup="$alignGroup">
                <graphic><SVGPath styleClass="icon-fill" content="M2 3 H14 V5 H2 Z M2 7 H10 V9 H2 Z M2 11 H14 V13 H2 Z" /></graphic>
                <tooltip><Tooltip text="%text.align.left" /></tooltip>
@@ -79,7 +85,10 @@
                <graphic><SVGPath styleClass="icon-fill" content="M2 3 H14 V5 H2 Z M6 7 H14 V9 H6 Z M2 11 H14 V13 H2 Z" /></graphic>
                <tooltip><Tooltip text="%text.align.right" /></tooltip>
             </ToggleButton>
-            <Separator orientation="VERTICAL" />
+         </children>
+      </HBox>
+      <HBox fx:id="textEffectGroup" styleClass="options-group">
+         <children>
             <Label text="%options.textOutline" />
             <Spinner fx:id="outlineSpinner" editable="true" prefWidth="70.0" />
             <CheckBox fx:id="shadowCheck" text="%options.shadow" />

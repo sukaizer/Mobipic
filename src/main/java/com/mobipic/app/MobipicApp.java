@@ -4,9 +4,11 @@ import com.mobipic.controller.MainController;
 import com.mobipic.util.Fxml;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -22,6 +24,8 @@ import java.util.List;
 public class MobipicApp extends Application {
 
     private static final Duration SPLASH_DURATION = Duration.seconds(2);
+    private static final double MIN_WIDTH = 640;
+    private static final double MIN_HEIGHT = 420;
 
     @Override
     public void start(Stage splashStage) {
@@ -40,8 +44,7 @@ public class MobipicApp extends Application {
         stage.setTitle("Mobipic");
         stage.getIcons().add(icon);
         stage.setScene(new Scene(main.root()));
-        stage.setMinWidth(800);
-        stage.setMinHeight(500);
+        fitToScreen(stage);
         main.controller().init(stage, getHostServices());
 
         Runnable showMain = () -> {
@@ -57,6 +60,16 @@ public class MobipicApp extends Application {
         PauseTransition pause = new PauseTransition(SPLASH_DURATION);
         pause.setOnFinished(e -> showMain.run());
         pause.play();
+    }
+
+    /** Uses the preferred size of the window when the screen allows it, or most of the screen otherwise. */
+    private static void fitToScreen(Stage stage) {
+        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+        Parent root = stage.getScene().getRoot();
+        stage.setWidth(Math.min(root.prefWidth(-1), screen.getWidth() * 0.92));
+        stage.setHeight(Math.min(root.prefHeight(-1), screen.getHeight() * 0.92));
+        stage.setMinWidth(Math.min(MIN_WIDTH, screen.getWidth()));
+        stage.setMinHeight(Math.min(MIN_HEIGHT, screen.getHeight()));
     }
 
     private java.util.Optional<Path> startupFile() {

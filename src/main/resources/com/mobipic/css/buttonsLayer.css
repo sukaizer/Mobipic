@@ -1,12 +1,14 @@
-.vbox {
-    -fx-alignment: CENTER;
-    -fx-spacing: 10;
+.layer-buttons {
+    -fx-alignment: center;
+    -fx-hgap: 8;
+    -fx-vgap: 8;
+    -fx-padding: 8 6 10 6;
 }
 .button {
     -fx-focus-color: #b22222;
     -fx-alignment: CENTER;
-    -fx-pref-width: 120;
-    -fx-pref-height: 30;
+    -fx-pref-width: 115;
+    -fx-pref-height: 28;
     -fx-font-family: Verdana;
 
     -fx-background-color:

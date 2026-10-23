@@ -8,6 +8,39 @@
     -fx-padding: 20;
 }
 
+.main-split {
+    -fx-padding: 0;
+    -fx-box-border: transparent;
+}
+
+.main-split > .split-pane-divider {
+    -fx-padding: 0 2 0 2;
+    -fx-background-color: #c8c8c8;
+}
+
+.palette-scroll,
+.palette-scroll > .viewport {
+    -fx-background-color: #f2f2f2;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.palette-scroll {
+    -fx-border-color: transparent #c8c8c8 transparent transparent;
+    /* The palette (80 px) plus room for the scroll bar shown on short windows */
+    -fx-min-width: 90;
+    -fx-pref-width: 90;
+    -fx-max-width: 90;
+}
+
+.palette-scroll .scroll-bar:vertical {
+    -fx-pref-width: 8;
+}
+
+.layer-panel {
+    -fx-background-color: #f4f4f4;
+}
+
 .status-bar {
     -fx-background-color: #f2f2f2;
     -fx-border-color: #c8c8c8 transparent transparent transparent;
