@@ -6,9 +6,8 @@ It is a basic photo editor written in Java using JavaFX.
 Version 2 modernizes the original 2021 project (Java 16, IntelliJ-only build) while keeping
 the same features, look and spirit.
 
-### Contributors
-* @sukaizer
-* @paulcatillon
+### Author
+* Alexandre Ciorascu (@sukaizer)
 
 ## Getting started
 

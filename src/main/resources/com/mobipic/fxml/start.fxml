@@ -15,6 +15,5 @@
          </image>
       </ImageView>
       <Label layoutX="41.0" layoutY="253.0" prefHeight="32.0" text="%splash.by" />
-      <Label layoutX="41.0" layoutY="285.0" text="%splash.and" />
    </children>
 </AnchorPane>
