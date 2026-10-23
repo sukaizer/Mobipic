@@ -30,7 +30,10 @@ public final class ImageLayer extends Layer {
     }
 
     private ImageLayer(ImageLayer other) {
-        this(other.image, other.x, other.y, other.width, other.height);
+        super(other);
+        this.image = other.image;
+        this.width = other.width;
+        this.height = other.height;
         this.filter = other.filter;
     }
 
@@ -54,7 +57,8 @@ public final class ImageLayer extends Layer {
         this.filter = Objects.requireNonNull(filter, "filter");
     }
 
-    private Box box() {
+    @Override
+    public Box bounds() {
         return new Box(x, y, width, height);
     }
 
@@ -68,29 +72,29 @@ public final class ImageLayer extends Layer {
     }
 
     @Override
-    public void strokeOutline(GraphicsContext gc) {
-        gc.strokeRect(x, y, width, height);
-    }
-
-    @Override
-    public boolean contains(double px, double py) {
-        return box().contains(px, py);
+    protected boolean contains(double lx, double ly) {
+        return bounds().contains(lx, ly);
     }
 
     @Override
     public List<Point2D> handles() {
-        return box().corners();
+        return bounds().handles();
     }
 
     @Override
-    public int moveHandle(int index, double px, double py) {
-        Box before = box();
-        Box after = before.withCornerMoved(index, px, py, false);
+    protected int oppositeHandle(int index) {
+        return Box.oppositeHandle(index);
+    }
+
+    @Override
+    protected int moveHandle(int index, double lx, double ly, boolean keepRatio) {
+        Box before = bounds();
+        Box after = before.withHandleMoved(index, lx, ly, keepRatio);
         x = after.x();
         y = after.y();
         width = after.w();
         height = after.h();
-        return Box.draggedCorner(before, index, after);
+        return Box.draggedHandle(before, index, after);
     }
 
     @Override

@@ -2,11 +2,16 @@
 
 <?import javafx.scene.Group?>
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.Pane?>
 
-<!-- The Group makes the ScrollPane account for the zoom (scale) of the canvas. -->
+<!-- The Group makes the ScrollPane account for the zoom, which scales the surface (canvas + text editor). -->
 <Group xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mobipic.controller.CanvasController">
    <children>
-      <Canvas fx:id="canvas" styleClass="drawing-canvas" onMouseDragged="#onDragged" onMouseMoved="#onMoved" onMousePressed="#onPressed"
-              onMouseReleased="#onReleased" onMouseExited="#onExited" />
+      <Pane fx:id="surface">
+         <children>
+            <Canvas fx:id="canvas" onMouseDragged="#onDragged" onMouseMoved="#onMoved" onMousePressed="#onPressed"
+                    onMouseReleased="#onReleased" onMouseExited="#onExited" />
+         </children>
+      </Pane>
    </children>
 </Group>

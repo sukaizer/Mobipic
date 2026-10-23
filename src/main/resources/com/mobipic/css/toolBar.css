@@ -46,14 +46,3 @@
 #zoomReset {
     -fx-pref-width: 40;
 }
-
-.zoom-label {
-    -fx-font-family: Verdana;
-    -fx-padding: 0 0 0 6;
-}
-
-.hint-label {
-    -fx-font-family: Verdana;
-    -fx-text-fill: #555555;
-    -fx-padding: 0 6 0 0;
-}

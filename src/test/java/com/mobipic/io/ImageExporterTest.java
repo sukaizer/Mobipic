@@ -1,6 +1,7 @@
 package com.mobipic.io;
 
 import com.mobipic.FxToolkit;
+import com.mobipic.model.FillMode;
 import com.mobipic.model.ProjectModel;
 import com.mobipic.model.RectangleLayer;
 import com.mobipic.model.ShapeStyle;
@@ -29,7 +30,7 @@ class ImageExporterTest {
         Path file = dir.resolve("export." + format.extension());
         FxToolkit.onFx(() -> {
             ProjectModel model = new ProjectModel(FxToolkit.solidImage(64, 48, Color.WHITE));
-            model.add(new RectangleLayer(0, 0, 32, 48, new ShapeStyle(Color.RED, 1, true)));
+            model.add(new RectangleLayer(0, 0, 32, 48, new ShapeStyle(Color.RED, Color.RED, 1, FillMode.FILL)));
             model.select(null);
             ImageExporter.export(model, format, file);
             return null;

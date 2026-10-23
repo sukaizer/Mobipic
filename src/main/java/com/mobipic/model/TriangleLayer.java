@@ -2,6 +2,7 @@ package com.mobipic.model;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.transform.Rotate;
 
 import java.util.List;
 
@@ -48,6 +49,45 @@ public final class TriangleLayer extends ShapeLayer {
     }
 
     @Override
+    protected boolean usesRotation() {
+        return false;
+    }
+
+    /** Sets an isosceles triangle inscribed in the box, pointing up. */
+    public void setBox(Box box) {
+        x = box.x() + box.w() / 2;
+        y = box.y();
+        x2 = box.maxX();
+        y2 = box.maxY();
+        x3 = box.x();
+        y3 = box.maxY();
+    }
+
+    /** Moves the vertex {@code index} (0, 1 or 2). */
+    public void setVertex(int index, double vx, double vy) {
+        switch (index) {
+            case 0 -> {
+                x = vx;
+                y = vy;
+            }
+            case 1 -> {
+                x2 = vx;
+                y2 = vy;
+            }
+            case 2 -> {
+                x3 = vx;
+                y3 = vy;
+            }
+            default -> throw new IndexOutOfBoundsException(index);
+        }
+    }
+
+    @Override
+    public Box bounds() {
+        return Box.around(xs(), ys());
+    }
+
+    @Override
     public void translate(double dx, double dy) {
         super.translate(dx, dy);
         x2 += dx;
@@ -56,16 +96,14 @@ public final class TriangleLayer extends ShapeLayer {
         y3 += dy;
     }
 
-    /** Builds an isosceles triangle inscribed in the dragged box, pointing up. */
     @Override
-    public void setFromDrag(double ax, double ay, double bx, double by) {
-        Box box = Box.fromCorners(ax, ay, bx, by, false);
-        x = box.x() + box.w() / 2;
-        y = box.y();
-        x2 = box.x() + box.w();
-        y2 = box.y() + box.h();
-        x3 = box.x();
-        y3 = box.y() + box.h();
+    public void rotateBy(double degrees, double px, double py) {
+        Rotate r = new Rotate(degrees, px, py);
+        List<Point2D> vertices = handles();
+        for (int i = 0; i < 3; i++) {
+            Point2D p = r.transform(vertices.get(i));
+            setVertex(i, p.getX(), p.getY());
+        }
     }
 
     @Override
@@ -78,6 +116,11 @@ public final class TriangleLayer extends ShapeLayer {
         gc.strokePolygon(xs(), ys(), 3);
     }
 
+    @Override
+    public void strokeOutline(GraphicsContext gc) {
+        strokeGeometry(gc);
+    }
+
     private double[] xs() {
         return new double[]{x, x2, x3};
     }
@@ -87,7 +130,7 @@ public final class TriangleLayer extends ShapeLayer {
     }
 
     @Override
-    public boolean contains(double px, double py) {
+    protected boolean contains(double px, double py) {
         double tolerance = hitTolerance();
         if (Geometry.distanceToSegment(px, py, x, y, x2, y2) <= tolerance
                 || Geometry.distanceToSegment(px, py, x2, y2, x3, y3) <= tolerance
@@ -111,22 +154,8 @@ public final class TriangleLayer extends ShapeLayer {
     }
 
     @Override
-    public int moveHandle(int index, double px, double py) {
-        switch (index) {
-            case 0 -> {
-                x = px;
-                y = py;
-            }
-            case 1 -> {
-                x2 = px;
-                y2 = py;
-            }
-            case 2 -> {
-                x3 = px;
-                y3 = py;
-            }
-            default -> throw new IndexOutOfBoundsException(index);
-        }
+    protected int moveHandle(int index, double lx, double ly, boolean keepRatio) {
+        setVertex(index, lx, ly);
         return index;
     }
 

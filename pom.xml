@@ -6,7 +6,7 @@
 
     <groupId>com.mobipic</groupId>
     <artifactId>mobipic</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <name>Mobipic</name>
     <description>A basic photo editor written in Java with JavaFX</description>
 
@@ -98,7 +98,8 @@
                     <noManPages>true</noManPages>
                     <noHeaderFiles>true</noHeaderFiles>
                     <stripDebug>true</stripDebug>
-                    <compress>zip-6</compress>
+                    <!-- The plugin only takes a number; jlink warns that "2" is deprecated, which is harmless -->
+                    <compress>2</compress>
                 </configuration>
             </plugin>
         </plugins>

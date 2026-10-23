@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.SVGPath?>
+
+<!-- Options of the active tool, or of the selected layer with the selection tool. Groups are shown as needed. -->
+<FlowPane styleClass="options-bar" stylesheets="@../css/optionsBar.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mobipic.controller.OptionsBarController">
+   <fx:define>
+      <ToggleGroup fx:id="alignGroup" />
+   </fx:define>
+   <children>
+      <Label fx:id="titleLabel" styleClass="options-title" />
+
+      <HBox fx:id="primaryGroup" styleClass="options-group">
+         <children>
+            <Label fx:id="primaryLabel" />
+            <ColorPicker fx:id="primaryPicker" styleClass="swatch-picker" />
+         </children>
+      </HBox>
+      <HBox fx:id="secondaryGroup" styleClass="options-group">
+         <children>
+            <Label fx:id="secondaryLabel" />
+            <ColorPicker fx:id="secondaryPicker" styleClass="swatch-picker" />
+         </children>
+      </HBox>
+      <HBox fx:id="fillGroup" styleClass="options-group">
+         <children>
+            <ChoiceBox fx:id="fillModeChoice" />
+         </children>
+      </HBox>
+      <HBox fx:id="widthGroup" styleClass="options-group">
+         <children>
+            <Label text="%options.width" />
+            <Spinner fx:id="widthSpinner" editable="true" prefWidth="80.0" />
+         </children>
+      </HBox>
+      <HBox fx:id="radiusGroup" styleClass="options-group">
+         <children>
+            <Label text="%options.radius" />
+            <Spinner fx:id="radiusSpinner" editable="true" prefWidth="80.0" />
+         </children>
+      </HBox>
+
+      <HBox fx:id="textGroup" styleClass="options-group">
+         <children>
+            <ComboBox fx:id="fontCombo" prefWidth="160.0" visibleRowCount="15" />
+            <Spinner fx:id="sizeSpinner" editable="true" prefWidth="80.0">
+               <tooltip><Tooltip text="%text.size" /></tooltip>
+            </Spinner>
+            <ToggleButton fx:id="boldToggle" styleClass="icon-toggle, bold-toggle" text="%text.boldShort">
+               <tooltip><Tooltip text="%text.bold" /></tooltip>
+            </ToggleButton>
+            <ToggleButton fx:id="italicToggle" styleClass="icon-toggle, italic-toggle" text="%text.italicShort">
+               <tooltip><Tooltip text="%text.italic" /></tooltip>
+            </ToggleButton>
+            <Separator orientation="VERTICAL" />
+            <ToggleButton fx:id="alignLeft" styleClass="icon-toggle" toggleGroup="$alignGroup">
+               <graphic><SVGPath styleClass="icon-fill" content="M2 3 H14 V5 H2 Z M2 7 H10 V9 H2 Z M2 11 H14 V13 H2 Z" /></graphic>
+               <tooltip><Tooltip text="%text.align.left" /></tooltip>
+            </ToggleButton>
+            <ToggleButton fx:id="alignCenter" styleClass="icon-toggle" toggleGroup="$alignGroup">
+               <graphic><SVGPath styleClass="icon-fill" content="M2 3 H14 V5 H2 Z M4 7 H12 V9 H4 Z M2 11 H14 V13 H2 Z" /></graphic>
+               <tooltip><Tooltip text="%text.align.center" /></tooltip>
+            </ToggleButton>
+            <ToggleButton fx:id="alignRight" styleClass="icon-toggle" toggleGroup="$alignGroup">
+               <graphic><SVGPath styleClass="icon-fill" content="M2 3 H14 V5 H2 Z M6 7 H14 V9 H6 Z M2 11 H14 V13 H2 Z" /></graphic>
+               <tooltip><Tooltip text="%text.align.right" /></tooltip>
+            </ToggleButton>
+            <Separator orientation="VERTICAL" />
+            <Label text="%options.textOutline" />
+            <Spinner fx:id="outlineSpinner" editable="true" prefWidth="70.0" />
+            <CheckBox fx:id="shadowCheck" text="%options.shadow" />
+         </children>
+      </HBox>
+
+      <HBox fx:id="opacityGroup" styleClass="options-group">
+         <children>
+            <Label text="%options.opacity" />
+            <Slider fx:id="opacitySlider" max="100.0" min="0.0" prefWidth="100.0" value="100.0" />
+            <Label fx:id="opacityLabel" minWidth="40.0" />
+         </children>
+      </HBox>
+
+      <Label fx:id="emptyLabel" styleClass="options-empty" text="%options.empty" />
+   </children>
+</FlowPane>

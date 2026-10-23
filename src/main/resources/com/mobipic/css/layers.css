@@ -1,0 +1,29 @@
+/* Layer panel rows: visibility toggle, thumbnail, name */
+.list-cell {
+    -fx-padding: 3 4 3 4;
+}
+
+.eye-toggle {
+    -fx-background-color: transparent;
+    -fx-padding: 2;
+    -fx-cursor: hand;
+}
+
+.eye-icon {
+    -fx-fill: transparent;
+    -fx-stroke: #333333;
+    -fx-stroke-width: 1.3;
+}
+
+.list-view:focused .list-cell:selected .eye-icon {
+    -fx-stroke: white;
+}
+
+.layer-thumb {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 2, 0, 0, 0);
+}
+
+.drop-target {
+    -fx-border-color: #4a7fc1 transparent transparent transparent;
+    -fx-border-width: 2 0 0 0;
+}

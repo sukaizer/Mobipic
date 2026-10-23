@@ -1,17 +1,18 @@
 package com.mobipic.model;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.StrokeLineJoin;
+
+import java.util.Objects;
 
 /**
- * A geometric shape drawn with a colour, a stroke width and optionally filled.
+ * A geometric shape painted with an outline, a fill, or both.
  */
 public abstract sealed class ShapeLayer extends Layer
-        permits SquareLayer, RectangleLayer, CircleLayer, EllipseLayer, LineLayer, TriangleLayer {
+        permits RectangleLayer, EllipseLayer, LineLayer, TriangleLayer, PathLayer {
 
-    protected Color color;
-    protected double lineWidth;
-    protected boolean filled;
+    protected ShapeStyle style;
 
     protected ShapeLayer(double x, double y, ShapeStyle style) {
         super(x, y);
@@ -19,66 +20,48 @@ public abstract sealed class ShapeLayer extends Layer
     }
 
     protected ShapeLayer(ShapeLayer other) {
-        super(other.x, other.y);
-        this.color = other.color;
-        this.lineWidth = other.lineWidth;
-        this.filled = other.filled;
+        super(other);
+        this.style = other.style;
     }
 
     public ShapeStyle getStyle() {
-        return new ShapeStyle(color, lineWidth, filled);
+        return style;
     }
 
     public void setStyle(ShapeStyle style) {
-        this.color = style.color();
-        this.lineWidth = style.lineWidth();
-        this.filled = style.filled() && canFill();
+        Objects.requireNonNull(style, "style");
+        // Open shapes (lines, brush strokes) are always drawn as an outline
+        this.style = canFill() ? style : style.withFillMode(FillMode.OUTLINE);
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public double getLineWidth() {
-        return lineWidth;
-    }
-
-    public boolean isFilled() {
-        return filled;
+    /** @return whether the shape is closed and can be filled */
+    public boolean canFill() {
+        return true;
     }
 
     @Override
     public final void paint(GraphicsContext gc) {
-        gc.setLineWidth(lineWidth);
-        if (filled) {
-            gc.setFill(color);
+        if (style.fillMode().filled()) {
+            gc.setFill(style.fill());
             fillGeometry(gc);
-        } else {
-            gc.setStroke(color);
+        }
+        if (style.fillMode().stroked()) {
+            gc.setStroke(style.stroke());
+            gc.setLineWidth(style.lineWidth());
+            if (!canFill()) { // open strokes look better with round ends
+                gc.setLineCap(StrokeLineCap.ROUND);
+                gc.setLineJoin(StrokeLineJoin.ROUND);
+            }
             strokeGeometry(gc);
         }
     }
-
-    @Override
-    public void strokeOutline(GraphicsContext gc) {
-        strokeGeometry(gc);
-    }
-
-    /**
-     * Sets the geometry from a mouse drag going from the anchor {@code (ax, ay)} to {@code (bx, by)}.
-     */
-    public abstract void setFromDrag(double ax, double ay, double bx, double by);
 
     protected abstract void fillGeometry(GraphicsContext gc);
 
     protected abstract void strokeGeometry(GraphicsContext gc);
 
-    protected boolean canFill() {
-        return true;
-    }
-
     /** @return the tolerance around thin geometry when hit testing */
     protected double hitTolerance() {
-        return Math.max(lineWidth / 2, 4);
+        return Math.max(style.lineWidth() / 2, 4);
     }
 }

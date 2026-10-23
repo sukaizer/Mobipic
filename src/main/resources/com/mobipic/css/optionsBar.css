@@ -1,0 +1,52 @@
+/* Options of the active tool, under the toolbar */
+.options-bar {
+    -fx-background-color: linear-gradient(#fafafa, #ececec);
+    -fx-border-color: transparent transparent #c8c8c8 transparent;
+    -fx-padding: 4 8 4 8;
+    -fx-hgap: 14;
+    -fx-vgap: 4;
+    -fx-alignment: center-left;
+    -fx-min-height: 38;
+}
+
+.options-bar .label {
+    -fx-font-family: Verdana;
+    -fx-font-size: 11px;
+}
+
+.options-title {
+    -fx-font-weight: bold;
+}
+
+.options-group {
+    -fx-spacing: 5;
+    -fx-alignment: center-left;
+}
+
+.options-empty {
+    -fx-text-fill: #777777;
+}
+
+.swatch-picker {
+    -fx-color-label-visible: false;
+    -fx-cursor: hand;
+}
+
+.icon-toggle {
+    -fx-pref-width: 28;
+    -fx-pref-height: 26;
+    -fx-padding: 2;
+    -fx-cursor: hand;
+}
+
+.bold-toggle {
+    -fx-font-weight: bold;
+}
+
+.italic-toggle {
+    -fx-font-style: italic;
+}
+
+.icon-fill {
+    -fx-fill: #2b2b2b;
+}

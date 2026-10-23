@@ -6,80 +6,81 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.List;
 
 /**
- * An ellipse defined by the top-left corner of its bounding box and its two radii.
+ * An ellipse (or circle) inscribed in its bounding box.
  */
 public final class EllipseLayer extends ShapeLayer {
 
-    private double radiusX;
-    private double radiusY;
+    private double width;
+    private double height;
 
-    public EllipseLayer(double x, double y, double radiusX, double radiusY, ShapeStyle style) {
+    public EllipseLayer(double x, double y, double width, double height, ShapeStyle style) {
         super(x, y, style);
-        this.radiusX = radiusX;
-        this.radiusY = radiusY;
+        this.width = width;
+        this.height = height;
     }
 
     private EllipseLayer(EllipseLayer other) {
         super(other);
-        this.radiusX = other.radiusX;
-        this.radiusY = other.radiusY;
+        this.width = other.width;
+        this.height = other.height;
     }
 
-    public double getRadiusX() {
-        return radiusX;
+    public double getWidth() {
+        return width;
     }
 
-    public double getRadiusY() {
-        return radiusY;
+    public double getHeight() {
+        return height;
     }
 
-    private Box box() {
-        return new Box(x, y, 2 * radiusX, 2 * radiusY);
-    }
-
-    private void setBox(Box box) {
+    public void setBox(Box box) {
         x = box.x();
         y = box.y();
-        radiusX = box.w() / 2;
-        radiusY = box.h() / 2;
+        width = box.w();
+        height = box.h();
     }
 
     @Override
-    public void setFromDrag(double ax, double ay, double bx, double by) {
-        setBox(Box.fromCorners(ax, ay, bx, by, false));
+    public Box bounds() {
+        return new Box(x, y, width, height);
     }
 
     @Override
     protected void fillGeometry(GraphicsContext gc) {
-        gc.fillOval(x, y, 2 * radiusX, 2 * radiusY);
+        gc.fillOval(x, y, width, height);
     }
 
     @Override
     protected void strokeGeometry(GraphicsContext gc) {
-        gc.strokeOval(x, y, 2 * radiusX, 2 * radiusY);
+        gc.strokeOval(x, y, width, height);
     }
 
     @Override
-    public boolean contains(double px, double py) {
-        if (radiusX <= 0 || radiusY <= 0) {
+    protected boolean contains(double lx, double ly) {
+        if (width <= 0 || height <= 0) {
             return false;
         }
-        double dx = (px - (x + radiusX)) / radiusX;
-        double dy = (py - (y + radiusY)) / radiusY;
+        double dx = (lx - (x + width / 2)) / (width / 2);
+        double dy = (ly - (y + height / 2)) / (height / 2);
         return dx * dx + dy * dy <= 1;
     }
 
     @Override
     public List<Point2D> handles() {
-        return box().corners();
+        return bounds().handles();
     }
 
     @Override
-    public int moveHandle(int index, double px, double py) {
-        Box before = box();
-        Box after = before.withCornerMoved(index, px, py, false);
+    protected int oppositeHandle(int index) {
+        return Box.oppositeHandle(index);
+    }
+
+    @Override
+    protected int moveHandle(int index, double lx, double ly, boolean keepRatio) {
+        Box before = bounds();
+        Box after = before.withHandleMoved(index, lx, ly, keepRatio);
         setBox(after);
-        return Box.draggedCorner(before, index, after);
+        return Box.draggedHandle(before, index, after);
     }
 
     @Override
@@ -89,6 +90,6 @@ public final class EllipseLayer extends ShapeLayer {
 
     @Override
     public String typeKey() {
-        return "layer.ellipse";
+        return width == height ? "layer.circle" : "layer.ellipse";
     }
 }

@@ -1,0 +1,79 @@
+/* Tool column on the left of the canvas */
+.tool-palette {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: transparent #c8c8c8 transparent transparent;
+    -fx-padding: 6;
+    -fx-spacing: 6;
+    -fx-alignment: top-center;
+}
+
+.tool-grid {
+    -fx-hgap: 3;
+    -fx-vgap: 3;
+    -fx-pref-columns: 2;
+}
+
+.tool-button {
+    -fx-pref-width: 32;
+    -fx-pref-height: 32;
+    -fx-padding: 4;
+    -fx-background-radius: 5;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.tool-button:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+.tool-button:selected {
+    -fx-background-color: #c9dcf5;
+    -fx-border-color: #4a7fc1;
+    -fx-border-radius: 5;
+}
+
+.icon-stroke {
+    -fx-fill: transparent;
+    -fx-stroke: #2b2b2b;
+    -fx-stroke-width: 1.8;
+    -fx-stroke-line-join: round;
+    -fx-stroke-line-cap: round;
+}
+
+.icon-fill {
+    -fx-fill: #2b2b2b;
+    -fx-stroke: #2b2b2b;
+    -fx-stroke-width: 0.6;
+    -fx-stroke-line-join: round;
+}
+
+.swatch-picker {
+    -fx-color-label-visible: false;
+    -fx-pref-width: 67;
+    -fx-cursor: hand;
+}
+
+.swap-button {
+    -fx-pref-width: 67;
+    -fx-padding: 0;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+
+.palette {
+    -fx-hgap: 3;
+    -fx-vgap: 3;
+    -fx-pref-columns: 3;
+    -fx-alignment: center;
+}
+
+.palette-swatch {
+    -fx-stroke: #8a8a8a;
+    -fx-stroke-width: 1;
+    -fx-cursor: hand;
+}
+
+.palette-swatch:hover {
+    -fx-stroke: #000000;
+    -fx-stroke-width: 2;
+}

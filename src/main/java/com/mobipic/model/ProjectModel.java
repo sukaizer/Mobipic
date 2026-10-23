@@ -96,10 +96,10 @@ public final class ProjectModel {
         selected.set(layer);
     }
 
-    /** @return the top-most layer under the point, or {@code null} */
+    /** @return the top-most visible layer under the point, or {@code null} */
     public Layer layerAt(double x, double y) {
         for (int i = layers.size() - 1; i >= 0; i--) {
-            if (layers.get(i).contains(x, y)) {
+            if (layers.get(i).hitTest(x, y)) {
                 return layers.get(i);
             }
         }
@@ -154,6 +154,59 @@ public final class ProjectModel {
         return copy;
     }
 
+    /** Shows or hides a layer. Hidden layers are not painted, exported or clickable. */
+    public void setVisible(Layer layer, boolean visible) {
+        if (layer != null && layers.contains(layer) && layer.isVisible() != visible) {
+            checkpoint();
+            layer.setVisible(visible);
+            changed();
+        }
+    }
+
+    /** Renames a layer; a blank name restores the default type name. */
+    public void rename(Layer layer, String name) {
+        if (layer != null && layers.contains(layer) && !java.util.Objects.equals(layer.getName(), normalize(name))) {
+            checkpoint();
+            layer.setName(name);
+            changed();
+        }
+    }
+
+    private static String normalize(String name) {
+        return name == null || name.isBlank() ? null : name.strip();
+    }
+
+    /** Rotates an editable layer around its centre. */
+    public void rotate(Layer layer, double degrees) {
+        if (isEditable(layer)) {
+            checkpoint();
+            javafx.geometry.Point2D c = layer.center();
+            layer.rotateBy(degrees, c.getX(), c.getY());
+            changed();
+        }
+    }
+
+    /**
+     * Moves an editable layer to another position in the list (drag and drop in the layer panel).
+     * The base image always stays first.
+     */
+    public void moveTo(Layer layer, int index) {
+        if (!isEditable(layer)) {
+            return;
+        }
+        int target = Math.clamp(index, 1, layers.size() - 1);
+        int current = layers.indexOf(layer);
+        if (target == current) {
+            return;
+        }
+        checkpoint();
+        Layer previousSelection = selected.get();
+        layers.remove(current);
+        layers.add(target, layer);
+        selected.set(previousSelection);
+        changed();
+    }
+
     /** @return whether the layer can go one step further back (never below the base image) */
     public boolean canSendBackward(Layer layer) {
         return isEditable(layer) && layers.indexOf(layer) > 1;
@@ -188,6 +241,11 @@ public final class ProjectModel {
      */
     public void checkpoint() {
         history.push(snapshot());
+    }
+
+    /** Forgets the last checkpoint, when the change it was taken for did not happen. */
+    public void discardCheckpoint() {
+        history.dropLatest();
     }
 
     /** Notifies that a layer was changed in place: marks the project as modified and triggers a repaint. */

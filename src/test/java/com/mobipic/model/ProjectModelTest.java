@@ -54,7 +54,7 @@ class ProjectModelTest {
 
     @Test
     void addSelectsAndMarksDirty() {
-        SquareLayer square = new SquareLayer(10, 10, 20, STYLE);
+        RectangleLayer square = new RectangleLayer(10, 10, 20, 20, STYLE);
         model.add(square);
         assertSame(square, model.getSelected());
         assertTrue(model.isDirty());
@@ -64,8 +64,8 @@ class ProjectModelTest {
 
     @Test
     void duplicateInsertsAnOffsetCopyAbove() {
-        SquareLayer a = new SquareLayer(10, 10, 20, STYLE);
-        SquareLayer b = new SquareLayer(50, 50, 20, STYLE);
+        RectangleLayer a = new RectangleLayer(10, 10, 20, 20, STYLE);
+        RectangleLayer b = new RectangleLayer(50, 50, 20, 20, STYLE);
         model.add(a);
         model.add(b);
         Layer copy = model.duplicate(a);
@@ -78,7 +78,7 @@ class ProjectModelTest {
     void duplicatedImageKeepsItsSize() {
         ImageLayer image = new ImageLayer(FxToolkit.solidImage(10, 10, Color.RED), 0, 0);
         model.add(image);
-        image.moveHandle(2, 40, 30);
+        image.dragHandle(4, 40, 30, false);
         ImageLayer copy = (ImageLayer) model.duplicate(image);
         assertEquals(40, copy.getWidth());
         assertEquals(30, copy.getHeight());
@@ -86,8 +86,8 @@ class ProjectModelTest {
 
     @Test
     void reorderingNeverGoesBelowTheBase() {
-        SquareLayer a = new SquareLayer(0, 0, 1, STYLE);
-        SquareLayer b = new SquareLayer(0, 0, 1, STYLE);
+        RectangleLayer a = new RectangleLayer(0, 0, 1, 1, STYLE);
+        RectangleLayer b = new RectangleLayer(0, 0, 1, 1, STYLE);
         model.add(a);
         model.add(b);
         assertFalse(model.canSendBackward(a));
@@ -101,8 +101,8 @@ class ProjectModelTest {
 
     @Test
     void layerAtReturnsTheTopMostLayer() {
-        SquareLayer bottom = new SquareLayer(0, 0, 50, STYLE);
-        SquareLayer top = new SquareLayer(25, 25, 50, STYLE);
+        RectangleLayer bottom = new RectangleLayer(0, 0, 50, 50, STYLE);
+        RectangleLayer top = new RectangleLayer(25, 25, 50, 50, STYLE);
         model.add(bottom);
         model.add(top);
         assertSame(top, model.layerAt(30, 30));
@@ -113,7 +113,7 @@ class ProjectModelTest {
 
     @Test
     void undoAndRedoRestoreTheLayerList() {
-        SquareLayer square = new SquareLayer(0, 0, 10, STYLE);
+        RectangleLayer square = new RectangleLayer(0, 0, 10, 10, STYLE);
         model.add(square);
         model.remove(square);
         assertEquals(1, model.getLayers().size());
@@ -132,7 +132,7 @@ class ProjectModelTest {
 
     @Test
     void undoRevertsAnInPlaceChangeAndKeepsTheSelection() {
-        SquareLayer square = new SquareLayer(0, 0, 10, STYLE);
+        RectangleLayer square = new RectangleLayer(0, 0, 10, 10, STYLE);
         model.add(square);
         model.checkpoint();
         square.translate(30, 0);
@@ -146,8 +146,8 @@ class ProjectModelTest {
 
     @Test
     void cancelAddLeavesNoTrace() {
-        model.add(new SquareLayer(0, 0, 10, STYLE));
-        SquareLayer cancelled = new SquareLayer(0, 0, 0, STYLE);
+        model.add(new RectangleLayer(0, 0, 10, 10, STYLE));
+        RectangleLayer cancelled = new RectangleLayer(0, 0, 0, 0, STYLE);
         model.add(cancelled);
         model.cancelAdd(cancelled);
         assertEquals(2, model.getLayers().size());
@@ -159,7 +159,7 @@ class ProjectModelTest {
     @Test
     void historyIsBounded() {
         for (int i = 0; i < 60; i++) {
-            model.add(new SquareLayer(i, i, 1, STYLE));
+            model.add(new RectangleLayer(i, i, 1, 1, STYLE));
         }
         int undone = 0;
         while (model.canUndoProperty().get()) {
@@ -170,7 +170,64 @@ class ProjectModelTest {
     }
 
     @Test
+    void moveToReordersButNeverAboveTheBase() {
+        RectangleLayer a = new RectangleLayer(0, 0, 1, 1, STYLE);
+        RectangleLayer b = new RectangleLayer(0, 0, 1, 1, STYLE);
+        RectangleLayer c = new RectangleLayer(0, 0, 1, 1, STYLE);
+        model.add(a);
+        model.add(b);
+        model.add(c);
+        model.moveTo(c, 0); // clamped below the base
+        assertEquals(List.of(base, c, a, b), model.getLayers());
+        assertSame(c, model.getSelected());
+        model.undo();
+        assertEquals(4, model.getLayers().size());
+        assertEquals(List.of(base.getClass(), RectangleLayer.class, RectangleLayer.class, RectangleLayer.class),
+                model.getLayers().stream().map(Object::getClass).toList());
+        model.moveTo(base, 3);
+        assertSame(model.getBase(), model.getLayers().getFirst());
+    }
+
+    @Test
+    void visibilityRenameAndRotationAreUndoable() {
+        RectangleLayer rect = new RectangleLayer(0, 0, 10, 10, STYLE);
+        model.add(rect);
+        model.setVisible(rect, false);
+        model.rename(rect, "Cadre");
+        model.rotate(rect, 90);
+        assertFalse(rect.isVisible());
+        assertEquals("Cadre", rect.getName());
+        assertEquals(90, rect.getRotation());
+
+        model.undo();
+        assertEquals(0, model.getLayers().get(1).getRotation());
+        model.undo();
+        assertNull(model.getLayers().get(1).getName());
+        model.undo();
+        assertTrue(model.getLayers().get(1).isVisible());
+    }
+
+    @Test
+    void noOpChangesLeaveNoUndoStep() {
+        RectangleLayer rect = new RectangleLayer(0, 0, 10, 10, STYLE);
+        model.add(rect);
+        model.rename(rect, null);
+        model.setVisible(rect, true);
+        model.rotate(base, 90); // the base image cannot be rotated
+        model.undo();
+        assertEquals(1, model.getLayers().size()); // the only step was the add
+    }
+
+    @Test
+    void hiddenLayersAreNotPicked() {
+        RectangleLayer rect = new RectangleLayer(0, 0, 50, 50, STYLE);
+        model.add(rect);
+        model.setVisible(rect, false);
+        assertSame(base, model.layerAt(10, 10));
+    }
+
+    @Test
     void selectingAForeignLayerFails() {
-        assertThrows(IllegalArgumentException.class, () -> model.select(new SquareLayer(0, 0, 1, STYLE)));
+        assertThrows(IllegalArgumentException.class, () -> model.select(new RectangleLayer(0, 0, 1, 1, STYLE)));
     }
 }

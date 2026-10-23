@@ -8,8 +8,51 @@
     -fx-padding: 20;
 }
 
+.status-bar {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: #c8c8c8 transparent transparent transparent;
+    -fx-padding: 3 8 3 8;
+    -fx-spacing: 12;
+    -fx-alignment: center-left;
+}
+
+.status-bar .label {
+    -fx-font-family: Verdana;
+    -fx-font-size: 11px;
+    -fx-text-fill: #444444;
+}
+
 .placeholder {
     -fx-font-family: Verdana;
     -fx-font-size: 14px;
     -fx-text-fill: #555555;
+}
+
+/* Text typed directly on the canvas */
+.canvas-text-editor,
+.canvas-text-editor .content,
+.canvas-text-editor .scroll-pane,
+.canvas-text-editor .viewport {
+    -fx-background-color: transparent;
+}
+
+.canvas-text-editor {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-color: rgba(0, 0, 0, 0.55);
+    -fx-border-style: dashed;
+    -fx-border-width: 1;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-highlight-fill: rgba(74, 127, 193, 0.4);
+}
+
+.canvas-text-editor .content {
+    -fx-padding: 0;
+}
+
+.canvas-text-editor .scroll-bar {
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+    -fx-opacity: 0;
 }

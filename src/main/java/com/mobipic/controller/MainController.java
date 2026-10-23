@@ -5,10 +5,8 @@ import com.mobipic.io.ProjectIO;
 import com.mobipic.model.ImageLayer;
 import com.mobipic.model.Layer;
 import com.mobipic.model.ProjectModel;
-import com.mobipic.model.ShapeStyle;
-import com.mobipic.model.ShapeType;
-import com.mobipic.tool.MoveTool;
-import com.mobipic.tool.ResizeTool;
+import com.mobipic.tool.ToolKind;
+import com.mobipic.tool.ToolSettings;
 import com.mobipic.util.Dialogs;
 import com.mobipic.util.I18n;
 import javafx.application.HostServices;
@@ -20,13 +18,17 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.image.Image;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCharacterCombination;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -45,12 +47,15 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Main window: menus, toolbar, canvas and layer panel.
+ * Main window: menus, toolbar, options bar, tool palette, canvas and layer panel.
  */
 public final class MainController {
 
     private static final String GITHUB_URL = "https://github.com/sukaizer/Mobipic";
     private static final double ZOOM_STEP = 1.25;
+    private static final double PASTE_OFFSET = 10;
+    /** Put in the system clipboard to recognise a layer copied from Mobipic. */
+    private static final String CLIPBOARD_MARKER = "mobipic:layer";
     private static final List<String> IMAGE_EXTENSIONS = List.of("*.jpg", "*.jpeg", "*.png", "*.bmp", "*.gif");
 
     // Menus
@@ -65,17 +70,29 @@ public final class MainController {
     @FXML
     private MenuItem redoMenuItem;
     @FXML
+    private MenuItem cutMenuItem;
+    @FXML
+    private MenuItem copyMenuItem;
+    @FXML
     private Menu layersMenu;
     @FXML
     private MenuItem addFilterMenu;
     @FXML
     private MenuItem deleteMenuItem;
     @FXML
+    private MenuItem duplicateMenuItem;
+    @FXML
+    private MenuItem renameMenuItem;
+    @FXML
+    private MenuItem visibilityMenuItem;
+    @FXML
+    private MenuItem rotateLeftMenuItem;
+    @FXML
+    private MenuItem rotateRightMenuItem;
+    @FXML
     private MenuItem moveMenuItem;
     @FXML
     private MenuItem resizeMenuItem;
-    @FXML
-    private MenuItem duplicateMenuItem;
     @FXML
     private Menu viewMenu;
     @FXML
@@ -105,7 +122,15 @@ public final class MainController {
     @FXML
     private Label hintLabel;
 
-    // Canvas area
+    // Options bar, tool palette, canvas area
+    @FXML
+    private Node optionsView;
+    @FXML
+    private OptionsBarController optionsViewController;
+    @FXML
+    private Node toolPaletteView;
+    @FXML
+    private ToolPaletteController toolPaletteViewController;
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -125,16 +150,18 @@ public final class MainController {
     @FXML
     private Button deleteButton;
     @FXML
-    private Button moveButton;
-    @FXML
-    private Button resizeButton;
-    @FXML
     private Button duplicateButton;
+    @FXML
+    private Button rotateButton;
+    @FXML
+    private Button renameButton;
 
+    private final ToolSettings settings = new ToolSettings();
+    private final LayerStyleSync styleSync = new LayerStyleSync(settings);
     private final ObjectProperty<ProjectModel> project = new SimpleObjectProperty<>(this, "project");
     private final BooleanProperty projectOpen = new SimpleBooleanProperty();
+    private final BooleanProperty layerSelected = new SimpleBooleanProperty();
     private final BooleanProperty layerEditable = new SimpleBooleanProperty();
-    private final BooleanProperty layerResizable = new SimpleBooleanProperty();
     private final BooleanProperty imageSelected = new SimpleBooleanProperty();
     private final BooleanProperty canSendBackward = new SimpleBooleanProperty();
     private final BooleanProperty canBringForward = new SimpleBooleanProperty();
@@ -145,9 +172,8 @@ public final class MainController {
 
     private Stage stage;
     private HostServices hostServices;
-    private ShapeType lastShapeType;
-    private ShapeStyle lastShapeStyle = ShapeStyle.DEFAULT;
     private File lastDirectory;
+    private Layer clipboardLayer;
 
     @FXML
     private void initialize() {
@@ -155,18 +181,26 @@ public final class MainController {
         zoomInMenuItem.setAccelerator(new KeyCharacterCombination("+", KeyCombination.SHORTCUT_DOWN));
         zoomOutMenuItem.setAccelerator(new KeyCharacterCombination("-", KeyCombination.SHORTCUT_DOWN));
         zoomResetMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT0, KeyCombination.SHORTCUT_DOWN));
+        renameMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F2));
+
+        canvasViewController.setSettings(settings);
+        toolPaletteViewController.init(settings, canvasViewController.toolKindProperty());
+        optionsViewController.init(settings);
+        canvasViewController.toolKindProperty().addListener(stateListener);
 
         bindControls();
         wireLayerContextMenu();
 
         placeholder.visibleProperty().bind(projectOpen.not());
         placeholder.managedProperty().bind(projectOpen.not());
+        optionsView.disableProperty().bind(projectOpen.not());
+        toolPaletteView.disableProperty().bind(projectOpen.not());
 
         zoomLabel.textProperty().bind(Bindings.format(Locale.ROOT, "%.0f %%",
                 canvasViewController.zoomProperty().multiply(100)));
         hintLabel.textProperty().bind(Bindings.createStringBinding(
-                () -> projectOpen.get() ? I18n.get(canvasViewController.toolProperty().get().hintKey()) : "",
-                canvasViewController.toolProperty(), projectOpen));
+                () -> projectOpen.get() ? I18n.get(canvasViewController.toolKindProperty().get().hintKey()) : "",
+                canvasViewController.toolKindProperty(), projectOpen));
 
         scrollPane.addEventFilter(ScrollEvent.SCROLL, this::onScroll);
         installDragAndDrop();
@@ -199,14 +233,16 @@ public final class MainController {
         for (var item : List.of(saveMenuItem, saveAsMenuItem, exportMenu, layersMenu, viewMenu)) {
             item.disableProperty().bind(projectOpen.not());
         }
-        for (var control : List.of(deleteButton, moveButton, duplicateButton)) {
+        for (var control : List.of(deleteButton, duplicateButton, rotateButton)) {
             control.disableProperty().bind(layerEditable.not());
         }
-        for (var item : List.of(deleteMenuItem, moveMenuItem, duplicateMenuItem)) {
+        for (var item : List.of(deleteMenuItem, duplicateMenuItem, rotateLeftMenuItem, rotateRightMenuItem,
+                moveMenuItem, resizeMenuItem, cutMenuItem, copyMenuItem)) {
             item.disableProperty().bind(layerEditable.not());
         }
-        resizeButton.disableProperty().bind(layerResizable.not());
-        resizeMenuItem.disableProperty().bind(layerResizable.not());
+        renameButton.disableProperty().bind(layerSelected.not());
+        renameMenuItem.disableProperty().bind(layerSelected.not());
+        visibilityMenuItem.disableProperty().bind(layerSelected.not());
         addFilterMenu.disableProperty().bind(imageSelected.not());
         up.disableProperty().bind(canSendBackward.not());
         down.disableProperty().bind(canBringForward.not());
@@ -216,15 +252,19 @@ public final class MainController {
 
     private void wireLayerContextMenu() {
         LayersController layers = layersViewController;
-        layers.delete.setOnAction(e -> deleteLayer());
-        layers.move.setOnAction(e -> moveLayer());
-        layers.resize.setOnAction(e -> resizeLayer());
+        layers.rename.setOnAction(e -> renameLayer());
+        layers.toggleVisibility.setOnAction(e -> toggleVisibility());
         layers.duplicate.setOnAction(e -> duplicateLayer());
+        layers.delete.setOnAction(e -> deleteLayer());
+        layers.rotateLeft.setOnAction(e -> rotateLeft());
+        layers.rotateRight.setOnAction(e -> rotateRight());
         layers.filters.setOnAction(e -> addFilter());
-        layers.delete.disableProperty().bind(layerEditable.not());
-        layers.move.disableProperty().bind(layerEditable.not());
+        layers.rename.disableProperty().bind(layerSelected.not());
+        layers.toggleVisibility.disableProperty().bind(layerSelected.not());
         layers.duplicate.disableProperty().bind(layerEditable.not());
-        layers.resize.disableProperty().bind(layerResizable.not());
+        layers.delete.disableProperty().bind(layerEditable.not());
+        layers.rotateLeft.disableProperty().bind(layerEditable.not());
+        layers.rotateRight.disableProperty().bind(layerEditable.not());
         layers.filters.disableProperty().bind(imageSelected.not());
     }
 
@@ -248,6 +288,7 @@ public final class MainController {
         // Reuse the same canvas and layer list instead of stacking new ones
         canvasViewController.setModel(model);
         layersViewController.setModel(model);
+        styleSync.setModel(model);
         canvasViewController.zoomProperty().set(1);
         refreshState();
         updateTitle();
@@ -257,13 +298,14 @@ public final class MainController {
         ProjectModel model = project.get();
         Layer selected = model == null ? null : model.getSelected();
         projectOpen.set(model != null);
+        layerSelected.set(selected != null);
         layerEditable.set(model != null && model.isEditable(selected));
-        layerResizable.set(layerEditable.get() && selected.isResizable());
         imageSelected.set(selected instanceof ImageLayer);
         canSendBackward.set(model != null && model.canSendBackward(selected));
         canBringForward.set(model != null && model.canBringForward(selected));
         canUndo.set(model != null && model.canUndoProperty().get());
         canRedo.set(model != null && model.canRedoProperty().get());
+        optionsViewController.update(canvasViewController.toolKindProperty().get(), selected, layerEditable.get());
     }
 
     private void updateTitle() {
@@ -281,6 +323,18 @@ public final class MainController {
 
     private ProjectModel model() {
         return project.get();
+    }
+
+    private Layer selected() {
+        return model() == null ? null : model().getSelected();
+    }
+
+    /** @return the text field being typed into (canvas text, layer name, option value), or {@code null} */
+    private TextInputControl typingField() {
+        if (stage == null) {
+            return null;
+        }
+        return stage.getScene().getFocusOwner() instanceof TextInputControl field ? field : null;
     }
 
     // ---- File menu --------------------------------------------------------------------------
@@ -353,6 +407,7 @@ public final class MainController {
         if (model() == null) {
             return false;
         }
+        canvasViewController.commitText();
         Path file = model().getFile();
         return file == null ? saveAs() : saveTo(file);
     }
@@ -361,6 +416,7 @@ public final class MainController {
         if (model() == null) {
             return false;
         }
+        canvasViewController.commitText();
         FileChooser chooser = projectChooser("chooser.saveProject");
         chooser.setInitialFileName(model().getFile() == null
                 ? I18n.get("title.untitled") + "." + ProjectIO.EXTENSION
@@ -400,6 +456,7 @@ public final class MainController {
         if (model() == null) {
             return;
         }
+        canvasViewController.commitText();
         FileChooser chooser = chooser("chooser.export");
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
                 I18n.format("filter.format", format.name()), "*." + format.extension()));
@@ -428,6 +485,7 @@ public final class MainController {
 
     /** @return {@code true} if there is nothing to lose, or the user chose to save or discard */
     private boolean confirmDiscard() {
+        canvasViewController.commitText();
         ProjectModel model = model();
         if (model == null || !model.isDirty()) {
             return true;
@@ -445,34 +503,98 @@ public final class MainController {
 
     @FXML
     private void undo() {
-        if (model() != null) {
-            canvasViewController.resetTool();
+        TextInputControl field = typingField();
+        if (field != null) {
+            field.undo();
+        } else if (model() != null) {
+            canvasViewController.cancelTool();
             model().undo();
         }
     }
 
     @FXML
     private void redo() {
-        if (model() != null) {
-            canvasViewController.resetTool();
+        TextInputControl field = typingField();
+        if (field != null) {
+            field.redo();
+        } else if (model() != null) {
+            canvasViewController.cancelTool();
             model().redo();
+        }
+    }
+
+    @FXML
+    private void cut() {
+        TextInputControl field = typingField();
+        if (field != null) {
+            field.cut();
+        } else if (layerEditable.get()) {
+            copyLayer();
+            model().remove(selected());
+        }
+    }
+
+    @FXML
+    private void copy() {
+        TextInputControl field = typingField();
+        if (field != null) {
+            field.copy();
+        } else if (layerEditable.get()) {
+            copyLayer();
+        }
+    }
+
+    private void copyLayer() {
+        clipboardLayer = selected().copy();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(CLIPBOARD_MARKER);
+        Clipboard.getSystemClipboard().setContent(content);
+    }
+
+    /**
+     * Pastes, in order of preference: a layer copied from Mobipic, an image (screenshot, image copied from a
+     * browser...), or an image file. Without a project, a pasted image starts a new one.
+     */
+    @FXML
+    private void paste() {
+        TextInputControl field = typingField();
+        if (field != null) {
+            field.paste();
+            return;
+        }
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        if (model() != null && clipboardLayer != null && CLIPBOARD_MARKER.equals(clipboard.getString())) {
+            Layer pasted = clipboardLayer.copy();
+            pasted.translate(PASTE_OFFSET, PASTE_OFFSET);
+            clipboardLayer = pasted.copy(); // pasting again goes further
+            canvasViewController.toolKindProperty().set(ToolKind.SELECT);
+            model().add(pasted);
+        } else if (clipboard.hasImage()) {
+            Image image = clipboard.getImage();
+            if (model() == null) {
+                project.set(new ProjectModel(image));
+            } else {
+                canvasViewController.toolKindProperty().set(ToolKind.SELECT);
+                model().add(new ImageLayer(image, 0, 0));
+            }
+        } else if (clipboard.hasFiles() && !clipboard.getFiles().isEmpty()) {
+            Path path = clipboard.getFiles().getFirst().toPath();
+            if (model() == null || isProjectFile(path)) {
+                openFile(path);
+            } else {
+                addImage(path);
+            }
         }
     }
 
     // ---- Layer menu -------------------------------------------------------------------------
 
+    /** "New shape": switches to the rectangle tool (or keeps the current shape tool). */
     @FXML
     private void addShapeMenu() {
-        if (model() == null) {
-            return;
+        if (model() != null && !canvasViewController.toolKindProperty().get().isShape()) {
+            canvasViewController.toolKindProperty().set(ToolKind.RECTANGLE);
         }
-        ShapeDialogController dialog = Dialogs.showModal(stage, "shapes.fxml", "shapes.title",
-                (ShapeDialogController c) -> c.init(lastShapeType, lastShapeStyle));
-        dialog.getResult().ifPresent(tool -> {
-            lastShapeType = dialog.getSelectedType();
-            lastShapeStyle = dialog.getStyle();
-            canvasViewController.setTool(tool);
-        });
     }
 
     @FXML
@@ -490,19 +612,17 @@ public final class MainController {
         Image image = loadImage(path);
         if (image != null) {
             rememberDirectory(path);
+            canvasViewController.toolKindProperty().set(ToolKind.SELECT);
             model().add(new ImageLayer(image, 0, 0));
         }
     }
 
+    /** "New text": switches to the text tool; the text is then typed where the user clicks. */
     @FXML
     private void addTextMenu() {
-        ProjectModel model = model();
-        if (model == null) {
-            return;
+        if (model() != null) {
+            canvasViewController.toolKindProperty().set(ToolKind.TEXT);
         }
-        TextDialogController dialog = Dialogs.showModal(stage, "text.fxml", "text.title",
-                (TextDialogController c) -> c.init(model.getWidth() / 2, model.getHeight() / 2));
-        dialog.getResult().ifPresent(model::add);
     }
 
     @FXML
@@ -516,38 +636,63 @@ public final class MainController {
 
     @FXML
     private void deleteLayer() {
-        if (layerEditable.get()) {
-            canvasViewController.resetTool();
-            model().remove(model().getSelected());
-        }
-    }
-
-    @FXML
-    private void moveLayer() {
-        if (layerEditable.get()) {
-            canvasViewController.setTool(new MoveTool());
-        }
-    }
-
-    @FXML
-    private void resizeLayer() {
-        if (layerResizable.get()) {
-            canvasViewController.setTool(new ResizeTool());
+        if (typingField() == null && layerEditable.get()) {
+            canvasViewController.cancelTool();
+            model().remove(selected());
         }
     }
 
     @FXML
     private void duplicateLayer() {
-        if (layerEditable.get()) {
-            model().duplicate(model().getSelected());
+        if (typingField() == null && layerEditable.get()) {
+            model().duplicate(selected());
         }
+    }
+
+    @FXML
+    private void renameLayer() {
+        if (layerSelected.get()) {
+            layersViewController.startRename();
+        }
+    }
+
+    @FXML
+    private void toggleVisibility() {
+        if (layerSelected.get()) {
+            model().setVisible(selected(), !selected().isVisible());
+        }
+    }
+
+    @FXML
+    private void rotateLeft() {
+        if (layerEditable.get()) {
+            model().rotate(selected(), -90);
+        }
+    }
+
+    @FXML
+    private void rotateRight() {
+        if (layerEditable.get()) {
+            model().rotate(selected(), 90);
+        }
+    }
+
+    /** Kept from version 1: layers are now moved and resized directly with the selection tool. */
+    @FXML
+    private void moveLayer() {
+        canvasViewController.toolKindProperty().set(ToolKind.SELECT);
+    }
+
+    @FXML
+    private void resizeLayer() {
+        canvasViewController.toolKindProperty().set(ToolKind.SELECT);
     }
 
     /** "Up" arrow: moves the layer up in the list, i.e. further back in the drawing order. */
     @FXML
     private void sendBack() {
         if (canSendBackward.get()) {
-            model().sendBackward(model().getSelected());
+            model().sendBackward(selected());
         }
     }
 
@@ -555,7 +700,7 @@ public final class MainController {
     @FXML
     private void sendForward() {
         if (canBringForward.get()) {
-            model().bringForward(model().getSelected());
+            model().bringForward(selected());
         }
     }
 
@@ -592,15 +737,28 @@ public final class MainController {
 
     // ---- Keyboard ---------------------------------------------------------------------------
 
+    /**
+     * Keys without modifiers: Esc, Delete, X (swap colours) and the single-letter tool shortcuts.
+     * Ignored while typing in a text field.
+     */
     private void onKeyPressed(KeyEvent event) {
-        if (event.getCode() == KeyCode.ESCAPE && model() != null) {
-            canvasViewController.resetTool();
-            model().select(null);
-            event.consume();
-        } else if (event.getCode() == KeyCode.DELETE && layerEditable.get()) {
-            deleteLayer();
-            event.consume();
+        if (model() == null || typingField() != null || event.isShortcutDown() || event.isAltDown()) {
+            return;
         }
+        KeyCode code = event.getCode();
+        if (code == KeyCode.ESCAPE) {
+            canvasViewController.cancelTool();
+            model().select(null);
+        } else if ((code == KeyCode.DELETE || code == KeyCode.BACK_SPACE) && layerEditable.get()) {
+            deleteLayer();
+        } else if (code == KeyCode.X && !event.isShiftDown()) {
+            settings.swapColors();
+        } else if (ToolKind.forShortcut(code) != null && !event.isShiftDown()) {
+            canvasViewController.toolKindProperty().set(ToolKind.forShortcut(code));
+        } else {
+            return;
+        }
+        event.consume();
     }
 
     /** Arrow keys nudge the selected layer (1 px, 10 px with Shift) when the canvas has the focus. */
@@ -621,7 +779,7 @@ public final class MainController {
             default -> 0;
         };
         model().checkpoint();
-        model().getSelected().translate(dx, dy);
+        selected().translate(dx, dy);
         model().changed();
         event.consume();
     }

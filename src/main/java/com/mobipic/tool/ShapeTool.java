@@ -1,107 +1,163 @@
 package com.mobipic.tool;
 
+import com.mobipic.model.Box;
+import com.mobipic.model.EllipseLayer;
+import com.mobipic.model.Geometry;
+import com.mobipic.model.LineLayer;
+import com.mobipic.model.RectangleLayer;
 import com.mobipic.model.ShapeLayer;
-import com.mobipic.model.ShapeStyle;
-import com.mobipic.model.ShapeType;
 import com.mobipic.model.TriangleLayer;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 
+import java.util.Locale;
+
 /**
- * Draws one shape, then hands control back to the default tool.
- * <p>
- * Most shapes are drawn by press-drag-release from one corner (or end) to the other, in any direction.
- * Triangles are drawn with three clicks, one per vertex, with a live preview between clicks.
+ * Draws shapes by press-drag-release, in any direction, as in Paint. The tool stays active so several
+ * shapes can be drawn in a row; the last one stays selected so its options can still be changed.
+ * <ul>
+ *     <li>Shift: square / circle / equilateral-like triangle, lines snapped to 45°</li>
+ *     <li>Alt: draw from the centre</li>
+ *     <li>Triangle: a click without dragging places the vertices one by one (three clicks)</li>
+ * </ul>
  */
 public final class ShapeTool implements Tool {
 
-    /** Below this size (in canvas pixels) a drag is considered a plain click and discarded. */
-    private static final double MIN_DRAG = 2;
+    public enum Shape { RECTANGLE, ROUNDED_RECTANGLE, ELLIPSE, TRIANGLE, LINE }
 
-    private final ShapeType type;
-    private final ShapeStyle style;
+    /** Below this size (in screen pixels) a drag is considered a plain click. */
+    private static final double MIN_DRAG = 3;
+
+    private final Shape shape;
     private ShapeLayer current;
     private double anchorX;
     private double anchorY;
-    private int trianglePoints;
+    private boolean dragged;
+    /** Number of triangle vertices placed by clicking, 0 when not in click mode. */
+    private int clickedVertices;
 
-    public ShapeTool(ShapeType type, ShapeStyle style) {
-        this.type = type;
-        this.style = style;
+    public ShapeTool(Shape shape) {
+        this.shape = shape;
+    }
+
+    public Shape shape() {
+        return shape;
     }
 
     @Override
-    public void onPress(ToolContext ctx, double x, double y) {
-        if (type == ShapeType.TRIANGLE) {
-            triangleClick(ctx, x, y);
+    public void onPress(ToolContext ctx, ToolEvent e) {
+        if (clickedVertices > 0) {
+            placeNextVertex(ctx, e);
             return;
         }
-        anchorX = x;
-        anchorY = y;
-        current = type.create(x, y, style);
+        anchorX = e.x();
+        anchorY = e.y();
+        dragged = false;
+        current = create(ctx, e.x(), e.y());
         ctx.model().add(current);
     }
 
+    private ShapeLayer create(ToolContext ctx, double x, double y) {
+        ToolSettings s = ctx.settings();
+        ShapeLayer layer = switch (shape) {
+            case RECTANGLE -> new RectangleLayer(x, y, 0, 0, s.shapeStyle());
+            case ROUNDED_RECTANGLE -> new RectangleLayer(x, y, 0, 0, s.cornerRadiusProperty().get(), s.shapeStyle());
+            case ELLIPSE -> new EllipseLayer(x, y, 0, 0, s.shapeStyle());
+            case TRIANGLE -> new TriangleLayer(x, y, x, y, x, y, s.shapeStyle());
+            case LINE -> new LineLayer(x, y, x, y, s.shapeStyle());
+        };
+        layer.setOpacity(s.opacityProperty().get());
+        return layer;
+    }
+
     @Override
-    public void onDrag(ToolContext ctx, double x, double y) {
-        if (type == ShapeType.TRIANGLE) {
-            onMove(ctx, x, y);
-        } else if (current != null) {
-            current.setFromDrag(anchorX, anchorY, x, y);
+    public void onDrag(ToolContext ctx, ToolEvent e) {
+        if (clickedVertices > 0) {
+            onMove(ctx, e);
+            return;
+        }
+        if (current == null) {
+            return;
+        }
+        if (Math.hypot(e.x() - anchorX, e.y() - anchorY) * ctx.zoom() >= MIN_DRAG) {
+            dragged = true;
+        }
+        if (dragged) {
+            reshape(e);
             ctx.model().changed();
         }
     }
 
-    @Override
-    public void onRelease(ToolContext ctx, double x, double y) {
-        if (type == ShapeType.TRIANGLE || current == null) {
+    private void reshape(ToolEvent e) {
+        if (current instanceof LineLayer line) {
+            Point2D end = e.shift() ? Geometry.snapAngle(anchorX, anchorY, e.x(), e.y()) : new Point2D(e.x(), e.y());
+            if (e.alt()) {
+                line.setPoints(2 * anchorX - end.getX(), 2 * anchorY - end.getY(), end.getX(), end.getY());
+            } else {
+                line.setPoints(anchorX, anchorY, end.getX(), end.getY());
+            }
             return;
         }
-        current.setFromDrag(anchorX, anchorY, x, y);
-        if (Math.abs(x - anchorX) < MIN_DRAG && Math.abs(y - anchorY) < MIN_DRAG) {
+        double ratio = e.shift() ? 1 : 0;
+        Box box = e.alt()
+                ? Box.fromCenter(anchorX, anchorY, e.x(), e.y(), ratio)
+                : Box.fromCorners(anchorX, anchorY, e.x(), e.y(), ratio);
+        switch (current) {
+            case RectangleLayer r -> r.setBox(box);
+            case EllipseLayer el -> el.setBox(box);
+            case TriangleLayer t -> t.setBox(box);
+            default -> throw new IllegalStateException(current.getClass().getName());
+        }
+    }
+
+    @Override
+    public void onRelease(ToolContext ctx, ToolEvent e) {
+        if (current == null || clickedVertices > 0) {
+            return;
+        }
+        if (dragged) {
+            reshape(e);
+            ctx.model().changed();
+            current = null;
+        } else if (shape == Shape.TRIANGLE) {
+            clickedVertices = 1; // plain click: place the other vertices by clicking
+        } else {
             ctx.model().cancelAdd(current);
             current = null;
-            return; // stay in drawing mode, a real drag is expected
         }
-        ctx.model().changed();
-        current = null;
-        ctx.toolFinished();
     }
 
     @Override
-    public void onMove(ToolContext ctx, double x, double y) {
-        if (current instanceof TriangleLayer triangle) {
-            // Preview: the next vertex (and the following ones) follow the cursor
-            for (int i = trianglePoints; i < 3; i++) {
-                triangle.moveHandle(i, x, y);
+    public void onMove(ToolContext ctx, ToolEvent e) {
+        if (clickedVertices > 0 && current instanceof TriangleLayer triangle) {
+            // Preview: the next vertices follow the cursor
+            for (int i = clickedVertices; i < 3; i++) {
+                triangle.setVertex(i, e.x(), e.y());
             }
-            ctx.model().changed();
+            ctx.model().refresh();
         }
     }
 
-    private void triangleClick(ToolContext ctx, double x, double y) {
-        if (current == null) {
-            current = type.create(x, y, style);
-            trianglePoints = 1;
-            ctx.model().add(current);
-            return;
+    private void placeNextVertex(ToolContext ctx, ToolEvent e) {
+        TriangleLayer triangle = (TriangleLayer) current;
+        for (int i = clickedVertices; i < 3; i++) {
+            triangle.setVertex(i, e.x(), e.y());
         }
-        for (int i = trianglePoints; i < 3; i++) {
-            current.moveHandle(i, x, y);
-        }
-        trianglePoints++;
+        clickedVertices++;
         ctx.model().changed();
-        if (trianglePoints == 3) {
+        if (clickedVertices == 3) {
+            clickedVertices = 0;
             current = null;
-            ctx.toolFinished();
         }
     }
 
     @Override
     public void cancel(ToolContext ctx) {
-        if (current != null) {
+        if (clickedVertices > 0 && current != null) {
             ctx.model().cancelAdd(current);
-            current = null;
         }
+        clickedVertices = 0;
+        current = null;
     }
 
     @Override
@@ -111,6 +167,6 @@ public final class ShapeTool implements Tool {
 
     @Override
     public String hintKey() {
-        return type.hintKey();
+        return "tool.hint." + shape.name().toLowerCase(Locale.ROOT);
     }
 }
