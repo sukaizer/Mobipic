@@ -47,17 +47,16 @@
     -fx-stroke-line-join: round;
 }
 
-.swatch-picker {
-    -fx-color-label-visible: false;
-    -fx-pref-width: 67;
+.color-indicator {
+    -fx-pref-width: 60;
+    -fx-pref-height: 44;
+    -fx-min-height: 44;
     -fx-cursor: hand;
 }
 
-.swap-button {
-    -fx-pref-width: 67;
-    -fx-padding: 0;
-    -fx-font-size: 13px;
-    -fx-cursor: hand;
+.indicator-swatch {
+    -fx-stroke: #555555;
+    -fx-stroke-width: 1;
 }
 
 .palette {

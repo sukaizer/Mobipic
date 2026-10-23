@@ -82,14 +82,9 @@
                   </Menu>
                   <Menu fx:id="layersMenu" mnemonicParsing="false" text="%menu.layer">
                     <items>
-                        <Menu mnemonicParsing="false" text="%menu.layer.new">
-                          <items>
-                              <MenuItem id="menuItemText" mnemonicParsing="false" onAction="#addTextMenu" text="%menu.layer.new.text" />
-                              <MenuItem id="menuItemShapes" mnemonicParsing="false" onAction="#addShapeMenu" text="%menu.layer.new.shape" />
-                              <MenuItem id="menuItemFilter" fx:id="addFilterMenu" mnemonicParsing="false" onAction="#addFilter" text="%menu.layer.new.filter" />
-                              <MenuItem id="menuItemImage" mnemonicParsing="false" onAction="#addImageLayer" text="%menu.layer.new.image" />
-                          </items>
-                        </Menu>
+                        <MenuItem id="menuItemImage" mnemonicParsing="false" onAction="#addImageLayer" text="%menu.layer.addImage" />
+                        <MenuItem id="menuItemFilter" fx:id="addFilterMenu" mnemonicParsing="false" onAction="#addFilter" text="%menu.layer.filter" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#deleteLayer" text="%action.delete">
                            <accelerator><KeyCodeCombination alt="UP" code="BACK_SPACE" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
                         </MenuItem>
@@ -104,13 +99,6 @@
                         </MenuItem>
                         <MenuItem fx:id="rotateRightMenuItem" mnemonicParsing="false" onAction="#rotateRight" text="%action.rotateRight">
                            <accelerator><KeyCodeCombination alt="UP" code="R" control="UP" meta="UP" shift="DOWN" shortcut="DOWN" /></accelerator>
-                        </MenuItem>
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="moveMenuItem" mnemonicParsing="false" onAction="#moveLayer" text="%action.move">
-                           <accelerator><KeyCodeCombination alt="UP" code="B" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
-                        </MenuItem>
-                        <MenuItem fx:id="resizeMenuItem" mnemonicParsing="false" onAction="#resizeLayer" text="%action.resize">
-                           <accelerator><KeyCodeCombination alt="UP" code="R" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
                         </MenuItem>
                     </items>
                   </Menu>
@@ -139,14 +127,8 @@
                   <Button id="iconSave" fx:id="saveButton" mnemonicParsing="false" onAction="#saveProject">
                      <tooltip><Tooltip text="%tooltip.save" /></tooltip>
                   </Button>
-                  <Button id="iconShapes" fx:id="newShapeButton" mnemonicParsing="false" onAction="#addShapeMenu">
-                     <tooltip><Tooltip text="%tooltip.shape" /></tooltip>
-                  </Button>
                   <Button id="iconImages" fx:id="newImageButton" mnemonicParsing="false" onAction="#addImageLayer">
                      <tooltip><Tooltip text="%tooltip.image" /></tooltip>
-                  </Button>
-                  <Button id="iconText" fx:id="newTextButton" mnemonicParsing="false" onAction="#addTextMenu">
-                     <tooltip><Tooltip text="%tooltip.text" /></tooltip>
                   </Button>
                   <Button fx:id="zoomPlus" mnemonicParsing="false" onAction="#zoomPlus" text="+">
                      <tooltip><Tooltip text="%menu.view.zoomIn" /></tooltip>

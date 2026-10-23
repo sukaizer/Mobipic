@@ -3,7 +3,6 @@ package com.mobipic.render;
 import com.mobipic.model.Box;
 import com.mobipic.model.Layer;
 import javafx.geometry.Point2D;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -22,19 +21,13 @@ public final class CanvasRenderer {
     private CanvasRenderer() {
     }
 
-    /** Clears the canvas and paints the visible layers in order. */
-    public static void paintLayers(Canvas canvas, List<? extends Layer> layers) {
-        paintLayers(canvas, layers, null);
-    }
-
     /**
-     * Clears the canvas and paints the visible layers in order.
+     * Paints the visible layers in order, in image coordinates. The caller sets the transform
+     * (render scale, export tile offset...).
      *
      * @param skipped a layer not to paint (e.g. a text being edited on top of the canvas), or {@code null}
      */
-    public static void paintLayers(Canvas canvas, List<? extends Layer> layers, Layer skipped) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    public static void paintLayers(GraphicsContext gc, List<? extends Layer> layers, Layer skipped) {
         for (Layer layer : layers) {
             if (layer.isVisible() && layer != skipped) {
                 paintLayer(gc, layer);

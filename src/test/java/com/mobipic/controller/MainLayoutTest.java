@@ -18,6 +18,8 @@ import javax.imageio.ImageIO;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -72,6 +74,50 @@ class MainLayoutTest {
             return visible;
         });
         assertTrue(scrollable, "both scroll bars should be shown for an image larger than the window");
+    }
+
+    /**
+     * Regression: a canvas larger than the GPU texture limit (4096 px by default) cannot be rendered and
+     * JavaFX fails on every frame. Large photos must still open and display.
+     */
+    @Test
+    void imagesLargerThanTheTextureLimitOpen() throws Exception {
+        Path image = dir.resolve("huge.png");
+        java.awt.image.BufferedImage huge = new java.awt.image.BufferedImage(6000, 4500,
+                java.awt.image.BufferedImage.TYPE_INT_RGB);
+        java.awt.Graphics2D g = huge.createGraphics();
+        g.setColor(java.awt.Color.ORANGE);
+        g.fillRect(0, 0, 6000, 4500);
+        g.dispose();
+        ImageIO.write(huge, "png", image.toFile());
+
+        java.io.ByteArrayOutputStream errors = new java.io.ByteArrayOutputStream();
+        java.io.PrintStream originalErr = System.err;
+        System.setErr(new java.io.PrintStream(errors, true));
+        try {
+            Stage stage = FxToolkit.onFx(() -> {
+                Fxml.View<MainController> view = Fxml.load("main.fxml");
+                Stage s = new Stage();
+                s.setScene(new Scene(view.root(), 1000, 650));
+                s.show();
+                view.controller().openFile(image);
+                return s;
+            });
+            Thread.sleep(1000); // let several frames render
+            double[] sizes = FxToolkit.onFx(() -> {
+                javafx.scene.canvas.Canvas canvas = (javafx.scene.canvas.Canvas) stage.getScene().getRoot()
+                        .lookup(".drawing-canvas");
+                javafx.geometry.Bounds shown = canvas.getBoundsInParent();
+                stage.close();
+                return new double[]{canvas.getWidth(), canvas.getHeight(), shown.getWidth(), shown.getHeight()};
+            });
+            assertTrue(sizes[0] <= 4096 && sizes[1] <= 4096, "canvas texture too large: " + sizes[0] + "x" + sizes[1]);
+            assertEquals(6000, sizes[2], 1.0, "the canvas must still cover the whole image");
+            assertEquals(4500, sizes[3], 1.0);
+        } finally {
+            System.setErr(originalErr);
+        }
+        assertFalse(errors.toString().contains("Exception"), "rendering errors:\n" + errors);
     }
 
     private interface Setup {

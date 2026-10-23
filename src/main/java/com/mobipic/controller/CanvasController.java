@@ -20,24 +20,32 @@ import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Scale;
 
 import java.util.Locale;
 
 /**
  * Hosts the drawing canvas: forwards mouse events to the active tool, repaints on model changes and
  * shows a text box on top of the canvas while a text layer is being typed.
+ * <p>
+ * The canvas is not as large as the image: it is rendered at the resolution it is shown at (zoom times the
+ * screen scaling), never larger than the GPU texture limit, then scaled back to the image size. Large
+ * photos can therefore be opened, and zoomed-out views repaint faster. Tools always work in image coordinates.
  */
 public final class CanvasController implements ToolContext {
 
     public static final double MIN_ZOOM = 0.1;
     public static final double MAX_ZOOM = 8;
+
+    /** Largest canvas JavaFX can render: its texture limit, 4096 px unless -Dprism.maxTextureSize says otherwise. */
+    static final int MAX_CANVAS_SIZE = maxCanvasSize();
 
     @FXML
     private Pane surface;
@@ -58,16 +66,30 @@ public final class CanvasController implements ToolContext {
     private boolean editingIsNew;
     private String originalText;
 
-    // Eyedropper cache: the flattened image is rendered once per model revision
-    private Image flattened;
-    private long flattenedRevision = -1;
+    /** Maps canvas pixels back to image coordinates. */
+    private final Scale canvasToImage = new Scale(1, 1, 0, 0);
+    /** Canvas pixels per image pixel, on each axis. */
+    private double renderScaleX = 1;
+    private double renderScaleY = 1;
 
     @FXML
     private void initialize() {
         surface.scaleXProperty().bind(zoom);
         surface.scaleYProperty().bind(zoom);
+        canvas.getTransforms().add(canvasToImage);
         canvas.setFocusTraversable(true);
-        zoom.addListener(repaintListener); // overlays keep a constant on-screen width
+        zoom.addListener(obs -> updateRenderScale()); // also repaints: overlays keep a constant on-screen width
+        // Moving the window to a screen with another scaling changes the resolution needed
+        canvas.sceneProperty().addListener((obs, oldScene, scene) -> {
+            if (scene != null) {
+                scene.windowProperty().addListener((o, oldWindow, window) -> {
+                    if (window != null) {
+                        window.outputScaleXProperty().addListener(scale -> updateRenderScale());
+                        updateRenderScale();
+                    }
+                });
+            }
+        });
         toolKind.addListener((obs, old, kind) -> {
             commitText();
             tool.cancel(this);
@@ -97,15 +119,13 @@ public final class CanvasController implements ToolContext {
             model.revisionProperty().removeListener(repaintListener);
         }
         model = newModel;
-        flattened = null;
         tool = toolKind.get().create();
         if (model == null) {
             canvas.setWidth(0);
             canvas.setHeight(0);
             return;
         }
-        canvas.setWidth(model.getWidth());
-        canvas.setHeight(model.getHeight());
+        updateRenderScale();
         model.getLayers().addListener(repaintListener);
         model.selectedProperty().addListener(selectionListener);
         model.revisionProperty().addListener(repaintListener);
@@ -114,6 +134,37 @@ public final class CanvasController implements ToolContext {
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    private static int maxCanvasSize() {
+        int limit = Integer.getInteger("prism.maxTextureSize", 4096);
+        return limit <= 0 ? 8192 : limit;
+    }
+
+    /** Resizes the canvas to the resolution it is displayed at, within the texture limit, and repaints. */
+    private void updateRenderScale() {
+        if (model == null) {
+            return;
+        }
+        double screenScale = canvas.getScene() != null && canvas.getScene().getWindow() != null
+                ? canvas.getScene().getWindow().getOutputScaleX()
+                : 1;
+        double largest = Math.max(1, Math.max(model.getWidth(), model.getHeight()));
+        double scale = Math.min(zoom.get() * screenScale, MAX_CANVAS_SIZE / largest);
+        double width = Math.max(1, Math.min(MAX_CANVAS_SIZE, Math.ceil(model.getWidth() * scale)));
+        double height = Math.max(1, Math.min(MAX_CANVAS_SIZE, Math.ceil(model.getHeight() * scale)));
+        canvas.setWidth(width);
+        canvas.setHeight(height);
+        // Exact per-axis factors, so that the scaled canvas covers the image exactly despite the rounding
+        renderScaleX = width / model.getWidth();
+        renderScaleY = height / model.getHeight();
+        canvasToImage.setX(1 / renderScaleX);
+        canvasToImage.setY(1 / renderScaleY);
+        repaint();
+    }
+
+    private ToolEvent toolEvent(MouseEvent e) {
+        return ToolEvent.of(e, renderScaleX, renderScaleY);
     }
 
     // ---- Tools ------------------------------------------------------------------------------
@@ -162,21 +213,21 @@ public final class CanvasController implements ToolContext {
             return;
         }
         canvas.requestFocus();
-        tool.onPress(this, ToolEvent.of(e));
+        tool.onPress(this, toolEvent(e));
         updateCursor(e);
     }
 
     @FXML
     private void onDragged(MouseEvent e) {
         if (model != null && editing == null && (e.isPrimaryButtonDown() || e.isSecondaryButtonDown())) {
-            tool.onDrag(this, ToolEvent.of(e));
+            tool.onDrag(this, toolEvent(e));
         }
     }
 
     @FXML
     private void onReleased(MouseEvent e) {
         if (model != null && editing == null) {
-            tool.onRelease(this, ToolEvent.of(e));
+            tool.onRelease(this, toolEvent(e));
             updateCursor(e);
         }
     }
@@ -184,7 +235,7 @@ public final class CanvasController implements ToolContext {
     @FXML
     private void onMoved(MouseEvent e) {
         if (model != null && editing == null) {
-            tool.onMove(this, ToolEvent.of(e));
+            tool.onMove(this, toolEvent(e));
             updateCursor(e);
         }
     }
@@ -195,7 +246,7 @@ public final class CanvasController implements ToolContext {
     }
 
     private void updateCursor(MouseEvent e) {
-        canvas.setCursor(tool.cursorAt(this, e.getX(), e.getY()));
+        canvas.setCursor(tool.cursorAt(this, e.getX() / renderScaleX, e.getY() / renderScaleY));
     }
 
     // ---- Text editing -----------------------------------------------------------------------
@@ -303,8 +354,12 @@ public final class CanvasController implements ToolContext {
             return;
         }
         layoutEditor();
-        CanvasRenderer.paintLayers(canvas, model.getLayers(), editing);
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setTransform(new Affine());
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.save();
+        gc.scale(renderScaleX, renderScaleY);
+        CanvasRenderer.paintLayers(gc, model.getLayers(), editing);
         Layer selected = model.getSelected();
         if (selected != null && selected != editing) {
             CanvasRenderer.paintSelection(gc, selected, zoom.get());
@@ -312,6 +367,7 @@ public final class CanvasController implements ToolContext {
         if (editing == null) {
             tool.paintOverlay(this, gc);
         }
+        gc.restore();
     }
 
     @Override
@@ -319,10 +375,7 @@ public final class CanvasController implements ToolContext {
         if (model == null || x < 0 || y < 0 || x >= model.getWidth() || y >= model.getHeight()) {
             return null;
         }
-        if (flattened == null || flattenedRevision != model.revisionProperty().get()) {
-            flattened = ImageExporter.render(model);
-            flattenedRevision = model.revisionProperty().get();
-        }
-        return flattened.getPixelReader().getColor((int) x, (int) y);
+        // Render just the pixel under the cursor, at full resolution
+        return ImageExporter.renderRegion(model, (int) x, (int) y, 1, 1).getPixelReader().getColor(0, 0);
     }
 }

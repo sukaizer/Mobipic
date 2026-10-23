@@ -12,8 +12,12 @@ import javafx.scene.input.MouseEvent;
  */
 public record ToolEvent(double x, double y, boolean shift, boolean alt, boolean secondary, int clickCount) {
 
-    public static ToolEvent of(MouseEvent e) {
-        return new ToolEvent(e.getX(), e.getY(), e.isShiftDown(), e.isAltDown(),
+    /**
+     * @param scaleX canvas pixels per image pixel horizontally (the canvas may be rendered at another resolution)
+     * @param scaleY canvas pixels per image pixel vertically
+     */
+    public static ToolEvent of(MouseEvent e, double scaleX, double scaleY) {
+        return new ToolEvent(e.getX() / scaleX, e.getY() / scaleY, e.isShiftDown(), e.isAltDown(),
                 e.getButton() == MouseButton.SECONDARY, e.getClickCount());
     }
 

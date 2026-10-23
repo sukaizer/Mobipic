@@ -9,7 +9,7 @@
    <children>
       <Pane fx:id="surface">
          <children>
-            <Canvas fx:id="canvas" onMouseDragged="#onDragged" onMouseMoved="#onMoved" onMousePressed="#onPressed"
+            <Canvas fx:id="canvas" styleClass="drawing-canvas" onMouseDragged="#onDragged" onMouseMoved="#onMoved" onMousePressed="#onPressed"
                     onMouseReleased="#onReleased" onMouseExited="#onExited" />
          </children>
       </Pane>

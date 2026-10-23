@@ -45,10 +45,6 @@ public enum ToolKind {
         return "tool.hint." + name().toLowerCase(Locale.ROOT);
     }
 
-    public boolean isShape() {
-        return this == RECTANGLE || this == ROUNDED_RECTANGLE || this == ELLIPSE || this == TRIANGLE || this == LINE;
-    }
-
     public static ToolKind forShortcut(KeyCode code) {
         for (ToolKind kind : values()) {
             if (kind.shortcut == code) {

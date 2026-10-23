@@ -37,7 +37,8 @@ The interface is in French by default and in English on English systems
   and eyedropper. A tool stays active, so several shapes can be drawn in a row.
 * **Two colours**, as in Paint: the primary colour is used for outlines, brush strokes and text, the secondary
   one for fills and text outlines. Pick them from the palette (left click: primary, right click: secondary),
-  with the colour pickers, or from the image with the eyedropper. `X` swaps them.
+  with the colour pickers of the options bar, or from the image with the eyedropper. `X` (or a click on the
+  colour indicator above the palette) swaps them.
 * **Options bar** under the toolbar: outline and fill colours, outline only / fill only / both, width, corner
   radius, opacity; for text: font, size, bold, italic, alignment, outline and shadow. With the selection tool,
   it shows and edits the style of the selected layer.
@@ -88,12 +89,14 @@ The interface is in French by default and in English on English systems
 | Arrow keys (`+Shift`)             | Nudge the selected layer 1 px (10 px)          |
 | `Ctrl++` / `Ctrl+-` / `Ctrl+0`    | Zoom in / out / actual size                    |
 | `Esc`                             | Finish typing, cancel the current drawing, clear the selection |
-| `Ctrl+B` / `Ctrl+R`               | Kept from version 1: switch to the selection tool |
 
 ### Icon bar
 
 The toolbar buttons, in order: open a project, open an image as a new project, save the project,
-shape tool, add an image, text tool, zoom in, zoom out, actual size.
+add an image, zoom in, zoom out, actual size. Shapes and text are drawn with the tool palette.
+
+Large photos are supported: the canvas is rendered at the resolution it is displayed at (JavaFX cannot
+draw a canvas larger than 4096 px), while export, saving and the eyedropper always use full resolution.
 
 ## Project file format
 

@@ -48,6 +48,27 @@ class ImageExporterTest {
         assertEquals(255, right.getGreen(), 20);
     }
 
+    /** Wider than the texture limit and than several tiles: rendered tile by tile, at full resolution. */
+    @Test
+    void exportsImagesLargerThanTheTextureLimit() throws Exception {
+        Path file = dir.resolve("wide.png");
+        FxToolkit.onFx(() -> {
+            ProjectModel model = new ProjectModel(FxToolkit.solidImage(5000, 300, Color.WHITE));
+            model.add(new RectangleLayer(4800, 100, 200, 100, new ShapeStyle(Color.RED, Color.RED, 1, FillMode.FILL)));
+            RectangleLayer hidden = new RectangleLayer(0, 0, 100, 100, new ShapeStyle(Color.BLUE, Color.BLUE, 1, FillMode.FILL));
+            model.add(hidden);
+            model.setVisible(hidden, false);
+            ImageExporter.export(model, ImageExporter.Format.PNG, file);
+            return null;
+        });
+        BufferedImage written = ImageIO.read(file.toFile());
+        assertEquals(5000, written.getWidth());
+        assertEquals(new java.awt.Color(255, 0, 0), new java.awt.Color(written.getRGB(4900, 150)));
+        assertEquals(new java.awt.Color(255, 255, 255), new java.awt.Color(written.getRGB(2047, 150)));
+        assertEquals(new java.awt.Color(255, 255, 255), new java.awt.Color(written.getRGB(2048, 150)));
+        assertEquals(new java.awt.Color(255, 255, 255), new java.awt.Color(written.getRGB(50, 50)), "hidden layer exported");
+    }
+
     @Test
     void formatIsDetectedFromTheExtension() {
         assertEquals(ImageExporter.Format.JPG, ImageExporter.formatOf(Path.of("a.JPEG")));

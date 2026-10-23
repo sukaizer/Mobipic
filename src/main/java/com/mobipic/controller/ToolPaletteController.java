@@ -5,12 +5,12 @@ import com.mobipic.tool.ToolSettings;
 import com.mobipic.util.I18n;
 import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -53,9 +53,11 @@ public final class ToolPaletteController {
     @FXML
     private ToggleButton eyedropperTool;
     @FXML
-    private ColorPicker primaryPicker;
+    private Pane colorIndicator;
     @FXML
-    private ColorPicker secondaryPicker;
+    private Rectangle primarySwatch;
+    @FXML
+    private Rectangle secondarySwatch;
     @FXML
     private TilePane palette;
 
@@ -84,8 +86,9 @@ public final class ToolPaletteController {
     /** Connects the palette to the shared settings and to the active tool, in both directions. */
     public void init(ToolSettings settings, ObjectProperty<ToolKind> toolKind) {
         this.settings = settings;
-        primaryPicker.valueProperty().bindBidirectional(settings.primaryProperty());
-        secondaryPicker.valueProperty().bindBidirectional(settings.secondaryProperty());
+        primarySwatch.fillProperty().bind(settings.primaryProperty());
+        secondarySwatch.fillProperty().bind(settings.secondaryProperty());
+        Tooltip.install(colorIndicator, new Tooltip(I18n.get("colors.indicator")));
 
         selectToggle(toolKind.get());
         toolKind.addListener((obs, old, kind) -> selectToggle(kind));

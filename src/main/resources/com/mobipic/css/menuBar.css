@@ -23,16 +23,8 @@
     -fx-graphic : url("../images/help.png");
 }
 
-#menuItemShapes .label {
-    -fx-graphic : url("../images/shapes.png");
-}
-
 #menuItemImage .label {
     -fx-graphic : url("../images/image.png");
-}
-
-#menuItemText .label {
-    -fx-graphic : url("../images/text.png");
 }
 
 #menuItemFilter .label {

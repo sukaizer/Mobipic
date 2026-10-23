@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.SVGPath?>
 
@@ -57,15 +57,13 @@
          </children>
       </TilePane>
       <Separator />
-      <ColorPicker fx:id="primaryPicker" styleClass="swatch-picker">
-         <tooltip><Tooltip text="%colors.primary" /></tooltip>
-      </ColorPicker>
-      <ColorPicker fx:id="secondaryPicker" styleClass="swatch-picker">
-         <tooltip><Tooltip text="%colors.secondary" /></tooltip>
-      </ColorPicker>
-      <Button fx:id="swapButton" onAction="#swapColors" styleClass="swap-button" text="⇅">
-         <tooltip><Tooltip text="%colors.swap" /></tooltip>
-      </Button>
+      <!-- Current colours, Paint style: primary in front, secondary behind. Click to swap. -->
+      <Pane fx:id="colorIndicator" styleClass="color-indicator" onMouseClicked="#swapColors">
+         <children>
+            <Rectangle fx:id="secondarySwatch" layoutX="22.0" layoutY="14.0" width="26.0" height="26.0" styleClass="indicator-swatch" />
+            <Rectangle fx:id="primarySwatch" layoutX="10.0" layoutY="2.0" width="26.0" height="26.0" styleClass="indicator-swatch" />
+         </children>
+      </Pane>
       <TilePane fx:id="palette" prefColumns="3" styleClass="palette" />
    </children>
 </VBox>

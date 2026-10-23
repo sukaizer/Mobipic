@@ -90,10 +90,6 @@ public final class MainController {
     @FXML
     private MenuItem rotateRightMenuItem;
     @FXML
-    private MenuItem moveMenuItem;
-    @FXML
-    private MenuItem resizeMenuItem;
-    @FXML
     private Menu viewMenu;
     @FXML
     private MenuItem zoomInMenuItem;
@@ -106,11 +102,7 @@ public final class MainController {
     @FXML
     private Button saveButton;
     @FXML
-    private Button newShapeButton;
-    @FXML
     private Button newImageButton;
-    @FXML
-    private Button newTextButton;
     @FXML
     private Button zoomPlus;
     @FXML
@@ -226,8 +218,7 @@ public final class MainController {
     // ---- State ------------------------------------------------------------------------------
 
     private void bindControls() {
-        for (var control : List.of(saveButton, newShapeButton, newImageButton, newTextButton,
-                zoomPlus, zoomMinus, zoomReset)) {
+        for (var control : List.of(saveButton, newImageButton, zoomPlus, zoomMinus, zoomReset)) {
             control.disableProperty().bind(projectOpen.not());
         }
         for (var item : List.of(saveMenuItem, saveAsMenuItem, exportMenu, layersMenu, viewMenu)) {
@@ -237,7 +228,7 @@ public final class MainController {
             control.disableProperty().bind(layerEditable.not());
         }
         for (var item : List.of(deleteMenuItem, duplicateMenuItem, rotateLeftMenuItem, rotateRightMenuItem,
-                moveMenuItem, resizeMenuItem, cutMenuItem, copyMenuItem)) {
+                cutMenuItem, copyMenuItem)) {
             item.disableProperty().bind(layerEditable.not());
         }
         renameButton.disableProperty().bind(layerSelected.not());
@@ -589,14 +580,6 @@ public final class MainController {
 
     // ---- Layer menu -------------------------------------------------------------------------
 
-    /** "New shape": switches to the rectangle tool (or keeps the current shape tool). */
-    @FXML
-    private void addShapeMenu() {
-        if (model() != null && !canvasViewController.toolKindProperty().get().isShape()) {
-            canvasViewController.toolKindProperty().set(ToolKind.RECTANGLE);
-        }
-    }
-
     @FXML
     private void addImageLayer() {
         if (model() == null) {
@@ -614,14 +597,6 @@ public final class MainController {
             rememberDirectory(path);
             canvasViewController.toolKindProperty().set(ToolKind.SELECT);
             model().add(new ImageLayer(image, 0, 0));
-        }
-    }
-
-    /** "New text": switches to the text tool; the text is then typed where the user clicks. */
-    @FXML
-    private void addTextMenu() {
-        if (model() != null) {
-            canvasViewController.toolKindProperty().set(ToolKind.TEXT);
         }
     }
 
@@ -675,17 +650,6 @@ public final class MainController {
         if (layerEditable.get()) {
             model().rotate(selected(), 90);
         }
-    }
-
-    /** Kept from version 1: layers are now moved and resized directly with the selection tool. */
-    @FXML
-    private void moveLayer() {
-        canvasViewController.toolKindProperty().set(ToolKind.SELECT);
-    }
-
-    @FXML
-    private void resizeLayer() {
-        canvasViewController.toolKindProperty().set(ToolKind.SELECT);
     }
 
     /** "Up" arrow: moves the layer up in the list, i.e. further back in the drawing order. */
