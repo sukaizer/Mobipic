@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
+
+<ListView fx:id="layersList" minHeight="150.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.mobipic.controller.LayersController">
+   <placeholder>
+      <javafx.scene.control.Label text="%layers.empty" />
+   </placeholder>
+   <contextMenu>
+      <ContextMenu>
+        <items>
+            <MenuItem fx:id="delete" mnemonicParsing="false" text="%action.delete" />
+            <MenuItem fx:id="move" mnemonicParsing="false" text="%action.move" />
+            <MenuItem fx:id="resize" mnemonicParsing="false" text="%action.resize" />
+            <MenuItem fx:id="duplicate" mnemonicParsing="false" text="%action.duplicate" />
+            <MenuItem fx:id="filters" mnemonicParsing="false" text="%action.filter" />
+        </items>
+      </ContextMenu>
+   </contextMenu>
+</ListView>

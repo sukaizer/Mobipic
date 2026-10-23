@@ -1,0 +1,15 @@
+/* Drawing area: the image sits centred on a neutral background. */
+.canvas-scroll, .canvas-scroll > .viewport {
+    -fx-background-color: #d9d9d9;
+}
+
+.canvas-holder {
+    -fx-alignment: center;
+    -fx-padding: 20;
+}
+
+.placeholder {
+    -fx-font-family: Verdana;
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+}

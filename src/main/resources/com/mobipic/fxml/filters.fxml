@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="250.0" prefWidth="420.0" spacing="30.0" stylesheets="@../css/confirmWindow.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mobipic.controller.FilterDialogController">
+   <children>
+      <Label text="%filters.choose" />
+      <ChoiceBox fx:id="choiceBox" prefWidth="150.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ChoiceBox>
+      <HBox alignment="CENTER" spacing="20.0">
+         <children>
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#validate" text="%dialog.ok" />
+            <Button cancelButton="true" mnemonicParsing="false" onAction="#cancel" text="%dialog.cancel" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

@@ -1,0 +1,75 @@
+.root {
+    -fx-alignment: center;
+}
+
+.button, .toggle-button {
+    -fx-focus-color: #b22222;
+    -fx-font-family: Verdana;
+    -fx-pref-width: 30;
+    -fx-pref-height: 30;
+
+    -fx-background-color:
+            rgba(0,0,0,0.08),
+            linear-gradient(#9a9a9a, #909090),
+            linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-background-radius: 5,5,4;
+    -fx-padding: 3 5 3 5;
+    -fx-text-fill: #242d35;
+    -fx-font-size: 12px;
+}
+
+.label {
+    -fx-font-family: Verdana;
+}
+
+.color-picker:hover {
+    -fx-cursor: hand;
+}
+
+.slider {
+    -fx-cursor: hand;
+}
+
+.toggle-button:selected {
+    -fx-border-color: #ff0000;
+    -fx-border-width: 3;
+}
+
+#ok, #cancel {
+    -fx-pref-width: 90;
+}
+
+.button:hover, .toggle-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /* drop shadow */
+    -fx-cursor: hand;
+}
+
+#hbox {
+    -fx-alignment: top-center;
+}
+
+
+#circle {
+    -fx-graphic : url("../images/circle.png");
+}
+
+#triangle {
+    -fx-graphic : url("../images/triangle.png");
+}
+
+#square {
+    -fx-graphic : url("../images/square.png");
+}
+
+#rectangle {
+    -fx-graphic : url("../images/rectangle.png");
+}
+
+#line {
+    -fx-graphic : url("../images/line.png");
+}
+
+#ellipse {
+    -fx-graphic : url("../images/ellipse.png");
+}

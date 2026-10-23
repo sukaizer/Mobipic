@@ -1,0 +1,92 @@
+.button {
+    -fx-focus-color: #b22222;
+    -fx-min-width: 90;
+
+    -fx-background-color:
+            rgba(0,0,0,0.08),
+            linear-gradient(#9a9a9a, #909090),
+            linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-background-radius: 5,5,4;
+    -fx-padding: 3 5 3 5;
+    -fx-text-fill: #242d35;
+    -fx-font-size: 12px;
+}
+
+.toggle-button {
+    -fx-focus-color: #b22222;
+    -fx-pref-width: 30;
+    -fx-pref-height: 30;
+
+    -fx-background-color:
+            rgba(0,0,0,0.08),
+            linear-gradient(#9a9a9a, #909090),
+            linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-background-radius: 5,5,4;
+    -fx-padding: 3 5 3 5;
+    -fx-text-fill: #242d35;
+}
+
+.toggle-button:hover {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /* drop shadow */
+}
+
+.toggle-button:selected {
+    -fx-border-color: #ff0000;
+    -fx-border-width: 3;
+}
+
+.button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /* drop shadow */
+    -fx-cursor: hand;
+}
+
+.color-picker {
+    -fx-background-color:
+            rgba(0,0,0,0.08),
+            linear-gradient(#9a9a9a, #909090),
+            linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-background-radius: 5,5,4;
+    -fx-padding: 3 5 3 5;
+    -fx-text-fill: #242d35;
+}
+
+.color-picker:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /* drop shadow */
+    -fx-cursor: hand;
+}
+
+.combo-box-base, .choice-box {
+    -fx-background-color:
+            rgba(0,0,0,0.08),
+            linear-gradient(#9a9a9a, #909090),
+            linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-background-radius: 5,5,4;
+    -fx-padding: 3 5 3 5;
+    -fx-text-fill: #242d35;
+}
+
+.combo-box-base:hover, .choice-box:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8),5,0,0,0); /* drop shadow */
+    -fx-cursor: hand;
+}
+
+.slider {
+    -fx-cursor: hand;
+}
+
+#button-bar {
+    -fx-alignment: center;
+}
+
+#bold {
+    -fx-graphic : url("../images/bold.png");
+}
+
+#italic {
+    -fx-graphic : url("../images/italic.png");
+}

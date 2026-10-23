@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.mobipic.controller.MainController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="75.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+   </rowConstraints>
+   <children>
+      <VBox>
+         <children>
+            <MenuBar stylesheets="@../css/menuBar.css">
+              <menus>
+                  <Menu mnemonicParsing="false" text="%menu.file">
+                    <items>
+                        <MenuItem id="menuItemOpen" mnemonicParsing="false" onAction="#openProject" text="%menu.file.open">
+                           <accelerator><KeyCodeCombination alt="UP" code="O" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                        <MenuItem id="menuItemNew" mnemonicParsing="false" onAction="#newProject" text="%menu.file.new">
+                           <accelerator><KeyCodeCombination alt="UP" code="N" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                        <MenuItem id="menuItemSave" fx:id="saveMenuItem" mnemonicParsing="false" onAction="#saveProject" text="%menu.file.save">
+                           <accelerator><KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#saveProjectAs" text="%menu.file.saveAs">
+                           <accelerator><KeyCodeCombination alt="UP" code="S" control="UP" meta="UP" shift="DOWN" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                        <Menu fx:id="exportMenu" mnemonicParsing="false" text="%menu.file.export">
+                          <items>
+                              <MenuItem mnemonicParsing="false" onAction="#exportToJpg" text=".jpg" />
+                              <MenuItem mnemonicParsing="false" onAction="#exportToBmp" text=".bmp" />
+                              <MenuItem mnemonicParsing="false" onAction="#exportToPng" text=".png" />
+                          </items>
+                        </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#quitApp" text="%menu.file.quit">
+                           <accelerator><KeyCodeCombination alt="UP" code="Q" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="%menu.edit">
+                    <items>
+                        <MenuItem fx:id="undoMenuItem" mnemonicParsing="false" onAction="#undo" text="%menu.edit.undo">
+                           <accelerator><KeyCodeCombination alt="UP" code="Z" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="redoMenuItem" mnemonicParsing="false" onAction="#redo" text="%menu.edit.redo">
+                           <accelerator><KeyCodeCombination alt="UP" code="Y" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                    </items>
+                  </Menu>
+                  <Menu fx:id="layersMenu" mnemonicParsing="false" text="%menu.layer">
+                    <items>
+                        <Menu mnemonicParsing="false" text="%menu.layer.new">
+                          <items>
+                              <MenuItem id="menuItemText" mnemonicParsing="false" onAction="#addTextMenu" text="%menu.layer.new.text" />
+                              <MenuItem id="menuItemShapes" mnemonicParsing="false" onAction="#addShapeMenu" text="%menu.layer.new.shape" />
+                              <MenuItem id="menuItemFilter" fx:id="addFilterMenu" mnemonicParsing="false" onAction="#addFilter" text="%menu.layer.new.filter" />
+                              <MenuItem id="menuItemImage" mnemonicParsing="false" onAction="#addImageLayer" text="%menu.layer.new.image" />
+                          </items>
+                        </Menu>
+                        <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#deleteLayer" text="%action.delete">
+                           <accelerator><KeyCodeCombination alt="UP" code="BACK_SPACE" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="moveMenuItem" mnemonicParsing="false" onAction="#moveLayer" text="%action.move">
+                           <accelerator><KeyCodeCombination alt="UP" code="B" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="resizeMenuItem" mnemonicParsing="false" onAction="#resizeLayer" text="%action.resize">
+                           <accelerator><KeyCodeCombination alt="UP" code="R" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="duplicateMenuItem" mnemonicParsing="false" onAction="#duplicateLayer" text="%action.duplicate">
+                           <accelerator><KeyCodeCombination alt="UP" code="D" control="UP" meta="UP" shift="UP" shortcut="DOWN" /></accelerator>
+                        </MenuItem>
+                    </items>
+                  </Menu>
+                  <Menu fx:id="viewMenu" mnemonicParsing="false" text="%menu.view">
+                    <items>
+                        <MenuItem fx:id="zoomInMenuItem" mnemonicParsing="false" onAction="#zoomPlus" text="%menu.view.zoomIn" />
+                        <MenuItem fx:id="zoomOutMenuItem" mnemonicParsing="false" onAction="#zoomMinus" text="%menu.view.zoomOut" />
+                        <MenuItem fx:id="zoomResetMenuItem" mnemonicParsing="false" onAction="#zoomReset" text="%menu.view.zoomReset" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="%menu.help">
+                    <items>
+                        <MenuItem id="menuItemHelp" mnemonicParsing="false" onAction="#helpButtonAction" text="%menu.help.github" />
+                    </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+            <ToolBar stylesheets="@../css/toolBar.css">
+              <items>
+                  <Button id="iconOpen" mnemonicParsing="false" onAction="#openProject">
+                     <tooltip><Tooltip text="%tooltip.open" /></tooltip>
+                  </Button>
+                  <Button id="iconNew" mnemonicParsing="false" onAction="#newProject">
+                     <tooltip><Tooltip text="%tooltip.new" /></tooltip>
+                  </Button>
+                  <Button id="iconSave" fx:id="saveButton" mnemonicParsing="false" onAction="#saveProject">
+                     <tooltip><Tooltip text="%tooltip.save" /></tooltip>
+                  </Button>
+                  <Button id="iconShapes" fx:id="newShapeButton" mnemonicParsing="false" onAction="#addShapeMenu">
+                     <tooltip><Tooltip text="%tooltip.shape" /></tooltip>
+                  </Button>
+                  <Button id="iconImages" fx:id="newImageButton" mnemonicParsing="false" onAction="#addImageLayer">
+                     <tooltip><Tooltip text="%tooltip.image" /></tooltip>
+                  </Button>
+                  <Button id="iconText" fx:id="newTextButton" mnemonicParsing="false" onAction="#addTextMenu">
+                     <tooltip><Tooltip text="%tooltip.text" /></tooltip>
+                  </Button>
+                  <Button fx:id="zoomPlus" mnemonicParsing="false" onAction="#zoomPlus" text="+">
+                     <tooltip><Tooltip text="%menu.view.zoomIn" /></tooltip>
+                  </Button>
+                  <Button fx:id="zoomMinus" mnemonicParsing="false" onAction="#zoomMinus" text="-">
+                     <tooltip><Tooltip text="%menu.view.zoomOut" /></tooltip>
+                  </Button>
+                  <Button id="zoomReset" fx:id="zoomReset" mnemonicParsing="false" onAction="#zoomReset" text="1:1">
+                     <tooltip><Tooltip text="%menu.view.zoomReset" /></tooltip>
+                  </Button>
+                  <Label fx:id="zoomLabel" styleClass="zoom-label" />
+                  <Pane HBox.hgrow="ALWAYS" />
+                  <Label fx:id="hintLabel" styleClass="hint-label" />
+              </items>
+            </ToolBar>
+            <!-- fitTo* centres a small canvas in the viewport; a larger one still scrolls (content min size wins) -->
+            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" styleClass="canvas-scroll" stylesheets="@../css/canvasArea.css" VBox.vgrow="ALWAYS">
+               <content>
+                  <StackPane fx:id="canvasHolder" styleClass="canvas-holder">
+                     <children>
+                        <Label fx:id="placeholder" styleClass="placeholder" text="%placeholder" wrapText="true" />
+                        <fx:include fx:id="canvasView" source="canvas.fxml" />
+                     </children>
+                  </StackPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+      <VBox GridPane.columnIndex="1">
+         <children>
+            <fx:include fx:id="layersView" source="layers.fxml" VBox.vgrow="ALWAYS" />
+            <HBox fx:id="hboxLayersModify" styleClass="button-bar" stylesheets="@../css/switchLayers.css">
+               <children>
+                  <Button id="up" fx:id="up" alignment="CENTER" mnemonicParsing="false" onAction="#sendBack" textAlignment="CENTER">
+                     <tooltip><Tooltip text="%tooltip.up" /></tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button id="down" fx:id="down" mnemonicParsing="false" onAction="#sendForward">
+                     <tooltip><Tooltip text="%tooltip.down" /></tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0" />
+            <VBox fx:id="layersModifyBar" prefHeight="200.0" styleClass="vbox" stylesheets="@../css/buttonsLayer.css">
+               <children>
+                  <Button fx:id="deleteButton" alignment="CENTER" mnemonicParsing="false" onAction="#deleteLayer" text="%action.delete" />
+                  <Button fx:id="moveButton" mnemonicParsing="false" onAction="#moveLayer" text="%action.move" />
+                  <Button fx:id="resizeButton" mnemonicParsing="false" onAction="#resizeLayer" text="%action.resize" />
+                  <Button fx:id="duplicateButton" mnemonicParsing="false" onAction="#duplicateLayer" text="%action.duplicate" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</GridPane>

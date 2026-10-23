@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.canvas.Canvas?>
+
+<!-- The Group makes the ScrollPane account for the zoom (scale) of the canvas. -->
+<Group xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mobipic.controller.CanvasController">
+   <children>
+      <Canvas fx:id="canvas" styleClass="drawing-canvas" onMouseDragged="#onDragged" onMouseMoved="#onMoved" onMousePressed="#onPressed"
+              onMouseReleased="#onReleased" onMouseExited="#onExited" />
+   </children>
+</Group>
